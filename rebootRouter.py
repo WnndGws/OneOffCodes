@@ -1,8 +1,14 @@
-from grab import Grab
+import urllib.request
 
-g = Grab()
+url = 'http://192.168.0.1/html/reboot.html'
+username = 'admin'
+password = input("Password? ")
 
-g.go('http://192.168.0.1/html/reboot.html')
-g.doc.set_input('username', 'admin')
-g.doc.set_input('password', '*********')
-g.doc.submit()
+auth_handler = urllib.request.HTTPBasicAuthHandler()
+auth_handler.add_password(realm='', uri=url, user=username, passwd=password)
+opener = urllib.request.build_opener(auth_handler)
+urllib.request.install_opener(opener)
+f = urllib.request.urlopen(url)
+print(f.status)
+print(f.reason)
+print(f.read().decode('utf-8'))
