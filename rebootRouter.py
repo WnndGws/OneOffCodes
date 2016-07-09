@@ -1,14 +1,21 @@
 import urllib.request
 
 url = 'http://192.168.0.1/html/reboot.html'
+headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'}
 username = 'admin'
 password = input("Password? ")
 
-auth_handler = urllib.request.HTTPBasicAuthHandler()
-auth_handler.add_password(realm='', uri=url, user=username, passwd=password)
-opener = urllib.request.build_opener(auth_handler)
+manager = urllib.request.HTTPPasswordMgrWithDefaultRealm()
+manager.add_password(None, url, username, password)
+
+handler = urllib.request.HTTPBasicAuthHandler(manager)
+
+opener = urllib.request.build_opener(handler)
+opener.open(url)
 urllib.request.install_opener(opener)
-f = urllib.request.urlopen(url)
-print(f.status)
-print(f.reason)
-print(f.read().decode('utf-8'))
+
+req = urllib.request.Request(url, None, headers)
+
+with urllib.request.urlopen(req) as response:
+    html = response.read()
+    print(html)
