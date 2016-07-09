@@ -1,5 +1,3 @@
-#test
-
 '''order of opperations:
 roll 4 dice to see how many black and red to remove
 assign each day a red or a black
