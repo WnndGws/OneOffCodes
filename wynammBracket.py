@@ -7,7 +7,7 @@
 5) repeat'''
 
 import random
-import sys
+import os
 
 def team_chooser(team_list):
     '''Team chooser helper function.Enter '1' to select first displayed team, and '2' or anything other than '1' for second team'''
@@ -21,9 +21,6 @@ def team_chooser(team_list):
                 chosen_teams.append(team_list[i+1])
     return chosen_teams
 
-# Get absolute path of the dir script is run from
-cwd = sys.path[0]
-
 # Set colors for terminal output
 colour_red = "\033[01;31m{0}\033[00m"
 colour_green = "\033[1;36m{0}\033[00m"
@@ -31,7 +28,7 @@ colour_green = "\033[1;36m{0}\033[00m"
 matchups_dict = {}
 scores_dict = {}
 
-with open(cwd + '/wynnammBracket_possible_teams.txt', 'r') as file:
+with open('wynammBracket_possible_teams.txt', 'r') as file:
     possible_teams=file.read().splitlines()
 random.shuffle(possible_teams) # Randomise teams
 
