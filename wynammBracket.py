@@ -8,31 +8,50 @@
 
 import random
 import os
+import sys
+
+# Set colors for terminal output
+colour_red = "\033[01;31m{0}\033[00m"
+colour_green = "\033[1;36m{0}\033[00m"
 
 def team_chooser(team_list):
     '''Team chooser helper function. Enter '1' to select first displayed team, and '2' or anything other than '1' for second team'''
     chosen_teams = []
-    for i, team in enumerate(team_list):
-        if i % 2 == 0:
-            selection = input("Enter 1 for {0} or 2 for {1}: ".format(team_list[i], team_list[i+1]))
-            if selection == '1':
-                chosen_teams.append(team_list[i])
-            else:
-                chosen_teams.append(team_list[i+1])
+    i = 0  #using this so that we can print the same teams if incorrect entry
+    print ('Press either "1" or "2" to choose your team')
+    selection = input("(1) {0}\n(2) {1}: \nChoice: ".format(team_list[i], team_list[i+1]))
+    if selection not in ('1','2'):
+        print ('Please only enter 1 or 2')     
+    elif selection == '1':
+        chosen_teams.append(team_list[i])
+    elif selection == '2':
+        chosen_teams.append(team_list[i+1])
+        i += 2
+                                
     return chosen_teams
     
 def load_teams():
     cwd = sys.path[0] # Get absolute path of the dir script resides in. os.getcwd() only returns dir script is invoked from
-    with open(cwd + '/wynammBracket_possible_teams.txt', 'r') as file:
-        possible_teams = file.read().splitlines()
-    random.shuffle(possible_teams) # Randomly order the teams
-    return possible_teams
+    if os.path.isfile(cwd + '/wynammBracket_possible_teams.txt'):        
+        with open(cwd + '/wynammBracket_possible_teams.txt', 'r') as file:
+            possible_teams = file.read().splitlines()
+        random.shuffle(possible_teams) # Randomly order the teams
+        return possible_teams
+    else: #add default values when no config file is found
+        print (colour_red.format('***NO TEAMS LIST FILE FOUND***'))
+        print ('Loading default teams.........')
+        possible_teams = ['FC Bayern', 'FC Barcelona', 'Real Madrid', 'PSG', 'Chelsea', 'Man City', 'Arsenal', 'Juventus',
+                 'Bor Dortmund', 'Atletico Madrid', 'Man Utd.', 'Valencia', 'Napoli', 'Spurs', 'Liverpool', 'Roma', 'Sevilla FC',
+                 'Villarreal CF', 'Bayer 04', 'Vfl Wolfsburg', 'Inter', 'Athletic Bilbao', 'SL Benfica', 'Sporting CP', 'Zenit',
+                 'FC Schalke 04', 'Milan', 'Everton', 'Lazio', 'FC Porto', "Bor. M'gladbach", 'Besiktas', 'Fenerbahce', 'Fiorentina',
+                 'Olym Lyonnais', 'AS Monaco', 'Real Sociedad', 'Newcastle Utd.', 'Stoke', 'West Ham', 'Celta Vigo', 'Swansea', 
+                 'Olym. Marseille', 'Torino', 'Real Betis', 'Leicester City', 'Southampton', 'Malaga CF', 'Crystal Palace', 'PSV',
+                 '1899 Hoffenheim', 'Shakhtar Donetsk', 'Ajax', 'AS Saint-Etienne', 'CSKA Moscow', 'RC Deportivo', 'Sunderland',
+                 'Watford', 'Stade Rennais', 'RCD Espanyol']
+        random.shuffle(possible_teams)
+        return possible_teams
 
-<<<<<<< HEAD
-# Set colors for terminal output
-colour_red = "\033[01;31m{0}\033[00m"
-colour_green = "\033[1;36m{0}\033[00m"
-=======
+
 def team_list_edit(teams):
     ''' Step through default teams list team by team and ask whether to remove or keep '''
     num_teams = len(teams)
@@ -43,18 +62,9 @@ def team_list_edit(teams):
             num_teams -= 1
         elif user_input == 'e':
             break
->>>>>>> 767e3ca307a8d1165aca3f1975ee60d87f0e91f9
 
     if len(possible_teams) < 32:
         print("Warning: team list only has {0} teams. Need 32 or more!".format(len(teams)))
-
-<<<<<<< HEAD
-with open('wynammBracket_possible_teams.txt', 'r') as file:
-    possible_teams=file.read().splitlines()
-random.shuffle(possible_teams) # Randomise teams
-=======
-    return teams
->>>>>>> 767e3ca307a8d1165aca3f1975ee60d87f0e91f9
 
 def team_list_add(teams):
     ''' Add team to default team list '''
@@ -75,11 +85,11 @@ if __name__ == '__main__':
     scores_dict = {}
     
     possible_teams = load_teams()
-    print("mvy fef tournament-o-matic.\nLoaded the following teams: ")
-    print(possible_teams)
+    print("mvy fef tournament-o-matic.\nLoaded the following teams: \n")
+#    print(possible_teams)
     
     while True: # Keep looping until user explicitly chooses to proceed. Allows user as many chances as they want to edit/add teams
-        user_input = input("Press '1' to proceed, '2' to edit teams:, '3' to add teams, '4' to print current teams")
+        user_input = input("(1) Proceed\n(2) Edit teams\n(3) Add teams\n(4) Print current teams\nChoice: ")
         if user_input == '1':
             break
         elif user_input == '2':
@@ -88,7 +98,7 @@ if __name__ == '__main__':
             possible_teams = team_list_add(possible_teams)
         elif user_input == '4':
             print(possible_teams)
-
+        
     if len(possible_teams) < 32:
         raise Exception("Minimum of 32 teams required in default teams text file!")
             
@@ -101,11 +111,15 @@ if __name__ == '__main__':
     chosen_amm_teams = []
     print(colour_red.format("***Choosing Wyn teams***"))
     chosen_wyn_teams = team_chooser(possible_wyn_teams)
-    print(colour_red.format("***Choosing Amm teams***"))
+    print(colour_green.format("***Choosing Amm teams***")) #use different colours for differnt users
     chosen_amm_teams = team_chooser(possible_amm_teams)
 
     # Create matchups: wyn team 1 vs amm team 1 etc
     for i, team in enumerate(chosen_wyn_teams):
         matchups_dict[team] = chosen_amm_teams[i]
-        
-    print(colour_green.format(matchups_dict))
+    
+    matchup_number = 0    
+    print(colour_green.format("Matchup number {0}: {1}(Wyn) vs. {2}(Amm)".format(matchup_number+1, list(matchups_dict)[matchup_number], matchups_dict[list(matchups_dict)[matchup_number]])))
+    matchup_number += 1
+    
+    '''Next thing to do is dump matchup_dict to a pickle'''
