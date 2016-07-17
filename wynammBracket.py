@@ -122,4 +122,4 @@ if __name__ == '__main__':
     print(colour_green.format("Matchup number {0}: {1}(Wyn) vs. {2}(Amm)".format(matchup_number+1, list(matchups_dict)[matchup_number], matchups_dict[list(matchups_dict)[matchup_number]])))
     matchup_number += 1
     
-    '''Next thing to do is dump matchup_dict to a pickle'''
+    '''Next thing to do is dump matchup_dict to a pickle, and then let it loop through all teams until all teams gone'''
