@@ -112,29 +112,43 @@ def load_tournament(matchups_dict, scores_dict):
         matchups_dict, scores_dict = pickle.load(file)
 
 
-def calc_spaces(wyn_team, amm_team):
+def calc_longest_team(matchups_dict):
+    ''' Return spaces matching length of longest team name.'''
+    matchup_number = 0
+    longest_length = 0
+    while matchup_number < len(matchups_dict):
+        wyn_team = list(matchups_dict)[matchup_number]
+        amm_team = matchups_dict[list(matchups_dict)[matchup_number]]
+        matchup_number += 1
+        if len(wyn_team) > longest_length:
+            longest_length = len(wyn_team)
+        elif len(amm_team) > longest_length:
+            longest_length = len(wyn_team)
+    return longest_length
+
+
+def calc_spaces(longest_length, wyn_team, amm_team):
     ''' Calculate no. of spaces to put after team name when printing tournament.'''
-    length_diff = len(wyn_team) - len(amm_team)
-
-    if len(wyn_team) > len(amm_team):
-        wyn_spaces = ' '
-        amm_spaces = ' ' * length_diff
-    else:
-        wyn_spaces = ' ' * length_diff
-        amm_spaces = ' '
-
+    diff_wyn = longest_length - len(wyn_team)
+    diff_amm = longest_length - len(amm_team)
+    wyn_spaces = ' ' * (diff_wyn+1)
+    amm_spaces = ' ' * (diff_amm+1)
     return wyn_spaces, amm_spaces
 
 
 def print_tournament(matchups_dict, scores_dict):
     ''' Print tournament bracket into terminal.'''
     matchup_number = 0
-    while matchup_number < len(matchups_dict) / 2:
+    longest_team = calc_longest_team(matchups_dict)
+    print('        Round16       |     Round8         |       Round4      |     Final  ')
+    while matchup_number < len(matchups_dict):
         wyn_team = list(matchups_dict)[matchup_number]
         amm_team = matchups_dict[list(matchups_dict)[matchup_number]]
-        wyn_spaces, amm_spaces = calc_spaces(wyn_team, amm_team)
-        print(colour_red.format('{1}{2}---\\\n'.format(wyn_team, wyn_spaces)))
-        print(colour_green.format('{1}{2}---/\n'.format(amm_team, amm_spaces)))
+        wyn_spaces, amm_spaces = calc_spaces(longest_team, wyn_team, amm_team)
+        print(colour_red.format('{0}{1}---\\'.format(wyn_team, wyn_spaces)))
+        # Test print of next round
+        print(colour_green.format('{0}{1}{2}---\\'.format(amm_spaces+' '*(5+len(amm_team)), amm_team, amm_spaces)))
+        print(colour_green.format('{0}{1}---/\n'.format(amm_team, amm_spaces)))
         matchup_number += 1
 
 
