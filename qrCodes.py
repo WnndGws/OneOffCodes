@@ -1,5 +1,5 @@
-from qrcode import *
 from PIL import Image
+from qrcode import QRCode
 import zbarlight
 
 subject = "Science"
