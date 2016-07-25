@@ -148,9 +148,12 @@ def print_tournament(matchups_dict, scores_dict):
         print(colour_red.format('{0}{1}---\\'.format(wyn_team, wyn_spaces)))
         # Test print of next round
         print(colour_green.format('{0}{1}{2}---\\'.format(amm_spaces+' '*(5+len(amm_team)), amm_team, amm_spaces)))
-        print(colour_green.format('{0}{1}---/\n'.format(amm_team, amm_spaces)))
+        print(colour_green.format('{0}{1}---/\n\n'.format(amm_team, amm_spaces)))
         matchup_number += 1
-
+        
+def match_outcomes(matchups_dict, scores_dict):
+    '''Allow user to enter scores for each matchup'''
+    matchup_chosen = input('Which matchup do you want to play next (1-{0})?: '.format(len(matchups_dict)))
 
 def main():
     ''' Main function.'''
@@ -197,6 +200,9 @@ def main():
     # Create matchups: wyn team 1 vs amm team 1 etc
     for i, team in enumerate(chosen_wyn_teams):
         matchups_dict[team] = chosen_amm_teams[i]
+        if len(scores_dict) == 0:        
+            scores_dict[team] = 0
+            scores_dict[chosen_amm_teams[i]] = 0
         print(colour_green.format('Matchup number {0}: '
                                   '{1} (Wyn) vs. {2} (Amm)'.format(i+1,
                                                                    team,
@@ -204,7 +210,8 @@ def main():
     # Save tournament to file
     save_tournament(matchups_dict, scores_dict)
     # Print tournament status to terminal
-    print_tournament(matchups_dict, scores_dict)
+    'print_tournament(matchups_dict, scores_dict)'
+    match_outcomes(matchups_dict, scores_dict)
 
 if __name__ == '__main__':
     main()
