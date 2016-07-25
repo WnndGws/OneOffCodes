@@ -54,6 +54,7 @@ def team_chooser(team_list):
                                   '(2) {1}\n'
                                   'Choice:'.format(team_list[i], team_list[i+1]))
                 if selection not in ('1', '2'):
+                    print("Please only enter 1 or 2")
                     continue
                 elif selection == '1':
                     chosen_teams.append(team_list[i])
@@ -90,18 +91,19 @@ def new_tournament():
                  'CSKA Moscow', 'RC Deportivo', 'Sunderland', 'Watford',
                  'Stade Rennais', 'RCD Espanyol']
     shuffle(teams)  # Randomly order the teams
-    
+
     # Create random list of 16 teams each
     possible_wyn_teams = teams[:16]
     possible_amm_teams = teams[16:32]
-    
+
     while True:
     # Keep looping until user explicitly chooses to proceed.
     # Allows user as many chances as they want to edit/add teams.
+        print("WARNING: This will overwrite any saved tournament you have!\n")
         user_input = input('(1) Proceed\n'
                            '(2) Edit teams\n'
                            '(3) Add teams\n'
-                           '(4) Print teams that will be currently be randomised\n'
+                           '(4) Print teams that will be currently be randomised\n\n'
                            'Choice: ')
         if user_input == '1':
             if len(teams) < 32:
@@ -115,59 +117,96 @@ def new_tournament():
         elif user_input == '4':
             print('No. teams: {0}'.format(len(teams)))
             print(possible_teams)
-            
-    #now to assign teams            
-    chosen_wyn_teams = []
+
+    #now to assign teams
+    wyn_teams = []
     chosen_amm_teams = []
-    print(colour_red.format("***Choosing Wyn teams***"))
-    chosen_wyn_teams = team_chooser(possible_wyn_teams)
-    print(colour_green.format("***Choosing Amm teams***"))
-    chosen_amm_teams = team_chooser(possible_amm_teams)
-    
+    print(colour_red.format("\n***Choosing Wyn teams***"))
+    wyn_teams = team_chooser(possible_wyn_teams)
+    print(colour_green.format("\n***Choosing Amm teams***"))
+    amm_teams = team_chooser(possible_amm_teams)
+
     # Create matchups: wyn team 1 vs amm team 1 etc
     matchups_dict = {}
-    scores_dict = {}    
-    
-    for i, team in enumerate(chosen_wyn_teams):
-        matchups_dict[team] = chosen_amm_teams[i]
-        scores_dict[team] = ""
-        scores_dict[chosen_amm_teams[i]] = ""
-        if len(scores_dict) == 0:        
+    scores_dict = {}
+
+    for i, team in enumerate(wyn_teams):
+        matchups_dict[team] = amm_teams[i]
+        scores_dict[team] = "00+00 = 00"
+        scores_dict[amm_teams[i]] = "00+00 = 00"
+        if len(scores_dict) == 0:
             scores_dict[team] = 0
             scores_dict[chosen_amm_teams[i]] = 0
         print(colour_green.format('Matchup number {0}: '
                                   '{1} (Wyn) vs. {2} (Amm)'.format(i+1,
                                                                    team,
-                                                                   chosen_amm_teams[i])))
-                                                                   
+                                                                   amm_teams[i])))
+
     ''' Save tournament to file.'''
     with open('fef.pickle', 'wb') as file:
-        pickle.dump((matchups_dict, scores_dict),
+        pickle.dump((matchups_dict, scores_dict, wyn_teams, amm_teams),
                     file,
                     protocol=pickle.HIGHEST_PROTOCOL)
-    
-def continue_tournament():
-    with open('fef.pickle', 'rb') as file:
-        matchups_dict, scores_dict = pickle.load(file)
-    
 
-def main():
-    ''' Main function.'''
-    while True:
-        try:
-            action = input("Do you want to (s)tart a new tournament, or (c)ontinue a current tournament? ")      
-            if action in ('start', 's','1'):
-                new_tournament()
-                break
-            elif action in ('continue', 'cont', 'c','2'):
-                continue_tournament()
-                break
-        except FileNotFoundError:
-            print ("There doesnt seem to be a fif.pickle file saved...\nPlease move it into"
-                    "the correct folder, or start a new tournament")
+def print_bracket():
+    ''' Return spaces matching length of longest team name.'''
+    matchup_number = 0
+    longest_length = 0
+    while matchup_number < len(matchups_dict):
+        wyn_team = list(matchups_dict)[matchup_number]
+        amm_team = matchups_dict[list(matchups_dict)[matchup_number]]
+        matchup_number += 1
+        if len(wyn_team) > longest_length:
+            longest_length = len(wyn_team)
+        elif len(amm_team) > longest_length:
+            longest_length = len(amm_team)
+
+    if len(matchups_dict) > 4:
+        lines = {}
+        line_number = 1
+        for x in range(0, 8):
+            line = "_"*(longest_length+25)
+            line = line.replace(line[:len(wyn_teams[x])], wyn_teams[x], 1)
+            line = line.replace(line[len(wyn_teams[x]):(len(wyn_teams[x])+5)], "(Wyn)", 1)
+            line = line[:-20]+"(Scores: {0})".format(scores_dict[wyn_teams[x]])
+            lines["line{0}".format(line_number)] = line
+            line_number += 1
+
+        line_number = 9
+        for x in range(0, 8):
+            line = "_"*(longest_length+25)
+            line = line.replace(line[:len(amm_teams[x])], amm_teams[x], 1)
+            line = line.replace(line[len(amm_teams[x]):(len(amm_teams[x])+5)], "(Amm)", 1)
+            line = line[:-20]+"(Scores: {0})".format(scores_dict[amm_teams[x]])
+            lines["line{0}".format(line_number)] = line
+            line_number += 1
+
+        print(lines)
+
+#def main(): #Commented out, will add in at end, otherwise makes debugging hard
+''' Main function.'''
+while True:
+    try:
+        action = input("Do you want to (s)tart a new tournament, or (c)ontinue a current tournament? "
+                        "\nChoice: ")      
+        if action in ('start', 's','1'):
+            new_tournament()
+            with open('fef.pickle', 'rb') as file:
+                matchups_dict, scores_dict, wyn_teams, amm_teams = pickle.load(file)
+            break
+        elif action in ('continue', 'cont', 'c','2'):
+            with open('fef.pickle', 'rb') as file:
+                matchups_dict, scores_dict, wyn_teams, amm_teams = pickle.load(file)
+            break
+    except FileNotFoundError:
+        print ("There doesnt seem to be a fif.pickle file saved...\nPlease move it into"
+                "the correct folder, or start a new tournament")
+                
     
     #No matter which way we went, we now have a dict with matchups and a dict with scores
-    #Now need to present it nicely to the user    
+    #Now need to present it nicely to the user
+
+print_bracket()
     
-if __name__ == '__main__':
-    main()
+#if __name__ == '__main__':
+#    main()
