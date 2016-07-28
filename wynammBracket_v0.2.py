@@ -7,6 +7,7 @@ import os.path
 import pickle
 import sys
 from random import shuffle
+import re
 
 # Set colors for terminal output
 colour_red = "\033[01;31m{0}\033[00m"  # Wyn colour
@@ -74,7 +75,7 @@ def new_tournament():
         with open(cwd + '/wynammBracket_possible_teams.txt', 'r') as file:
             teams = file.read().splitlines()
     else:  # Add default values when no config file is found
-        print(colour_red.format('***NO TEAMS LIST FILE FOUND***'))
+        print(colour_red.format('***NO TEAMS LIST FILE FOUND***\n\n'))
         print('Loading default teams.........')
         teams = ['FC Bayern', 'FC Barcelona', 'Real Madrid', 'PSG', 'Chelsea',
                  'Man City', 'Arsenal', 'Juventus', 'Bor Dortmund',
@@ -169,19 +170,23 @@ def print_bracket():
             line = line.replace(line[:len(wyn_teams[x])], wyn_teams[x], 1)
             line = line.replace(line[len(wyn_teams[x]):(len(wyn_teams[x])+5)], "(Wyn)", 1)
             line = line[:-20]+"(Scores: {0})".format(scores_dict[wyn_teams[x]])
-            lines["line{0}".format(line_number)] = line
-            line_number += 1
+            lines["line{0}".format(str(line_number).zfill(2))] = line
+            line_number += 2
 
-        line_number = 9
+        line_number = 2
         for x in range(0, 8):
             line = "_"*(longest_length+25)
             line = line.replace(line[:len(amm_teams[x])], amm_teams[x], 1)
             line = line.replace(line[len(amm_teams[x]):(len(amm_teams[x])+5)], "(Amm)", 1)
             line = line[:-20]+"(Scores: {0})".format(scores_dict[amm_teams[x]])
-            lines["line{0}".format(line_number)] = line
-            line_number += 1
+            lines["line{0}".format(str(line_number).zfill(2))] = line
+            line_number += 2
 
-        print(lines)
+        for key,value in sorted(lines.items()):
+            if re.match(".*(Wyn).*", value) is not None:
+                print(colour_red.format("{0}\n{1}\\".format(value," "*(longest_length+25))))
+            else:
+                print(colour_green.format("{1}/\n{0}\n\n\n\n".format(value," "*(longest_length+25))))
 
 #def main(): #Commented out, will add in at end, otherwise makes debugging hard
 ''' Main function.'''
