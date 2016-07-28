@@ -184,7 +184,7 @@ def print_bracket():
 
         for key,value in sorted(lines.items()):
             if re.match(".*(Wyn).*", value) is not None:
-                print(colour_red.format("{0}\n{1}\\".format(value," "*(longest_length+25))))
+                print(colour_red.format("{0}\n{1}\\\n{1}TBD".format(value," "*(longest_length+25))))
             else:
                 print(colour_green.format("{1}/\n{0}\n\n\n\n".format(value," "*(longest_length+25))))
 
