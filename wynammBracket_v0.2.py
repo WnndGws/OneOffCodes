@@ -7,7 +7,8 @@ import os.path
 import pickle
 import sys
 from random import shuffle
-import re
+#import re
+#from tabulate import tabulate
 
 # Set colors for terminal output
 colour_red = "\033[01;31m{0}\033[00m"  # Wyn colour
@@ -148,6 +149,24 @@ def new_tournament():
         pickle.dump((matchups_dict, scores_dict, wyn_teams, amm_teams),
                     file,
                     protocol=pickle.HIGHEST_PROTOCOL)
+                    
+def determine_winners():
+    winners = []
+    for i, team in enumerate(wyn_teams):        
+        if int(scores_dict[team][-2:]) > int(scores_dict[matchups_dict[team]][-2:]):
+            winners.append(team)
+        elif int(scores_dict[team][-2:]) > int(scores_dict[matchups_dict[team]][-2:]):
+            winners.append(matchups_dict[team])
+        else:
+            winners.append('TBD')                
+    for i, team in enumerate(winners):
+        if team == 'TBD':
+            break
+        elif team not in amm_teams:
+            opponent = matchups_dict(team)
+            amm_teams.remove(opponent)
+        else:
+            wyn_teams.remove(team)
 
 def print_bracket():
     ''' Return spaces matching length of longest team name.'''
@@ -181,12 +200,31 @@ def print_bracket():
             line = line[:-20]+"(Scores: {0})".format(scores_dict[amm_teams[x]])
             lines["line{0}".format(str(line_number).zfill(2))] = line
             line_number += 2
-
-        for key,value in sorted(lines.items()):
-            if re.match(".*(Wyn).*", value) is not None:
-                print(colour_red.format("{0}\n{1}\\\n{1}TBD".format(value," "*(longest_length+25))))
-            else:
-                print(colour_green.format("{1}/\n{0}\n\n\n\n".format(value," "*(longest_length+25))))
+            
+        determine_winners()
+        
+        #for key,value in sorted(lines.items()):
+            
+        line_number = 17
+        if len(wyn_teams)+len(amm_teams) == 8:           
+            for x in range(0, len(wyn_teams)):
+                line = "_"*(longest_length+25)
+                line = line.replace(line[:len(wyn_teams[x])], wyn_teams[x], 1)
+                line = line.replace(line[len(wyn_teams[x]):(len(wyn_teams[x])+5)], "(Wyn)", 1)
+                line = line[:-20]+"(Scores: {0})".format(scores_dict[wyn_teams[x]])
+                lines["line{0}".format(str(line_number).zfill(2))] = line
+                line_number += 2
+                
+            line_number = 18
+            for x in range(0, len(amm_teams)):
+                line = "_"*(longest_length+25)
+                line = line.replace(line[:len(amm_teams[x])], amm_teams[x], 1)
+                line = line.replace(line[len(amm_teams[x]):(len(amm_teams[x])+5)], "(Amm)", 1)
+                line = line[:-20]+"(Scores: {0})".format(scores_dict[amm_teams[x]])
+                lines["line{0}".format(str(line_number).zfill(2))] = line
+                line_number += 2
+            
+        print(lines)
 
 #def main(): #Commented out, will add in at end, otherwise makes debugging hard
 ''' Main function.'''
