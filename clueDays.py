@@ -9,18 +9,17 @@ import random
 import itertools
 
 numberOfDays = int(input("How many days this month? "))
-diceNumber = ('1','2','3','4','5','6')
-diceColour = ('r','b')
-cardNumber = ('A','2','3','4','5','6','7','8','9','10','J','Q','K')
-cardSuite = ('r','b','r','b')
+diceNumber = ('1', '2', '3', '4', '5', '6')
+diceColour = ('r', 'b')
+cardNumber = ('A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K')
+cardSuite = ('r', 'b', 'r', 'b')
 
 dayslist = []
 cardsInDeck = []
 
- 
-for a,b in itertools.product(cardNumber,cardSuite):
+for a, b in itertools.product(cardNumber, cardSuite):
     cardsInDeck.append(a+b)
-    
+
 diceRolls = 0
 blackRolls = 0
 redRolls = 0
@@ -31,7 +30,7 @@ while diceRolls < 4:
     else:
         redRolls += int(roll[0])
     diceRolls = diceRolls + 1
-    
+
 redCards = []
 blackCards = []
 for c in cardsInDeck:
@@ -39,18 +38,18 @@ for c in cardsInDeck:
         redCards.append(c)
     else:
         blackCards.append(c)
-        
+
 random.shuffle(redCards)
 random.shuffle(blackCards)
 
 while blackRolls > 0:
     del blackCards[0]
     blackRolls = blackRolls - 1
-    
+
 while redRolls > 0:
     del redCards[0]
     redRolls = redRolls - 1
-    
+
 shuffledDeck = redCards + blackCards
 random.shuffle(shuffledDeck)
 
@@ -59,10 +58,8 @@ while numberOfDays > 0:
     dayColours.append(str(numberOfDays) + shuffledDeck[numberOfDays][-1])
     del shuffledDeck[numberOfDays]
     numberOfDays = numberOfDays - 1
-    
-timesThrough = random.randrange(1,7)
 
-while timesThrough > 0:
+while len(dayColours) > 11:
     possibleDeletions = len(dayColours)
     while possibleDeletions > 0:
         c = random.choice(diceColour)
@@ -71,6 +68,5 @@ while timesThrough > 0:
         else:
             del dayColours[possibleDeletions - 1]
             possibleDeletions = possibleDeletions - 1
-    timesThrough = timesThrough - 1
-    
-print (dayColours)
+
+print(dayColours)
