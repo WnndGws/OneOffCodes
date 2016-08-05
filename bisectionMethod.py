@@ -43,8 +43,8 @@ graph(equation,-100,100)
 happy = 'no'
 while happy == 'no':
     zoom = str(input('Would you like to zoom in further? (Yes/No): '))
-    allowedZoom = ["Yes","Y","y","yes","YES","NO","no","No","N","n"]
-    if zoom not in allowedZoom:
+    allowedZoom = ["yes", "y", "no", "n"]
+    if zoom.lower() not in allowedZoom:
         print("Please enter only 'Yes' or 'No'")
         happy = 'no'
     elif ('y' or 'Y') in zoom:
