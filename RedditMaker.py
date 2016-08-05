@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 """
+Helper function for creating multi-reddits.
+Run script and paste the string it outputs into the accompanying Excel file.
+
 Created on Sat Jun 11 09:02:09 2016
 
 @author: wynand
