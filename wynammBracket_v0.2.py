@@ -7,6 +7,8 @@ import os.path
 import pickle
 import sys
 from random import shuffle
+from astropy.table import Table, Column
+import numpy
 #import re
 #from tabulate import tabulate
 
@@ -201,6 +203,13 @@ def print_bracket():
             lines["line{0}".format(str(line_number).zfill(2))] = line
             line_number += 2
             
+        t = Table()
+    for key,value in lines.items():
+        if int(key[-2:]) < 0:
+            print(value)
+        else:
+            print('test')
+            
         determine_winners()
         
         #for key,value in sorted(lines.items()):
@@ -225,7 +234,8 @@ def print_bracket():
                 line_number += 2
             
         print(lines)
-
+        print(t)        
+        
 #def main(): #Commented out, will add in at end, otherwise makes debugging hard
 ''' Main function.'''
 while True:
