@@ -12,10 +12,10 @@ cellCount = [maxCell]
 while maxCell > 0:
     maxCell = maxCell - 1
     cellCount.append(maxCell)
-    
+
 pasteString = "="
 
 for i in cellCount:
     pasteString = pasteString + '{0}{1}&"+"&'.format(collumn, i)
-    
-print (pasteString)
+
+print(pasteString)
