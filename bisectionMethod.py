@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """
+Example of using bisection method to solve for roots of a continuous function.
+
 Created on Tue May 24 23:01:19 2016
 
 @author: wynand
@@ -9,23 +11,14 @@ import matplotlib.pyplot as pyplot
 import numpy as np
 import parser
 
-coef = input("Please enter all coefficients of your equation (including zeros!) seperated by commas (eg. x^2 would be input as 1,0,0): ")
-coef = list(map(float,coef.split(',')))
-terms = len(coef)
-equation = ""
 
-params = 0
-while params < terms:
-    equation = equation + str("+" + str(coef[params]) + "*x**" + str(terms-params-1))
-    params = params+1
-    
-def graph(formula,xmin,xmax):
-    xTicks = (xmax-xmin)/200
-    x = np.arange(xmin,xmax,xTicks)
+def graph(formula, xmin, xmax):
+    xTicks = (xmax - xmin)/200
+    x = np.arange(xmin, xmax, xTicks)
     y = eval(equation)
     fig = pyplot.figure()
-    ax = fig.add_subplot(111) 
-    ax.plot(x,y)
+    ax = fig.add_subplot(111)
+    ax.plot(x, y)
     ax.spines['left'].set_position('zero')
     ax.spines['right'].set_color('none')
     ax.spines['bottom'].set_position('zero')
@@ -35,11 +28,23 @@ def graph(formula,xmin,xmax):
     ax.xaxis.set_ticks_position('bottom')
     ax.yaxis.set_ticks_position('left')
     ax.axhline(linewidth=2, color='blue')
-    ax.axvline(linewidth=2, color='blue')    
+    ax.axvline(linewidth=2, color='blue')
     pyplot.show()
-    
-graph(equation,-100,100)
 
+# First build the equation based on user input
+coef = input("Please enter all coefficients of your equation (including zeros!) seperated by commas (eg. x^2 would be input as 1,0,0): ")
+coef = list(map(float, coef.split(',')))
+terms = len(coef)
+equation = ""
+params = 0
+while params < terms:
+    equation = equation + str("+" + str(coef[params]) + "*x**" + str(terms-params-1))
+    params = params+1
+
+# Plot the function
+graph(equation, -100, 100)
+
+# If zooming in, ask for the x-axis interval to zoom-in to
 happy = 'no'
 while happy == 'no':
     zoom = str(input('Would you like to zoom in further? (Yes/No): '))
@@ -48,39 +53,40 @@ while happy == 'no':
         print("Please enter only 'Yes' or 'No'")
         happy = 'no'
     elif ('y' or 'Y') in zoom:
-        xmin = int(input('Enter x-min:' ))
-        xmax = int(input('Enter x-max:' ))
+        xmin = int(input('Enter x-min: '))
+        xmax = int(input('Enter x-max: '))
         if xmin >= xmax:
-            print ("Make sure that xmin is lower than xmax")
-        else:            
-            graph(equation,xmin,xmax)
+            print("Make sure that xmin is lower than xmax")
+        else:
+            graph(equation, xmin, xmax)
         happy = 'no'
     else:
-        happy = 'yes'        
-        
+        happy = 'yes'
+
+# Ask user to estimate the value of the 1st root from the plot
 r1estimate = float(input('Estimate the x-value of the 1st root: '))
 code = parser.expr(equation).compile()
 
-a=r1estimate-1
-b=r1estimate+1
-tol=0.001
+a = r1estimate - 1
+b = r1estimate + 1
+tol = 0.001
 roots = []
 
 n = 1
 nmax = 500
-while nmax > n:    
-    n = n+1    
-    
+while nmax > n:
+    n = n+1
+
     x = a
     fa = eval(code)
     if fa == 0:
         print(x)
-        
+
     x = b
     fb = eval(code)
     if fb == 0:
         print(x)
-        
+
     xmid = ((a+b)/2)
     x = xmid
     fxmid = eval(code)
