@@ -12,7 +12,7 @@ numberOfDays = int(input("How many days this month? "))
 diceNumber = ('1', '2', '3', '4', '5', '6')
 diceColour = ('r', 'b')
 cardNumber = ('A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K')
-cardSuite = ('r', 'b', 'r', 'b')
+cardSuite = ('r', 'b', 'w', 'b')
 
 dayslist = []
 cardsInDeck = []
@@ -34,10 +34,10 @@ while diceRolls < 4:
 redCards = []
 blackCards = []
 for c in cardsInDeck:
-    if c[1] == 'r':
-        redCards.append(c)
-    else:
+    if c[1] == 'b':
         blackCards.append(c)
+    else:
+        redCards.append(c)
 
 random.shuffle(redCards)
 random.shuffle(blackCards)
