@@ -10,7 +10,7 @@ def main():
                  '2016/08/25': 'filexy.zip',
                  '2016/08/26': 'filexz.zip'}
 
-    current_date = dt.datetime.now().strftime('%Y/%m/%d')
+    current_date = dt.date.today().strftime('%Y/%m/%d')
 
     try:
         target_file = file_list[current_date]
