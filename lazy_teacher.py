@@ -6,19 +6,27 @@ import datetime as dt
 import os
 
 
-def main():
-    file_list = {'2016/08/07': 'filexx.z',
-                 '2016/08/25': 'filexy.z',
-                 '2016/08/26': 'filexz.z'}
+file_list = {}
+state = 'inputting'
+while state == 'inputting':
+    state = input('Would you like to enter another file? (Y/n): ')
+    if state in ('Y', 'Yes', 'yes', '', 'y'):
+        state = 'inputting'
+    else:
+        state = 'brokk'
+        break
+    file_input = input('Enter a file you would like to unzip and the date (Filename - yyyymmdd): ')
+    file_name = str(file_input.split(" - ",1)[0])
+    file_date = str(file_input.split(" - ",1)[1])
+    file_list[file_date] = file_name
 
-    current_date = dt.date.today().strftime('%Y/%m/%d')
+current_date = dt.date.today().strftime('%Y%m%d')
 
-    try:
-        target_file = file_list[current_date]
-        os.system('7z x {0} {1}'.format(target_file, target_file.split(".", 1)[0])
-    except KeyError:
-        print('No matching files for today')
-        return None
+try:
+    target_file = file_list[current_date]
+    os.system('7z x {0}'.format(target_file))
+except KeyError:
+    print('No matching files for today')
 
     # FTP into server and unzip file (EASIER OPTION)
     #           OR
