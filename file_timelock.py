@@ -4,6 +4,7 @@
 
 import datetime as dt
 import os
+import pickle
 
 
 file_list = {}
@@ -19,8 +20,13 @@ while state == 'inputting':
     file_name = str(file_input.split(" - ",1)[0])
     file_date = str(file_input.split(" - ",1)[1])
     file_list[file_date] = file_name
+    with open ('filelock.settings', 'wb') as file:
+        pickle.dump(file_list, file, protocol=pickle.HIGHEST_PROTOCOL)
 
 current_date = dt.date.today().strftime('%Y%m%d')
+
+with open('filelock.settings', 'rb') as file:
+    file_list = pickle.load(file)
 
 try:
     target_file = file_list[current_date]
