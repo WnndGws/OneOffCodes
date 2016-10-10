@@ -5,8 +5,8 @@ roll dice to see how many times to go through deck
 remove all dayColours if draw a black from fullDeck
 '''
 
-import random
 import itertools
+import random
 
 numberOfDays = int(input("How many days this month? "))
 diceNumber = ('1', '2', '3', '4', '5', '6')

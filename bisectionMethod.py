@@ -7,9 +7,11 @@ Created on Tue May 24 23:01:19 2016
 @author: wynand
 """
 
+# Python standard library
+import parser
+# Third party
 import matplotlib.pyplot as pyplot
 import numpy as np
-import parser
 
 
 def graph(equation, xmin, xmax):
