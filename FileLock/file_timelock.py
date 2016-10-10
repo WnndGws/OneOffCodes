@@ -11,16 +11,16 @@ file_list = {}
 state = 'inputting'
 while state == 'inputting':
     state = input('Would you like to enter another file? (Y/n): ')
-    if state in ('Y', 'Yes', 'yes', '', 'y'):
+    if state.lower() in ('yes', '', 'y'):
         state = 'inputting'
     else:
         state = 'brokk'
         break
     file_input = input('Enter a file you would like to unzip and the date (Filename - yyyymmdd): ')
-    file_name = str(file_input.split(" - ",1)[0])
-    file_date = str(file_input.split(" - ",1)[1])
+    file_name = str(file_input.split(" - ", 1)[0])
+    file_date = str(file_input.split(" - ", 1)[1])
     file_list[file_date] = file_name
-    with open ('filelock.settings', 'wb') as file:
+    with open('filelock.settings', 'wb') as file:
         pickle.dump(file_list, file, protocol=pickle.HIGHEST_PROTOCOL)
 
 current_date = dt.date.today().strftime('%Y%m%d')
