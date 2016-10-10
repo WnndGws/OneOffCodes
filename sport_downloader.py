@@ -2,20 +2,22 @@
 Started: 20141125
 Last updated: 20141129'''
 
-from bs4 import BeautifulSoup
-import requests
+# Python standard library
 import datetime as dt
-from collections import namedtuple
-import lxml.html
-import time
-import sys
 import pprint
+import sys
+import time
+from collections import namedtuple
+# Third party modules
 import httplib2
-from apiclient import discovery
-from apiclient import http
-from apiclient import errors
-from apiclient.http import MediaFileUpload
+import lxml.html
 import oauth2client.client
+import requests
+from apiclient import discovery
+from apiclient import errors
+from apiclient import http
+from apiclient.http import MediaFileUpload
+from bs4 import BeautifulSoup
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 
