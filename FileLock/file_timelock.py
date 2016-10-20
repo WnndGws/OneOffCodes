@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
-'''Check list of files and determine which one to unzip'''
+"""Check list of files and determine which one to unzip"""
 
 import datetime as dt
 import os
 import pickle
-
 
 file_list = {}
 state = 'inputting'
@@ -40,5 +39,5 @@ except KeyError:
     # whatever one is easier
 
 
-#if __name__ == '__main__':
-#    main()
+    # if __name__ == '__main__':
+    #    main()

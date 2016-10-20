@@ -1,6 +1,6 @@
-'''Author: Wynand
+"""Author: Wynand
 Started: 20141125
-Last updated: 20141129'''
+Last updated: 20141129"""
 
 # Python standard library
 import datetime as dt
@@ -35,13 +35,15 @@ for link in raw_links_dl:
     if "NFL" in link.text:
         dl[link.get("href")] = link.text
 
+
 # We now have a reference dictionary of all of the pastbin links and their titles
 # We now want to find the latest week
 
 def search_dl(dl, lookup):
     for k, v in dl.items():
         if lookup in v:
-         return k
+            return k
+
 
 # We can now return a pastebin address based on a date
 
@@ -71,16 +73,16 @@ for row in schedule.findAll("tr"):
 # We now have a namedtuple that has every game from the subreddit sidebar in it
 # Now we need to find the latest game played
 
-#to look up values in tuple can use:
-#for fixture in season:
+# to look up values in tuple can use:
+# for fixture in season:
 #  ....:     print (fixture.date, fixture.opponent, fixture.result)
 
 
 today = dt.date.today()
-yesterday = today - dt.timedelta(days = 1)
+yesterday = today - dt.timedelta(days=1)
 today_pastebin_formatted = today.strftime("%Y.%m.%d")
 today_sfsidebar_formatted = today.strftime("%m/%d")
-yesterday_pastebin_formatted =yesterday.strftime("%Y.%m.%d")
+yesterday_pastebin_formatted = yesterday.strftime("%Y.%m.%d")
 yesterday_sfsidebar_formatted = yesterday.strftime("%m/%d")
 
 games_today_yesterday = []
@@ -95,14 +97,13 @@ for fixture in season:
 # Currently the times are based on AMERICAN, so need to offset by 24hrs
 # To offset simply add a third day option of 'twodaysago'
 
-twodaysago = today - dt.timedelta(days = 2)
+twodaysago = today - dt.timedelta(days=2)
 twodaysago_pastebin_formatted = twodaysago.strftime("%Y.%m.%d")
 twodaysago_sfsidebar_formatted = twodaysago.strftime("%m/%d")
 
 for fixture in season:
     if fixture.date == twodaysago_sfsidebar_formatted:
         games_today_yesterday.append(fixture.date)
-
 
 # Our tuple now includes the game if it was twodaysago in USA terms, which is ~24hrs after the game in Aus
 # We now need to take the date in games_today_yesterday and find it in the dl dictionary
@@ -120,7 +121,7 @@ game_wanted = game_wanted.strftime("%Y.%m.%d")
 
 # We now have a dt value in the form %yyy.%mm.%dd for the game played in the previous 48 hours
 
-pastebin_download_url = search_dl(dl,game_wanted)
+pastebin_download_url = search_dl(dl, game_wanted)
 pastebin_download_url = "http://pastebin.com{0}".format(pastebin_download_url)
 
 if pastebin_download_url == "http://pastebin.comNone":
@@ -143,7 +144,7 @@ for row in raw_links_pastebin:
 # We now have a tuple with the 5 download links (1 for full game + 4 quarters) in it
 # Next we need to add these links to a text file, and upload it to google drive
 
-f = open('/home/wynand/Desktop/Python Programs/Sport Downloader/Download Links.txt',"w")
+f = open('/home/wynand/Desktop/Python Programs/Sport Downloader/Download Links.txt', "w")
 for t in download_links:
     f.write("\ntext={0}\nautoStart=TRUE\n".format(t))
 f.close()
@@ -157,29 +158,29 @@ flow = flow_from_clientsecrets('/home/wynand/Desktop/Python Programs/Sport Downl
                                scope='https://www.googleapis.com/auth/drive',
                                redirect_uri='urn:ietf:wg:oauth:2.0:oob')
 
-#retrieve if available
+# retrieve if available
 storage = Storage('/home/wynand/Desktop/Python Programs/Sport Downloader/OAuthcredentials.txt')
 credentials = storage.get()
 
-if  credentials is None:
-    #step 1
-    auth_uri = flow.step1_get_authorize_url() # Redirect the user to auth_uri
-    print ('Go to the following link in your browser: ' + auth_uri)
+if credentials is None:
+    # step 1
+    auth_uri = flow.step1_get_authorize_url()  # Redirect the user to auth_uri
+    print('Go to the following link in your browser: ' + auth_uri)
     code = input('Enter verification code: ').strip()
-    #step 2
+    # step 2
     credentials = flow.step2_exchange(code)
 else:
-    print ('GDrive credentials are still current')
+    print('GDrive credentials are still current')
 
-#authorise
+# authorise
 http = httplib2.Http()
 http = credentials.authorize(http)
-print ('Authorisation successfully completed')
+print('Authorisation successfully completed')
 
-#build
+# build
 drive = discovery.build('drive', 'v2', http=http)
 
-#store for next time
+# store for next time
 storage.put(credentials)
 
 # We are now authorised to upload to drive, now need to do the actual uploading
@@ -198,7 +199,7 @@ parent_id = [{'id': "0BzOWafUuF9rvUkx6MTR6NjE5bFE"}]
 media_body = MediaFileUpload(file_name, mimetype="", resumable=True)
 
 # The body contains the metadata for the file.
-body = {'title': file_title, 'description': file_description, 'parents':parent_id}
+body = {'title': file_title, 'description': file_description, 'parents': parent_id}
 
 # Perform the request and print the result.
 file_upload = drive.files().insert(body=body, media_body=media_body).execute()

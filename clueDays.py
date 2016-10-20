@@ -1,9 +1,9 @@
-'''order of operations:
+"""order of operations:
 roll 4 dice to see how many black and red to remove
 assign each day a red or a black
 roll dice to see how many times to go through deck
 remove all dayColours if draw a black from fullDeck
-'''
+"""
 
 import itertools
 import random

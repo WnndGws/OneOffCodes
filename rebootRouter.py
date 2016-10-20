@@ -2,7 +2,7 @@ import urllib.request
 from bs4 import BeautifulSoup
 
 url = 'http://192.168.0.1/html/reboot.html'
-headers = {'User-Agent' : 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'}
+headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'}
 username = 'admin'
 password = input("Password? ")
 
