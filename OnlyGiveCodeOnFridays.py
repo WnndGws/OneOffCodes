@@ -10,15 +10,16 @@ time_to_fri = dt.timedelta((4 - now_date.weekday()) % 7)
 next_friday = now_date + time_to_fri
 next_code = next_friday.strftime('%m') + next_friday.strftime('%d')
 
-'''Im sure theres a more elegant way of doing the following, effectively what I'm trying to do is have a reproducable code, but that can't be guessed'''
+# Produce a unique 5 digit passcode
+# step one: calculate SHA256 hash (bytes string)
 new_pw = hashlib.pbkdf2_hmac('sha256', next_code.encode(), salt, 100000)
+# step two: convert each char of the byte string to its hexadecimal notation (bytes string)
 new_pw = binascii.hexlify(new_pw)
-new_pw = re.findall(r'\d+', str(new_pw))
+# step three: remove non-numeric parts of the string
+new_pw = re.findall(r'\d+', new_pw.decode())
 new_pw = "".join(new_pw)
+# step four: take the passcode from the first 5 digits
 new_pw = new_pw[-5:]
-
-# for debugging
-# print(new_pw)
 
 if now_date.weekday() == 4:
     print("New password: {0}".format(new_pw))
