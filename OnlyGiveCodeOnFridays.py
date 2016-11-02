@@ -5,6 +5,8 @@ import re
 
 salt = b'5618418165421843546546436546463546984'  # byte-string of random numbers
 
+#This is a branch test on github
+
 now_date = dt.date.today()
 time_to_fri = dt.timedelta((4 - now_date.weekday()) % 7)
 next_friday = now_date + time_to_fri
