@@ -1,0 +1,11 @@
+#!/usr/bin/expect -f
+
+set arg1 [lindex $argv 0]
+
+set timeout -1
+spawn gmvault sync --emails-only -e -d /home/wynand/wynZFS/Wynand/Backups/Gmail *************@gmail.com -p
+match_max 100000
+expect -re {Please enter gmail password for *************@gmail.com and press ENTER:}
+send -- $arg1
+send -- "\r"
+expect eof
