@@ -38,12 +38,11 @@ then
     rm -rf ~/wynZFS/Wynand/Backups/tmp.txt
 else
     rm -rf ~/wynZFS/Wynand/Backups/tmp.txt
+    # Only copy files to SDD and mega if no errors
+    echo "Copying........."
+    # Copy to Windows Drive
+    rsync -rtuvc --progress --delete-delay ~/wynZFS/Wynand/Backups /mnt/328E16488E16054F/AntergosBackups
+
+    #Upload to mega.nz
+    nocorrect megaput -u ${mega_user} -p ${mega_password} -l ~/wynZFS/Wynand/Backups -r /Root/Backups
 fi
-
-# Copy to Windows Drive
-echo "Copying........."
-rsync -rtuvc --progress --delete-delay ~/wynZFS/Wynand/Backups /mnt/328E16488E16054F/AntergosBackups
-
-#Upload to mega.nz
-nocorrect megacopy -u ${mega_user} -p ${mega_password} -l ~/wynZFS/Wynand/Backups -r /Root/Backups
-
