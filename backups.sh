@@ -44,5 +44,5 @@ else
     rsync -rtuvc --progress --delete-delay ~/wynZFS/Wynand/Backups /mnt/328E16488E16054F/AntergosBackups
 
     #Upload to mega.nz
-    nocorrect megaput -u ${mega_user} -p ${mega_password} -l ~/wynZFS/Wynand/Backups -r /Root/Backups
+    nocorrect megacopy -u ${mega_user} -p ${mega_password} -r /Root/Backups -l  ~/wynZFS/Wynand/Backups
 fi
