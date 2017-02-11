@@ -9,7 +9,6 @@
 source <(gpg -qd ~/.passwords.asc)
 export BORG_PASSPHRASE
 export mega_user
-export mega_password
 export google_password
 
 #Create daily update of GoogleDrive
@@ -44,5 +43,9 @@ else
     rsync -rtuvc --progress --delete-delay ~/wynZFS/Wynand/Backups /mnt/328E16488E16054F/AntergosBackups
 
     #Upload to mega.nz
-    nocorrect megacopy -u ${mega_user} -p ${mega_password} -r /Root/Backups -l  ~/wynZFS/Wynand/Backups
+    megasync
+    # I might just crontab this eventually
+
+    # If i ever want to kill it after a time use wait and;
+    # kill -- $(ps -e | grep "megasync" | grep -v grep | awk "{print $1}")
 fi
