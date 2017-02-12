@@ -40,8 +40,8 @@ else
     rm -rf ~/wynZFS/Wynand/Backups/.tmp.txt
     
     # Only copy files to SDD and mega if no errors
-    echo "Copying........."
-    
+   
+    echo "Finding duplicates..."
     # Need to see if any files changed, and delete them from mega so that the new files can be uploaded
     diff -qrN ~/wynZFS/Wynand/Backups /mnt/328E16488E16054F/AntergosBackups/Backups | cut -d \  -f 4 >~/wynZFS/Wynand/Backups/.tmp.txt
     cat ~/wynZFS/Wynand/Backups/.tmp.txt | xargs -i rm -rf {}
@@ -49,6 +49,7 @@ else
     cat ~/wynZFS/Wynand/Backups/.tmp.txt | xargs -i megarm -u ${mega_user} -p ${mega_password} {}
     rm -rf ~/wynZFS/Wynand/Backups/.tmp.txt
 
+    echo "Copying........."
     # Copy to Windows Drive
     rsync -ruvcI --progress ~/wynZFS/Wynand/Backups /mnt/328E16488E16054F/AntergosBackups
 

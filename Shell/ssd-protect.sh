@@ -13,7 +13,7 @@ hdd="sda"
 prevMbDb="/home/wynand/GoogleDrive/01_Personal/05_Software/Antergos/prevMbDb"
 
 # how many mb can be written before you should be notified that something is up (must be a positive integer)
-warningThreshold="25"
+warningThreshold="2500"
 
 # End configuration
 
@@ -31,7 +31,7 @@ echo "$mbWritten" > "$prevMbDb"
 deltaMb=$(echo "$mbWritten-$prevMb" | bc)
 
 # check to see if threshold is exceeded
-echo "$deltaMb megabyte(s) have been written in the last hour, threshold is $warningThreshold mb"
+echo "$deltaMb megabyte(s) have been written in the last day, threshold is $warningThreshold mb"
 
 if ((  $(bc <<< "$deltaMb > $warningThreshold") ))
 then
