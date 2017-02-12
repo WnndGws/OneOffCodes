@@ -51,9 +51,9 @@ else
 
     echo "Copying........."
     # Copy to Windows Drive
-    rsync -ruvcI --progress ~/wynZFS/Wynand/Backups /mnt/328E16488E16054F/AntergosBackups
+    cp -Lruv ~/wynZFS/Wynand/Backups /mnt/328E16488E16054F/AntergosBackups
 
     #Upload to mega.nz
     echo "Uploading......."
-    nocorrect megacopy -u ${mega_user} -p ${mega_password} -r /Root/Backups -l  ~/wynZFS/Wynand/Backups
+#   nocorrect megacopy -u ${mega_user} -p ${mega_password} -r /Root/Backups -l  ~/wynZFS/Wynand/Backups
 fi
