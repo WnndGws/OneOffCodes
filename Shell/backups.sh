@@ -13,9 +13,7 @@ export mega_password
 export google_password
 
 #Create daily update of GoogleDrive
-borg create -p -C lz4 ~/wynZFS/Wynand/Backups/GoogleDrive/::"{hostname}-{now:%Y%m%d-%H%M}" ~/GoogleDrive
-
-borg create -p -C lz4 ~/wynZFS/Wynand/Backups/Antergos/::"{hostname}-{now:%Y%m%d-%H%M}" /home/ --exclude ~/.PlayOnLinux --exclude "*cache*" --exclude ~/GoogleDrive --exclude ~/Downloads --exclude ~/wynZFS --exclude "*.nohup*" --exclude "*steam*" --exclude "*Steam*"
+borg create -p -C lz4 ~/wynZFS/Wynand/Backups/Antergos/::"{hostname}-{now:%Y%m%d-%H%M}" /home --exclude "*cache*" --exclude ~/Downloads --exclude ~/wynZFS --exclude "*.nohup*" --exclude "*steam*" --exclude "*Steam*"
 
 # Backup Gmail
 expect ~/GoogleDrive/01_Personal/05_Software/Antergos/gmail_expect_script.exp ${google_password}
@@ -39,7 +37,7 @@ then
 else
     rm -rf ~/wynZFS/Wynand/Backups/.tmp.txt
     
-    # Only copy files to SDD and mega if no errors
+    # Only copy files to HDD and mega if no errors
    
     echo "Finding duplicates..."
     # Need to see if any files changed, and delete them from mega so that the new files can be uploaded
@@ -55,5 +53,5 @@ else
 
     #Upload to mega.nz
     echo "Uploading......."
-    nocorrect megacopy -u ${mega_user} -p ${mega_password} -r /Root/Backups -l  ~/wynZFS/Wynand/Backups
+#   nocorrect megacopy -u ${mega_user} -p ${mega_password} -r /Root/Backups -l  ~/wynZFS/Wynand/Backups
 fi
