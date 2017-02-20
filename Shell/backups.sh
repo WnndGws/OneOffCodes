@@ -13,7 +13,7 @@ export mega_password
 export google_password
 
 # Monitor files for changes
-inotifywait -mr -e modify -e move -e create -e delete --format "%e %w%f" /home/wynand/wynZFS/Wynand/Backups -o ~/log
+inotifywait --exclude "\.changes|\.tmp\.txt" -mr -e modify -e move -e create -e delete --format "%e %w%f" /home/wynand/wynZFS/Wynand/Backups -o ~/wynZFS/Wynand/Backups/.changes &
 
 # Backup my crontab
 crontab -l > ~/GoogleDrive/01_Personal/05_Software/Antergos/wyntergos_crontab
@@ -21,8 +21,10 @@ crontab -l > ~/GoogleDrive/01_Personal/05_Software/Antergos/wyntergos_crontab
 #Create daily update of GoogleDrive
 borg create -p -C lz4 /wynZFS/Wynand/Backups/Antergos/::"{hostname}-{now:%Y%m%d-%H%M}" /home --exclude "*cache*" --exclude ~/Downloads --exclude ~/wynZFS --exclude "*.nohup*" --exclude "*steam*" --exclude "*Steam*"
 
-# Backup Gmail
-# expect ~/GoogleDrive/01_Personal/05_Software/Antergos/gmail_expect_script.exp ${google_password}
+# Backup Gmail in a venv
+source ~/.virtualenv2/gmvault/bin/activate
+expect ~/GoogleDrive/01_Personal/05_Software/Antergos/gmail_expect_script.exp ${google_password}
+deactivate
 
 # Save packages and configurations
 expect ~/GoogleDrive/01_Personal/05_Software/Antergos/aconfmgr_expect_script.exp ${BORG_PASSPHRASE}
@@ -41,20 +43,23 @@ then
     rm -rf ~/wynZFS/Wynand/Backups/.tmp.txt
 else
     rm -rf ~/wynZFS/Wynand/Backups/.tmp.txt
-    
+    notify-send "Backups Checked" "All clear"
     # Only copy files to HDD and mega if no errors
    
     echo "Finding changed files..."
     # Need to see if any files changed, and delete them from mega so that the new files can be uploaded
-    diff -qrN /wynZFS/Wynand/Backups /run/media/wynand/Wyntergos_Backups/Backups | cut -d \  -f 4 >~/wynZFS/Wynand/Backups/.tmp.txt
+#   diff -qrN /wynZFS/Wynand/Backups /run/media/wynand/Wyntergos_Backups/Backups | cut -d \  -f 4 >~/wynZFS/Wynand/Backups/.tmp.txt
+    cut -d \  -f 2 ~/wynZFS/Wynand/Backups/.changes >~/wynZFS/Wynand/Backups/.tmp.txt
+    rm -rf ~/wynZFS/Wynand/Backups/.changes
+    sed -i 's/\/home\/wynand\/wynZFS\/Wynand\//\/run\/media\/wynand\/Wyntergos_Backups\//g' ~/wynZFS/Wynand/Backups/.tmp.txt
     cat ~/wynZFS/Wynand/Backups/.tmp.txt | xargs -i rm -rf {}
-    sed -i 's/\/run\/media\/wynand\/Wyntergos_Backups\/Backups\//\/Root\//g' ~/wynZFS/Wynand/Backups/.tmp.txt
+    sed -i 's/\/run\/media\/wynand\/Wyntergos_Backups\//\/Root\//g' ~/wynZFS/Wynand/Backups/.tmp.txt
     cat ~/wynZFS/Wynand/Backups/.tmp.txt | xargs -i megarm -u ${mega_user} -p ${mega_password} {}
     rm -rf ~/wynZFS/Wynand/Backups/.tmp.txt
 
     echo "Copying........."
     # Copy to External Drive
-    cp -Lruv ~/wynZFS/Wynand/Backups /run/media/wynand/Wyntergos_Backups | mbuffer -P 75 -m 8M
+    cp -Lruv ~/wynZFS/Wynand/Backups /run/media/wynand/Wyntergos_Backups
 
     #Upload to mega.nz
     echo "Uploading......."

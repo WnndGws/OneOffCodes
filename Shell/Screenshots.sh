@@ -1,8 +1,8 @@
 #!/bin/zsh
 
 echo "Select area to share......"
-sleep 0.2
-scrot '/home/wynand/GoogleDrive/01_Personal/01_Personal/06_Images/Screenshots/%Y-%m-%d-%T.png' -q 50 -s
+sleep 1
+scrot '/home/wynand/GoogleDrive/01_Personal/01_Personal/06_Images/Screenshots/%Y-%m-%d-%T.png' -s
 sleep 3
 while [[ $(insync get_status) =~ "SYNCING" ]] { sleep 0.5 }
 sleep 1
