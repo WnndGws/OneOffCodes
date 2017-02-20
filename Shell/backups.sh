@@ -40,7 +40,8 @@ borg check /wynZFS/Wynand/Backups/Antergos/ &>> ~/wynZFS/Wynand/Backups/.tmp.txt
 if grep -Fq "Completed repository check, errors found" ~/wynZFS/Wynand/Backups/.tmp.txt
 then
     notify-send "Backup Error" "There was an error found in one of the Borg backups"
-    rm -rf ~/wynZFS/Wynand/Backups/.tmp.txt
+#   rm -rf ~/wynZFS/Wynand/Backups/.tmp.txt
+    mv ~/wynZFS/Wynand/Backups/.tmp.txt ~/BorgCheck.txt
 else
     rm -rf ~/wynZFS/Wynand/Backups/.tmp.txt
     notify-send "Backups Checked" "All clear"
