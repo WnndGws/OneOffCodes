@@ -3,7 +3,7 @@
 set arg1 [lindex $argv 0]
 
 set timeout -1
-spawn aconfmgr -c /home/wynand/wynZFS/Wynand/Backups/Aconfmgr --aur-helper pacaur save
+spawn aconfmgr -c /home/wynand/wynZFS/Wynand/Backups/aconfmgr save
 match_max 100000
 expect -re {\[0m\[sudo\] password for wynand: }
 send -- $arg1

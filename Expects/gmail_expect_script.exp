@@ -3,9 +3,9 @@
 set arg1 [lindex $argv 0]
 
 set timeout -1
-spawn gmvault sync --type quick --emails-only -e -d /home/wynand/wynZFS/Wynand/Backups/Gmail *************@gmail.com -p
+spawn gmvault sync --type quick --emails-only -e -d /home/wynand/wynZFS/Wynand/Backups/Gmail wynand.gouws.wg@gmail.com -p
 match_max 100000
-expect -re {Please enter gmail password for *************@gmail.com and press ENTER:}
+expect -re {Please enter gmail password for wynand.gouws.wg@gmail.com and press ENTER:}
 send -- $arg1
 send -- "\r"
 expect eof
