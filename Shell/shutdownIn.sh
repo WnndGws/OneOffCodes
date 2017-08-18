@@ -24,5 +24,6 @@ while [ $time_ts -gt 0 ]; do
 done
 ## Countdown in terminal
 
-sudo shutdown
+systemctl poweroff
+#sudo shutdown
 ## Had to set linux to run shutdown without confirmation
