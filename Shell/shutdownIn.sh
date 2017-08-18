@@ -18,7 +18,7 @@ fi
 ## If number of delims is 1 then assume argument is seconds, 3 is hh:mm:ss
 
 while [ $time_ts -gt 0 ]; do
-    echo -ne "Shutdown will occur in $time_ts seconds......\033[0K\r"
+    echo -ne "Shutdown will occur in $(date -u -d @$time_ts +'%T')......\033[0K\r"
     sleep 1
     ((time_ts--))
 done
