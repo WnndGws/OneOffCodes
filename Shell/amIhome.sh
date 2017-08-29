@@ -2,7 +2,13 @@
 ## Allows me to ping by MAC address and then sends me an email if I am home
 
 while /bin/true; do
+    set -a
+    source <(gpg -qd ~/.passwords.asc)
+    set +a    
     ip=$(expect /home/wynand/GoogleDrive/01_Personal/01_Personal/01_Git/OneOffCodes/Expects/am_I_home.exp $SUDO_PASSPHRASE | grep $1)
+    unset GMAIL
+    unset GMAIL_PASSPHRASE
+    unset SUDO_PASSPHRASE
     
     if [ ! -z $ip ]; then
         set -a
