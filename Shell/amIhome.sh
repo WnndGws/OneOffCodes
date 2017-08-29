@@ -1,5 +1,6 @@
 #!/bin/zsh
-## Allows me to ping by MAC address and then adds file to my GoogleDrive if I am home
+## Allows me to ping by MAC address and then sends me an email if I am home
+
 while /bin/true; do
     set -a
     source <(gpg -qd ~/.passwords.asc)
