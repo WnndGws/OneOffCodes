@@ -1,0 +1,10 @@
+#!/usr/bin/expect -f
+
+set sudo_pw [lindex $argv 0]
+
+set timeout -1
+spawn sudo nmap -sP 10.1.1.1/24
+expect -re {password for wynand}
+send -- $sudo_pw
+send -- "\r"
+expect eof
