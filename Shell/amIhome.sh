@@ -14,7 +14,7 @@ while /bin/true; do
         set -a
         source <(gpg -qd ~/.passwords.asc)
         set +a        
-        echo -e "$ip" | mailx -v -s "Home Report" -S smtp-use-starttls -S ssl-verify=ignore -S smtp-auth=login -S smtp=smtp://smtp.gmail.com:587 -S from="$GMAIL" -S smtp-auth-user=$GMAIL -S smtp-auth-password=$GMAIL_PASSPHRASE -S ssl-verify=ignore -S nss-config-dir=~/.cert $GMAIL
+        echo -e "$ip" | mailx -v -s "Home Report" -S smtp-use-starttls -S ssl-verify=ignore -S smtp-auth=login -S mta=smtp://smtp.gmail.com:587 -S from="$GMAIL" -S smtp-auth-user=$GMAIL -S smtp-auth-password=$GMAIL_PASSPHRASE -S ssl-verify=ignore -S nss-config-dir=~/.cert $GMAIL
         unset GMAIL
         unset GMAIL_PASSPHRASE
         unset SUDO_PASSPHRASE
