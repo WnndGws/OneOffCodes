@@ -3,9 +3,9 @@
 
 rtcHibernate () {
     if [ "$(date -d now +%H)" -ge "0" -a "$(date -d now +%H)" -le "2" ]; then
-        source <(gpg -qd ~/.passwords.asc) && export SUDO_PASSPHRASE && expect ~/GoogleDrive/01_Personal/01_Personal/01_Git/OneOffCodes/Expects/rtcHibernate.exp ${SUDO_PASSPHRASE} $(date -d T0100 +%s)
+        source <(gpg -qd ~/.passwords.asc) && export SUDO_PASSPHRASE && expect /home/wynand/Git/OneOffCodes/Expects/rtcHibernate.exp ${SUDO_PASSPHRASE} $(date -d T0100 +%s)
     else
-        source <(gpg -qd ~/.passwords.asc) && export SUDO_PASSPHRASE && expect ~/GoogleDrive/01_Personal/01_Personal/01_Git/OneOffCodes/Expects/rtcHibernate.exp ${SUDO_PASSPHRASE} $(date -d "now + 1day T0100" +%s)
+        source <(gpg -qd ~/.passwords.asc) && export SUDO_PASSPHRASE && expect /home/wynand/Git/OneOffCodes/Expects/rtcHibernate.exp ${SUDO_PASSPHRASE} $(date -d "now + 1day T0100" +%s)
     fi
 }
 #Always hibernate until the next 2am

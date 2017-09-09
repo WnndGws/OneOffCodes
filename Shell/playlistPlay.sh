@@ -16,7 +16,7 @@ if [ $lines -eq 0 ]; then
 elif [ $lines -eq 1 ]; then
     head -1 "$1" | sed -e 's|\ |\*|g' -e "s|'|\\\'|g" -e 's|\.|\*|g' | xargs -i find /home/wynand/wynZFS/Media/TV/ -iname "*{}*" | sed -e "s|'|\\\'|g" | xargs -i xdg-open {}
 else
-    ~/GoogleDrive/01_Personal/01_Personal/01_Git/OneOffCodes/Shell/lsgrep.sh /home/wynand/wynZFS/Media/TV "*$search_term*"
+    /home/wynand/Git/OneOffCodes/Shell/lsgrep.sh /home/wynand/wynZFS/Media/TV "*$search_term*"
 fi
 # If 0 matches echo, if one match open, if more than one match use "lsgrep" (another function) to display the found files
 
