@@ -11,4 +11,4 @@ while [ $secs -gt 0 ]; do
    sleep 1
    : $((secs--))
 done
-find /home/wynand/GoogleDrive/01_Personal/01_Personal/06_Images/Screenshots -type f -mtime +7 -execdir rm -f {} \;
+find /home/wynand/GoogleDrive/01_Personal/01_Personal/05_Images/Screenshots -type f -mtime +7 -execdir rm -f {} \;
