@@ -14,5 +14,14 @@ sanctioningBodies = [td.getText() for td in soup.findAll('tr', limit=4)[3].findA
 # the td of that row, and using list comprehension to print the contents, giving me
 # table headers
 
+table = soup.find('table')
+tableRows = table.find_all('tr')
+for tr in tableRows:
+    td = tr.find_all('td')
+    row = [i.text for i in td]
+    print (row)
+## I now lists, where each list is a row of the table
+
+
 ## https://github.com/rocheio/wiki-table-scrape/blob/master/wikitablescrape.py
 ## http://savvastjortjoglou.com/nba-draft-part01-scraping.html
