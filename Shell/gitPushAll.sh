@@ -11,7 +11,7 @@ declare -a repos=(\
 
 for i in "${repos[@]}"; do
     cd "$i"
-    git add .
+    git add -p .
     git commit -aS
     git pull
     git push
