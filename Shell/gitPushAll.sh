@@ -11,8 +11,15 @@ declare -a repos=(\
 
 for i in "${repos[@]}"; do
     cd "$i"
-    git add -p .
-    git commit -aS
-    git pull
+    for file in $(git ls-files --others --exclude-standard); do
+        git add $file
+        git commit -oS $file
+    done
+
+    for file in $(git diff --name-only); do
+        git add -p $file
+        git commit -oS $file
+    done
+
     git push
 done
