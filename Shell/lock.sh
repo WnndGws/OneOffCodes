@@ -1,7 +1,7 @@
 #!/bin/zsh
 ## Locks and mutes PC
 
-amixer sset 'Master' 00%
+amixer sset 'Master' 00% 2>&1 /dev/null
 # Mutes
 
 scrot /tmp/screen.png
