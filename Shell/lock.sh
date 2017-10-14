@@ -12,7 +12,7 @@ pactl set-sink-mute $active_sink 1
 scrot /tmp/screen.png
 # Screenshot
 
-convert /tmp/screen.png -scale 10% -scale 1000% /tmp/screen.png
+convert /tmp/screen.png -scale 5% -scale 2000% /tmp/screen.png
 # Shrinks down, then resizes up so screenshot is blurry
 
 [[ -f ~/.dotfiles/i3/.config/i3/lock.png ]] && convert /tmp/screen.png ~/.dotfiles/i3/.config/i3/lock.png -gravity center -composite -matte /tmp/screen.png
