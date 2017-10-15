@@ -4,13 +4,14 @@ then sets this as the wallpaper'''
 
 import textwrap
 import os
+import sys
 import random
 from subprocess import call
 
 from PIL import Image, ImageDraw, ImageFont
 
 WALLPAPER_DIR = '/home/wynand/GoogleDrive/01_Personal/01_Personal/05_Images/Wallpapers'
-QUOTE_FILE = 'quotes.txt'
+QUOTE_FILE = sys.path[0] + '/quotes.txt'
 
 # get a font
 FNT = ImageFont.truetype('/usr/share/fonts/TTF/Arsenal-Regular.ttf', 50)
