@@ -14,7 +14,7 @@ WALLPAPER_DIR = '/home/wynand/GoogleDrive/01_Personal/01_Personal/05_Images/Wall
 QUOTE_FILE = sys.path[0] + '/quotes.txt'
 
 # get a font
-FNT = ImageFont.truetype('/usr/share/fonts/TTF/SourceSansPro-Bold.ttf', 50)
+FNT = ImageFont.truetype('/usr/share/fonts/TTF/DroidSerif-Regular.ttf', 50)
 
 def change_wallpaper():
     '''Add quote selected from text file over images in a folder'''
