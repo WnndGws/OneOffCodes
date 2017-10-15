@@ -28,7 +28,8 @@ def change_wallpaper():
 
     # make a blank image for the text, initialized to transparent text color
     text_image = Image.new('RGBA', base_image.size, (255, 255, 255, 0))
-    quote_pool = open(QUOTE_FILE).read().splitlines()
+    with open(QUOTE_FILE) as f:
+        quote_pool = f.read().splitlines()
     random_quote = random.choice(quote_pool)
     quote_lines = textwrap.wrap(random_quote, width=60)
 
