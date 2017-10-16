@@ -5,9 +5,9 @@ then sets this as the wallpaper
 TODO:
 * create a click.option, that when used doesnt need a wallpaper directory, instead uses the daily bing wallpaper
 '''
+import json
 import os
 import random
-import re
 from subprocess import call
 import textwrap
 
@@ -93,13 +93,12 @@ def download_bing_wallpaper():
     idx = "0"
     mkt = "en-AU"
     resolution = "1920x1080"
-    url = f'http://www.bing.com/HPImageArchive.aspx?format=xml&idx={idx}&n=1&mkt={mkt}'
+    url = f'http://www.bing.com/HPImageArchive.aspx?format=js&idx={idx}&n=1&mkt={mkt}'
 
     r = requests.get(url)
     if r.status_code == 200:
-        image_url = re.search(r'(\<urlBase\>)(.*)(\<\/urlBase\>)', bytes.decode(r.content))
-        image_url = re.search(r'\/.*\<', image_url.group(0))
-        image_url = image_url.group(0)[:-1]
+        json_dict = json.loads(r.content)['images'][0]
+        image_url = json_dict['urlbase']
         image_url = f'https://www.bing.com/{image_url}_{resolution}.jpg'
         r = requests.get(image_url)
         if r.status_code == 200:
