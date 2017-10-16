@@ -1,12 +1,17 @@
 #!/bin/python
 '''Takes a image from WALLPAPER_DIR and adds a random quote from QUOTE_FILE
-then sets this as the wallpaper'''
+then sets this as the wallpaper
 
-import textwrap
+TODO:
+* Set options
+* Allow for the setting of bing as daily wallpaper
+'''
+
 import os
-import sys
 import random
 from subprocess import call
+import sys
+import textwrap
 
 from PIL import Image, ImageDraw, ImageFont
 
