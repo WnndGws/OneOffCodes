@@ -5,6 +5,7 @@ then sets this as the wallpaper
 TODO:
 * Allow for the setting of bing as daily wallpaper
 '''
+import os
 import random
 from subprocess import call
 import textwrap
