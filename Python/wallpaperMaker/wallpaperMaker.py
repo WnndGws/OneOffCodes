@@ -7,11 +7,13 @@ TODO:
 '''
 import os
 import random
+import re
 from subprocess import call
 import textwrap
 
 import click
 from PIL import Image, ImageDraw, ImageFont
+import requests
 
 @click.command()
 @click.option('--wallpaper_dir', default='~/Pictures', help="Path to the wallpaper directory")
@@ -20,6 +22,25 @@ from PIL import Image, ImageDraw, ImageFont
 @click.option('--font', default='/usr/share/fonts/TTF/DroidSerif-Regular.ttf',\
                 help="Path to the .ttf font file")
 @click.option('--font_size', default=50, help="Font size")
+
+def download_bing_wallpaper():
+    '''Downloads the daily wallpaper from bing as a jpg'''
+    # idx determines where to start from. 0 is today, 1 is yesterday, etc.
+    idx = "0"
+    mkt = "en-AU"
+    resolution = "1920x1080"
+    url = f'http://www.bing.com/HPImageArchive.aspx?format=xml&idx={idx}&n=1&mkt={mkt}'
+
+    r = requests.get(url)
+    if r.status_code == 200:
+        image_url = re.search(r'(\<urlBase\>)(.*)(\<\/urlBase\>)', bytes.decode(r.content))
+        image_url = re.search(r'\/.*\<', image_url.group(0))
+        image_url = image_url.group(0)[:-1]
+        image_url = f'https://www.bing.com/{image_url}_{resolution}.jpg'
+        r = requests.get(image_url)
+        if r.status_code == 200:
+            with open('bing.jpg', 'wb') as f:
+                f.write(r.content)
 
 def change_wallpaper(wallpaper_dir, quote_file, font, font_size):
     '''Add quote selected from text file over images in a folder'''
@@ -67,4 +88,5 @@ def change_wallpaper(wallpaper_dir, quote_file, font, font_size):
     call(["feh", "--bg-scale", "/tmp/wallpaper.png"])
 
 if __name__ == "__main__":
-    change_wallpaper()
+    #change_wallpaper()
+    download_bing_wallpaper()
