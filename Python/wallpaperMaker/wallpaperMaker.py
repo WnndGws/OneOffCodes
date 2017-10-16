@@ -1,36 +1,39 @@
 #!/bin/python
-'''Takes a image from WALLPAPER_DIR and adds a random quote from QUOTE_FILE
+'''Takes a image from wallpaper_dir and adds a random quote from quote_file
 then sets this as the wallpaper
 
 TODO:
-* Set options
 * Allow for the setting of bing as daily wallpaper
 '''
 
 import os
 import random
 from subprocess import call
-import sys
 import textwrap
 
+import click
 from PIL import Image, ImageDraw, ImageFont
 
-WALLPAPER_DIR = '/home/wynand/GoogleDrive/01_Personal/01_Personal/05_Images/Wallpapers'
-QUOTE_FILE = sys.path[0] + '/quotes.txt'
+@click.command()
+@click.option('--wallpaper_dir', default='~/Pictures', help="Path to the wallpaper directory")
+@click.option('--quote_file', default='~/.config/wallpaperMaker/quotes.txt',\
+                help="Path to the newline seperated quotes file (in text form)")
+@click.option('--font', default='/usr/share/fonts/TTF/DroidSerif-Regular.ttf',\
+                help="Path to the .ttf font file")
+@click.option('--font_size', default=50, help="Font size")
 
-# get a font
-FNT = ImageFont.truetype('/usr/share/fonts/TTF/DroidSerif-Regular.ttf', 50)
-
-def change_wallpaper():
+def change_wallpaper(wallpaper_dir, quote_file, font, font_size):
     '''Add quote selected from text file over images in a folder'''
 
+    # set font
+    quote_font = ImageFont.truetype(font, font_size)
     # get an image
-    random_wallpaper = random.choice(os.listdir(WALLPAPER_DIR))
-    base_image = Image.open(WALLPAPER_DIR + "/" + random_wallpaper).convert('RGBA')
+    random_wallpaper = random.choice(os.listdir(wallpaper_dir))
+    base_image = Image.open(wallpaper_dir + "/" + random_wallpaper).convert('RGBA')
 
     # make a blank image for the text, initialized to transparent text color
     text_image = Image.new('RGBA', base_image.size, (255, 255, 255, 0))
-    with open(QUOTE_FILE) as f:
+    with open(quote_file) as f:
         quote_pool = f.read().splitlines()
     random_quote = random.choice(quote_pool)
     quote_lines = textwrap.wrap(random_quote, width=60)
@@ -40,16 +43,16 @@ def change_wallpaper():
     # determine location of text
     x_loc = base_image.size[0]
     # determine the size of one line of the quote, and multiply by how many lines giving the y-size
-    quote_size_y = len(quote_lines)*FNT.getsize(quote_lines[0])[1]
+    quote_size_y = len(quote_lines)*quote_font.getsize(quote_lines[0])[1]
     # determine x size by seeing how wide the text will be
-    quote_size_x = FNT.getsize(quote_lines[0])[0]
+    quote_size_x = quote_font.getsize(quote_lines[0])[0]
     # put the quote so the centre always matches the centre of the image
     y_loc = base_image.size[1]/2 - (quote_size_y/2)
 
     # draw text
     for line in quote_lines:
-        line_width, line_height = FNT.getsize(line)
-        draw.text(((x_loc - line_width - 20), y_loc), line, font=FNT, fill=((255, 255, 255, 128)))
+        line_width, line_height = quote_font.getsize(line)
+        draw.text(((x_loc - line_width - 20), y_loc), line, font=quote_font, fill=((255, 255, 255, 128)))
         y_loc += line_height
 
     textbox_image = Image.new('RGBA', base_image.size, (255, 255, 255, 0))
