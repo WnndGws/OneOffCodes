@@ -36,7 +36,7 @@ def download_bing_wallpaper(country, resolution):
     idx = "0"
     mkt = country
     resolution = resolution
-    url = f'http://www.bing.com/HPImageArchive.aspx?format=js&idx={idx}&n=1&mkt={mkt}'
+    url = f'https://www.bing.com/HPImageArchive.aspx?format=js&idx={idx}&n=1&mkt={mkt}'
 
     r = requests.get(url)
     if r.status_code == 200:
