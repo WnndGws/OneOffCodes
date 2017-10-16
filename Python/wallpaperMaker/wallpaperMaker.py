@@ -3,7 +3,7 @@
 then sets this as the wallpaper
 
 TODO:
-* Allow for the setting of bing as daily wallpaper
+* create a click.option, that when used doesnt need a wallpaper directory, instead uses the daily bing wallpaper
 '''
 import os
 import random
