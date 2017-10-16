@@ -16,12 +16,30 @@ from PIL import Image, ImageDraw, ImageFont
 import requests
 
 @click.command()
-@click.option('--wallpaper_dir', default='~/Pictures', help="Path to the wallpaper directory")
-@click.option('--quote_file', default='~/.config/wallpaperMaker/quotes.txt',\
-                help="Path to the newline seperated quotes file")
-@click.option('--font', default='/usr/share/fonts/TTF/DroidSerif-Regular.ttf',\
-                help="Path to the .ttf font file")
-@click.option('--font_size', default=50, help="Font size")
+@click.option(
+    '--wallpaper-dir',
+    type=click.Path(),
+    default='~/Pictures',
+    help="Path to the wallpaper directory [DEFAULT: ~/Pictures]"
+)
+
+@click.option(
+    '--quote-file',
+    type=click.Path(),
+    default='~/.config/wallpaperMaker/quotes.txt',
+    help="Path to the newline seperated quotes file"
+)
+@click.option(
+    '--font',
+    default='/usr/share/fonts/TTF/DroidSerif-Regular.ttf',
+    help="Path to the .ttf font file [DEFAULT: DroidSerif]"
+)
+
+@click.option(
+    '--font-size',
+    default=50,
+    help="Font size [DEFAULT: 50]"
+)
 
 def download_bing_wallpaper():
     '''Downloads the daily wallpaper from bing as a jpg'''
