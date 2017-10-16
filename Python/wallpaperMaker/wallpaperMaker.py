@@ -31,6 +31,7 @@ import requests
 )
 @click.option(
     '--font',
+    type=click.Path(),
     default='/usr/share/fonts/TTF/DroidSerif-Regular.ttf',
     help="Path to the .ttf font file [DEFAULT: DroidSerif]"
 )
