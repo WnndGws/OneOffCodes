@@ -5,8 +5,6 @@ then sets this as the wallpaper
 TODO:
 * Allow for the setting of bing as daily wallpaper
 '''
-
-import os
 import random
 from subprocess import call
 import textwrap
@@ -17,7 +15,7 @@ from PIL import Image, ImageDraw, ImageFont
 @click.command()
 @click.option('--wallpaper_dir', default='~/Pictures', help="Path to the wallpaper directory")
 @click.option('--quote_file', default='~/.config/wallpaperMaker/quotes.txt',\
-                help="Path to the newline seperated quotes file (in text form)")
+                help="Path to the newline seperated quotes file")
 @click.option('--font', default='/usr/share/fonts/TTF/DroidSerif-Regular.ttf',\
                 help="Path to the .ttf font file")
 @click.option('--font_size', default=50, help="Font size")
