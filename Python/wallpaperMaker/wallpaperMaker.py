@@ -16,7 +16,13 @@ import click
 from PIL import Image, ImageDraw, ImageFont
 import requests
 
-@click.command()
+# create a click group to download bing wallpaper
+@click.group()
+def run_download_bing_wallpaper():
+    pass
+
+# create click command to download daily bing wallpaper
+@run_download_bing_wallpaper.command()
 @click.option(
     '--country',
     type=click.Choice(['en-US', 'zn-CN', 'ja-JP', 'en-AU', 'en-UK', 'de-DE', 'en-NZ', 'en-CA']),
@@ -48,8 +54,12 @@ def download_bing_wallpaper(country, resolution):
             with open('bing.jpg', 'wb') as f:
                 f.write(r.content)
 
+# create click command to add quote to image and set that as wallpaper
+@click.group()
+def run_change_wallpaper():
+    pass
 
-@click.command()
+@run_change_wallpaper.command()
 @click.option(
     '--wallpaper-dir',
     type=click.Path(),
@@ -89,7 +99,6 @@ def change_wallpaper(wallpaper_dir, quote_file, font, font_size, bing):
     quote_font = ImageFont.truetype(font, font_size)
     # get an image
     if bing:
-        download_bing_wallpaper()
         base_image = Image.open('./bing.jpg').convert('RGBA')
     else:
         random_wallpaper = random.choice(os.listdir(wallpaper_dir))
@@ -135,6 +144,7 @@ def change_wallpaper(wallpaper_dir, quote_file, font, font_size, bing):
     image_out.save("/tmp/wallpaper.png")
     call(["feh", "--bg-scale", "/tmp/wallpaper.png"])
 
+cli = click.CommandCollection(sources=[run_download_bing_wallpaper, run_change_wallpaper])
 
 if __name__ == "__main__":
-    change_wallpaper()
+    cli()
