@@ -3,7 +3,11 @@
 then sets this as the wallpaper
 
 TODO:
-* create a click.option, that when used doesnt need a wallpaper directory, instead uses the daily bing wallpaper
+* create a click.option, that when used doesnt need a wallpaper directory,
+  instead uses the daily bing wallpaper
+* cleanup option names
+* cleanup errors that occur when forget to run "change_wallpaper" or "download_bing_wallpaper"
+* add option to set bing wallpaper dir (defaulting to tmp/)
 '''
 
 import json
@@ -16,9 +20,21 @@ import click
 from PIL import Image, ImageDraw, ImageFont
 import requests
 
-@click.command()
+# create a click group to download bing wallpaper
+@click.group()
+def run_download_bing_wallpaper():
+    '''downloads Bing daily wallpaper'''
+    pass
+
+# create click command to download daily bing wallpaper
+@run_download_bing_wallpaper.command(
+    context_settings=dict(ignore_unknown_options=True,
+                          allow_extra_args=True,
+                          resilient_parsing=True)
+)
 @click.option(
     '--country',
+    prompt=True,
     type=click.Choice(['en-US', 'zn-CN', 'ja-JP', 'en-AU', 'en-UK', 'de-DE', 'en-NZ', 'en-CA']),
     default='en-AU',
     help="Choose the country location of the Bing wallpaper you want to use [DEFAULT: en-AU]"
@@ -27,6 +43,7 @@ import requests
     '--resolution',
     type=click.Choice(['1920x1200', '1920x1080', '1366x768', '1280x720', '1024x768']),
     default='1920x1080',
+    prompt=True,
     help="Choose the resolution of the image you want to download [DEFAULT: 1920x1080]"
 )
 
@@ -48,8 +65,18 @@ def download_bing_wallpaper(country, resolution):
             with open('bing.jpg', 'wb') as f:
                 f.write(r.content)
 
+# create click command to add quote to image and set that as wallpaper
+@click.group()
+def run_change_wallpaper():
+    '''click group to run the change_wallpaper function'''
+    pass
 
-@click.command()
+@run_change_wallpaper.command(
+    context_settings=dict(ignore_unknown_options=True,
+                          allow_extra_args=True,
+                          resilient_parsing=True)
+)
+@click.pass_context
 @click.option(
     '--wallpaper-dir',
     type=click.Path(),
@@ -69,27 +96,27 @@ def download_bing_wallpaper(country, resolution):
     default='/usr/share/fonts/TTF/DroidSerif-Regular.ttf',
     help="Path to the .ttf font file [DEFAULT: DroidSerif]"
 )
-
 @click.option(
     '--font-size',
     default=50,
     help="Font size [DEFAULT: 50]"
 )
-
 @click.option(
     '--bing',
     is_flag=True,
     help="Use this flag if you want to use the daily Bing wallpaper instead of a local image"
 )
+@click.pass_context
+@click.argument('leftover_args', nargs=-1, type=click.UNPROCESSED)
 
-def change_wallpaper(wallpaper_dir, quote_file, font, font_size, bing):
+def change_wallpaper(self, ctx, wallpaper_dir, quote_file, font, font_size, bing, leftover_args):
     '''Add quote selected from text file over images in a folder'''
 
     # set font
     quote_font = ImageFont.truetype(font, font_size)
     # get an image
     if bing:
-        download_bing_wallpaper()
+        ctx.invoke(download_bing_wallpaper)
         base_image = Image.open('./bing.jpg').convert('RGBA')
     else:
         random_wallpaper = random.choice(os.listdir(wallpaper_dir))
@@ -135,6 +162,7 @@ def change_wallpaper(wallpaper_dir, quote_file, font, font_size, bing):
     image_out.save("/tmp/wallpaper.png")
     call(["feh", "--bg-scale", "/tmp/wallpaper.png"])
 
+RUN_WALLPAPER = click.CommandCollection(sources=[run_download_bing_wallpaper, run_change_wallpaper])
 
 if __name__ == "__main__":
-    change_wallpaper()
+    RUN_WALLPAPER()
