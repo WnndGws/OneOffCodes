@@ -5,6 +5,8 @@ then sets this as the wallpaper
 TODO:
 * create a click.option, that when used doesnt need a wallpaper directory,
   instead uses the daily bing wallpaper
+* cleanup option names
+* cleanup errors that occur when forget to run "change_wallpaper" or "download_bing_wallpaper"
 '''
 
 import json
@@ -25,7 +27,9 @@ def run_download_bing_wallpaper():
 
 # create click command to download daily bing wallpaper
 @run_download_bing_wallpaper.command(
-    context_settings=dict(ignore_unknown_options=True, allow_extra_args=True, resilient_parsing=True)
+    context_settings=dict(ignore_unknown_options=True,
+                          allow_extra_args=True,
+                          resilient_parsing=True)
 )
 @click.option(
     '--country',
@@ -67,7 +71,9 @@ def run_change_wallpaper():
     pass
 
 @run_change_wallpaper.command(
-    context_settings=dict(ignore_unknown_options=True, allow_extra_args=True, resilient_parsing=True)
+    context_settings=dict(ignore_unknown_options=True,
+                          allow_extra_args=True,
+                          resilient_parsing=True)
 )
 @click.pass_context
 @click.option(
