@@ -7,6 +7,7 @@ TODO:
   instead uses the daily bing wallpaper
 * cleanup option names
 * cleanup errors that occur when forget to run "change_wallpaper" or "download_bing_wallpaper"
+* add option to set bing wallpaper dir (defaulting to tmp/)
 '''
 
 import json
