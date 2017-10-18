@@ -24,9 +24,12 @@ def run_download_bing_wallpaper():
     pass
 
 # create click command to download daily bing wallpaper
-@run_download_bing_wallpaper.command()
+@run_download_bing_wallpaper.command(
+    context_settings=dict(ignore_unknown_options=True, allow_extra_args=True, resilient_parsing=True)
+)
 @click.option(
     '--country',
+    prompt=True,
     type=click.Choice(['en-US', 'zn-CN', 'ja-JP', 'en-AU', 'en-UK', 'de-DE', 'en-NZ', 'en-CA']),
     default='en-AU',
     help="Choose the country location of the Bing wallpaper you want to use [DEFAULT: en-AU]"
@@ -35,6 +38,7 @@ def run_download_bing_wallpaper():
     '--resolution',
     type=click.Choice(['1920x1200', '1920x1080', '1366x768', '1280x720', '1024x768']),
     default='1920x1080',
+    prompt=True,
     help="Choose the resolution of the image you want to download [DEFAULT: 1920x1080]"
 )
 
@@ -62,7 +66,10 @@ def run_change_wallpaper():
     '''click group to run the change_wallpaper function'''
     pass
 
-@run_change_wallpaper.command()
+@run_change_wallpaper.command(
+    context_settings=dict(ignore_unknown_options=True, allow_extra_args=True, resilient_parsing=True)
+)
+@click.pass_context
 @click.option(
     '--wallpaper-dir',
     type=click.Path(),
@@ -93,8 +100,9 @@ def run_change_wallpaper():
     help="Use this flag if you want to use the daily Bing wallpaper instead of a local image"
 )
 @click.pass_context
+@click.argument('leftover_args', nargs=-1, type=click.UNPROCESSED)
 
-def change_wallpaper(ctx, wallpaper_dir, quote_file, font, font_size, bing):
+def change_wallpaper(self, ctx, wallpaper_dir, quote_file, font, font_size, bing, leftover_args):
     '''Add quote selected from text file over images in a folder'''
 
     # set font
