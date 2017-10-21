@@ -4,7 +4,7 @@ set arg1 [lindex $argv 0]
 set arg2 [lindex $argv 1]
 
 set timeout -1
-eval spawn sudo rtcwake -t $arg2 -m disk
+eval spawn sudo rtcwake -n -u -t $arg2 -m disk
 match_max 100000
 expect -re {password for wynand:}
 send -- $arg1
