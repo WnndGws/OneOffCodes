@@ -2,7 +2,7 @@
 ##Everything i need to hibernate until 2am, wake up, and hibernate again at 5am
 
 rtcHibernate () {
-    if [ "$(date -d now +%H)" -ge "0" -a "$(date -d now +%H)" -le "2" ]; then
+    if [ "$(date -d now +%H)" -ge "0" -a "$(date -d now +%H)" -le "9" ]; then
         source <(gpg -qd ~/.passwords.asc) && export SUDO_PASSPHRASE && expect /home/wynand/Git/OneOffCodes/Expects/rtcHibernate.exp ${SUDO_PASSPHRASE} $(date -d T0100 +%s)
     else
         source <(gpg -qd ~/.passwords.asc) && export SUDO_PASSPHRASE && expect /home/wynand/Git/OneOffCodes/Expects/rtcHibernate.exp ${SUDO_PASSPHRASE} $(date -d "now + 1day T0100" +%s)
