@@ -10,7 +10,7 @@
 hdd="sda"
 
 # where to store ssd protect information
-prevMbDb="/home/wynand/GoogleDrive/01_Personal/05_Software/Antergos/prevMbDb"
+prevMbDb="~/GoogleDrive/01_Personal/05_Software/Antergos/prevMbDb"
 
 # how many mb can be written before you should be notified that something is up (must be a positive integer)
 warningThreshold="2500"
