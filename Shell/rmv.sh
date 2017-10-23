@@ -32,7 +32,7 @@ find $pat -maxdepth 1 -iname "$term" -print0 | while IFS= read -r -d $'\0' line;
     done
 # Find term in path and copies, then removes source thus simulating moving, while outputing how many have been done
 
-if [[ "$2" =~ \/run\/media\/wynand\/.* ]]; then
+if [[ "$2" =$HOME \/run\/media\/wynand\/.* ]]; then
     sync &
     watch grep -e Dirty: -e Writeback: /proc/meminfo
 fi

@@ -8,9 +8,9 @@ while /bin/true; do
 
     if [ "$ip" -eq 0 ]; then
         set -a
-        source <(gpg -qd ~/.passwords.asc)
+        source <(gpg -qd $HOME/.passwords.asc)
         set +a        
-        echo -e "$1 is home" | mailx -v -s "Home Report" -S smtp-use-starttls -S ssl-verify=ignore -S smtp-auth=login -S mta=smtp://smtp.gmail.com:587 -S from="$GMAIL" -S smtp-auth-user=$GMAIL -S smtp-auth-password=$GMAIL_PASSPHRASE -S ssl-verify=ignore -S nss-config-dir=~/.cert $GMAIL
+        echo -e "$1 is home" | mailx -v -s "Home Report" -S smtp-use-starttls -S ssl-verify=ignore -S smtp-auth=login -S mta=smtp://smtp.gmail.com:587 -S from="$GMAIL" -S smtp-auth-user=$GMAIL -S smtp-auth-password=$GMAIL_PASSPHRASE -S ssl-verify=ignore -S nss-config-dir=$HOME/.cert $GMAIL
         unset GMAIL
         unset GMAIL_PASSPHRASE
         unset SUDO_PASSPHRASE
@@ -26,9 +26,9 @@ while /bin/true; do
         # use nmap to test if host is up, needs to fail 4 times to avoid false positives
 
         set -a
-        source <(gpg -qd ~/.passwords.asc)
+        source <(gpg -qd $HOME/.passwords.asc)
         set +a        
-        echo -e "$1 has left home" | mailx -v -s "Home Report" -S smtp-use-starttls -S ssl-verify=ignore -S smtp-auth=login -S mta=smtp://smtp.gmail.com:587 -S from="$GMAIL" -S smtp-auth-user=$GMAIL -S smtp-auth-password=$GMAIL_PASSPHRASE -S ssl-verify=ignore -S nss-config-dir=~/.cert $GMAIL
+        echo -e "$1 has left home" | mailx -v -s "Home Report" -S smtp-use-starttls -S ssl-verify=ignore -S smtp-auth=login -S mta=smtp://smtp.gmail.com:587 -S from="$GMAIL" -S smtp-auth-user=$GMAIL -S smtp-auth-password=$GMAIL_PASSPHRASE -S ssl-verify=ignore -S nss-config-dir=$HOME/.cert $GMAIL
         unset GMAIL
         unset GMAIL_PASSPHRASE
         unset SUDO_PASSPHRASE

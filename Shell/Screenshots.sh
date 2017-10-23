@@ -2,8 +2,8 @@
 
 echo "Select area to share......"
 sleep 0.1
-scrot '~/GoogleDrive/01_Personal/01_Personal/05_Images/Screenshots/%Y-%m-%d-%T.png' -q 100 -s
-file_to_share=$(find ~/GoogleDrive/01_Personal/01_Personal/05_Images/Screenshots -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d" " | sed 's/\.\//\/home\/wynand\/GoogleDrive\/01_Personal\/01_Personal\/05_Images\/Screenshots\//g')
+scrot '$HOME/GoogleDrive/01_Personal/01_Personal/05_Images/Screenshots/%Y-%m-%d-%T.png' -q 100 -s
+file_to_share=$(find $HOME/GoogleDrive/01_Personal/01_Personal/05_Images/Screenshots -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d" " | sed 's/\.\//\/home\/wynand\/GoogleDrive\/01_Personal\/01_Personal\/05_Images\/Screenshots\//g')
 xclip -selection clipboard -t image/png -i $file_to_share
 secs=$((15))
 while [ $secs -gt 0 ]; do
@@ -11,4 +11,4 @@ while [ $secs -gt 0 ]; do
    sleep 1
    : $((secs--))
 done
-find ~/GoogleDrive/01_Personal/01_Personal/05_Images/Screenshots -type f -mtime +7 -execdir rm -f {} \;
+find $HOME/GoogleDrive/01_Personal/01_Personal/05_Images/Screenshots -type f -mtime +7 -execdir rm -f {} \;

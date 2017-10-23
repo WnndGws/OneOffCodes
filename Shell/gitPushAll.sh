@@ -2,11 +2,11 @@
 ## Script to push all my git repos at the same time
 
 declare -a repos=(\
-"~/Git/CarPi-Diem"
-"~/Git/OneOffCodes"
-"~/Git/OneOffCodes/Expects"
-"~/Git/OneOffCodes/Python"
-"~/Git/OneOffCodes/Shell"
+"$HOME/Git/CarPi-Diem"
+"$HOME/Git/OneOffCodes"
+"$HOME/Git/OneOffCodes/Expects"
+"$HOME/Git/OneOffCodes/Python"
+"$HOME/Git/OneOffCodes/Shell"
 )
 
 for i in "${repos[@]}"; do

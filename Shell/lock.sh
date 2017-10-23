@@ -16,7 +16,7 @@ convert /tmp/screen.png -scale 5% -scale 2000% /tmp/screen.png
 convert /tmp/screen.png -paint 1 /tmp/screen.png
 # Shrinks down, then resizes up so screenshot is blurry
 
-[[ -f ~/.dotfiles/i3/.config/i3/lock.png ]] && convert /tmp/screen.png ~/.dotfiles/i3/.config/i3/lock.png -gravity center -composite -matte /tmp/screen.png
+[[ -f $HOME/.dotfiles/i3/.config/i3/lock.png ]] && convert /tmp/screen.png $HOME/.dotfiles/i3/.config/i3/lock.png -gravity center -composite -matte /tmp/screen.png
 # Adds lock image over the blurry screenshot
 
 i3lock --no-unlock-indicator --ignore-empty-password --image=/tmp/screen.png --nofork &&\
