@@ -62,7 +62,7 @@ def download_bing_wallpaper(country, resolution):
         image_url = f'https://www.bing.com/{image_url}_{resolution}.jpg'
         r = requests.get(image_url)
         if r.status_code == 200:
-            with open('bing.jpg', 'wb') as f:
+            with open('/tmp/bing.jpg', 'wb') as f:
                 f.write(r.content)
 
 # create click command to add quote to image and set that as wallpaper
@@ -117,7 +117,7 @@ def change_wallpaper(self, ctx, wallpaper_dir, quote_file, font, font_size, bing
     # get an image
     if bing:
         ctx.invoke(download_bing_wallpaper)
-        base_image = Image.open('./bing.jpg').convert('RGBA')
+        base_image = Image.open('/tmp/bing.jpg').convert('RGBA')
     else:
         random_wallpaper = random.choice(os.listdir(wallpaper_dir))
         base_image = Image.open(wallpaper_dir + "/" + random_wallpaper).convert('RGBA')
