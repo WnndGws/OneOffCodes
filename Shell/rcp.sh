@@ -31,9 +31,3 @@ find $pat -maxdepth 1 -iname "$term" -print0 | while IFS= read -r -d $'\0' line;
         echo "\n"
     done
 # Find term in path and copies, while outputing how many have been done
-
-if [[ "$2" =$HOME \/run\/media\/wynand\/.* ]]; then
-    sync &
-    watch grep -e Dirty: -e Writeback: /proc/meminfo
-fi
-# If the copy was to a USB then sync and display writeback
