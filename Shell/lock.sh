@@ -5,16 +5,16 @@
 resolution=$(xdpyinfo | grep dimensions | awk '{print $2}')
 
 # Location of lock image
-lock_image="$HOME/.dotfiles/i3/.config/i3/lock.png"
+lock_image=$HOME/.dotfiles/i3/.config/i3/lock.png
 
 # Set filters to apply to the image
-filters='noise=alls=10,scale=iw*.05:-1,scale=iw*20:-1:flags=neighbor'
+filters='noise=alls=10,scale=iw*.05:-1,scale=iw*20:-1:flags=neighbor,overlay=(W-w)/2:(H-h)/2'
 
 # Output file location
-output_loc="/tmp/screen.png"
+output_loc=/tmp/screen.png
 
 # Take screenshot and apply filters, and overlay lock_image
-ffmpeg -y -loglevel 0 -s "$resolution" -f x11grab -i $DISPLAY -i $lock_image -vframes 1 -vf "$filters" -filter_complex 'overlay' $output_loc
+ffmpeg -y -loglevel 0 -s "$resolution" -f x11grab -i $DISPLAY -i $lock_image -vframes 1 -filter_complex $filters $output_loc
 
 i3lock --no-unlock-indicator --ignore-empty-password --image=$output_loc --nofork &&\
 
