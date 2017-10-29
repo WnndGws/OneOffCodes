@@ -2,7 +2,7 @@
 
 echo "Starting Peek........."
 sleep 0.1
-peek
+peek > /dev/null 2>&1
 sleep 2
 while [[ $(insync-headless get_sync_progress) != "No syncing activities"  ]] { echo -ne $(insync-headless get_sync_progress)\\r; sleep 0.1  }
 sleep 3
