@@ -24,7 +24,7 @@ output_loc=/tmp/screen.png
 # Take screenshot and apply filters, and overlay lock_image
 ffmpeg -y -loglevel 0 -s "$resolution" -f x11grab -i $DISPLAY -i $lock_image -vframes 1 -filter_complex $filters $output_loc
 
-i3lock --no-unlock-indicator --ignore-empty-password --image=$output_loc --nofork &&\
+i3lock --ignore-empty-password --image=$output_loc --nofork &&\
 
 # Unmutes after unlock if needed
 if [ $muteStatus = "no" ]
