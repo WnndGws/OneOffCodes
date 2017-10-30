@@ -6,7 +6,7 @@
 open() {
     case "$1" in
         *youtube.com*|*youtu.be*|*vodlocker.com*|*.webm*|*.mp4*|*.avi|*.gif) mpv --really-quiet --ytdl --ytdl-format="mp4[height<=?720]" "$1" &! ;;
-        *.png|*.jpeg|*.jpg) feh -. --geometry 600x600 "$1";;  # feh -. = opens to fit window.
+        *.png|*.jpeg|*.jpg) feh -. "$1";;  # feh -. = opens to fit window.
         *) google-chrome-stable "$1";  # For everything else.;
     esac
 }
