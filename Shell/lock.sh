@@ -15,8 +15,8 @@ resolution=$(xdpyinfo | grep dimensions | awk '{print $2}')
 # Location of lock image
 lock_image=$HOME/.dotfiles/i3/.config/i3/lock.png
 
-# Set filters to apply to the image
-filters='noise=alls=10,scale=iw*.05:-1,scale=iw*20:-1:flags=neighbor,overlay=800:450'
+# Set filters to apply to the image(with Screen 1 resolution of 1475x775)
+filters='noise=alls=10,scale=iw*.05:-1,scale=iw*20:-1:flags=neighbor,overlay=737.5:387.5'
 
 # Output file location
 output_loc=/tmp/screen.png
