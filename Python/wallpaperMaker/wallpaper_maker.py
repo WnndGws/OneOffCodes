@@ -15,10 +15,12 @@ import os
 import random
 from subprocess import call
 import textwrap
+import socket
 
 import click
 from PIL import Image, ImageDraw, ImageFont
 import requests
+
 
 # create a click group to download bing wallpaper
 @click.group()
@@ -93,7 +95,7 @@ def run_change_wallpaper():
 @click.option(
     '--font',
     type=click.Path(),
-    default='/usr/share/fonts/TTF/DroidSerif-Regular.ttf',
+    default='/usr/share/fonts/TTF/Lato-Regular.ttf',
     help="Path to the .ttf font file [DEFAULT: DroidSerif]"
 )
 @click.option(
@@ -164,5 +166,19 @@ def change_wallpaper(self, ctx, wallpaper_dir, quote_file, font, font_size, bing
 
 RUN_WALLPAPER = click.CommandCollection(sources=[run_download_bing_wallpaper, run_change_wallpaper])
 
-if __name__ == "__main__":
+def is_connected():
+    remote_server = "www.google.com"
+    try:
+    # see if we can resolve the host name -- tells us if there is
+    # a DNS listening
+        host = socket.gethostbyname(remote_server)
+    # connect to the host -- tells us if the host is actually
+    # reachable
+        s = socket.create_connection((host, 80), 2)
+        return True
+    except:
+        pass
+    return False
+
+if __name__ == "__main__" and is_connected() is True:
     RUN_WALLPAPER()
