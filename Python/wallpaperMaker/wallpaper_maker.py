@@ -154,7 +154,7 @@ def change_wallpaper(self, ctx, wallpaper_dir, quote_file, font, font_size, bing
     draw = ImageDraw.Draw(textbox_image)
     x_loc = base_image.size[0]
     y_loc = base_image.size[1]/2 - (quote_size_y/2)
-    draw.rectangle(((x_loc - quote_size_x * 1.05), y_loc - 10,
+    draw.rectangle(((x_loc - quote_size_x * 1.15), y_loc - 10,
                     x_loc - 10, y_loc + quote_size_y + 10),
                    (0, 0, 0, 128))
 
