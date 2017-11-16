@@ -5,9 +5,10 @@
 # A function containing a case list of options
 open() {
     case "$1" in
-        *v.redd.it*|*imgtc*|*youtube.com*|*youtu.be*|*vodlocker.com*|*.webm*|*.mp4*|*.avi|*.gif) mpv --really-quiet --loop "$1" &! ;;
+        *gfycat*|*v.redd.it*|*imgtc*|*youtube.com*|*youtu.be*|*vodlocker.com*|*.webm*|*.mp4*|*.avi|*.gif) mpv --really-quiet --loop "$1" &! ;;
         *.png*|*.jpeg*|*.jpg*) feh --scale-down "$1";;  # feh -. = opens to fit window.
-        *) google-chrome-stable "$1";  # For everything else.;
+        *) w3m -dump "$1" > /tmp/tmp.txt && urxvt -e vim /tmp/tmp.txt && rm /tmp/tmp.txt
+        #*) google-chrome-stable "$1";  # For everything else.;
     esac
 }
 
