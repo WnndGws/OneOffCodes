@@ -7,13 +7,13 @@ open() {
     case "$1" in
         *gfycat*|*v.redd.it*|*imgtc*|*youtube.com*|*youtu.be*|*vodlocker.com*|*.webm*|*.mp4*|*.avi|*.gif) mpv --really-quiet --loop "$1" &! ;;
         *imgur*|*.png*|*.jpeg*|*.jpg*) feh --scale-down "$1";;  # feh -. = opens to fit window.
-        *) python $HOME/Git/OneOffCodes/Python/paragraph_scraper.py --url "$1" && cat /tmp/para.txt | speedread -w 350
+        *) python $HOME/Git/OneOffCodes/Python/paragraph_scraper.py --url "$1" && cat /tmp/para.txt | speedread -w 375
         #*) google-chrome-stable "$1";  # For everything else.;
     esac
 }
 
 # Now a for loop to iterate the list of options,
 for url; do
-    open "$url"
     echo "$url" | xclip -selection clipboard
+    open "$url"
 done
