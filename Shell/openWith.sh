@@ -7,7 +7,7 @@ open() {
     case "$1" in
         *gfycat*|*v.redd.it*|*imgtc*|*youtube.com*|*youtu.be*|*vodlocker.com*|*.webm*|*.mp4*|*.avi|*.gif) mpv --really-quiet --loop "$1" &! ;;
         *imgur*|*.png*|*.jpeg*|*.jpg*) feh --scale-down "$1";;  # feh -. = opens to fit window.
-        *) python $HOME/Git/OneOffCodes/Python/paragraph_scraper.py --url "$1" && cat /tmp/para.txt | speedread -w 375
+        *) python $HOME/Git/OneOffCodes/Python/paragraph_scraper.py --url "$1" && urxvtc -e speedread -w 375 /tmp/para.txt
         #*) google-chrome-stable "$1";  # For everything else.;
     esac
 }
