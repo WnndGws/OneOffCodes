@@ -120,6 +120,7 @@ def change_wallpaper(self, ctx, wallpaper_dir, quote_file, font, font_size, bing
     if bing:
         ctx.invoke(download_bing_wallpaper)
         base_image = Image.open('/tmp/bing.jpg').convert('RGBA')
+        call(["wal", "-i", "/tmp/bing.jpg"])
     else:
         random_wallpaper = random.choice(os.listdir(wallpaper_dir))
         base_image = Image.open(wallpaper_dir + "/" + random_wallpaper).convert('RGBA')
