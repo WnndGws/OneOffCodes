@@ -17,7 +17,7 @@ def download_mp3(url):
                 f.write(chunk)
     return local_filename
 
-def itterate_through():
+def iterate_through():
     for n in range(130, 250):
         url = f'http://atheistnomads.com/{n}'
         print(url)
@@ -34,4 +34,4 @@ def itterate_through():
         file.write(json.dumps(ep_dict))
 
 if __name__ == '__main__':
-    itterate_through()
+    iterate_through()
