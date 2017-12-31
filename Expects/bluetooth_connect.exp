@@ -1,5 +1,5 @@
 #!/usr/bin/expect -f
-## Automatically 'connects' myb luetooth headphones
+## Automatically 'connects' my bluetooth headphones
 
 spawn bluetoothctl
 send "connect 00:11:B1:01:BE:1E\r"
