@@ -3,8 +3,8 @@
 
 battery_percentage=$(acpi --battery | rg -o '[0-9]{2}%')
 
-if [[ -z $battery_percentage ]]; then
+if [[  $battery_percentage == "00%" ]]; then
     break
 else
-    xbacklight -set $battery_percentage
+    brightnessctl s $battery_percentage
 fi
