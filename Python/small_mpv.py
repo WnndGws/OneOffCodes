@@ -21,6 +21,6 @@ for leaf in windows_open:
     if re.match('.*(- mpv).*', leaf.name, re.IGNORECASE) is not None:
         connection_id = leaf.id
         print(connection_id)
-        leaf.command(f'[con_id="{connection_id}"] resize shrink left')
-        leaf.command(f'[con_id="{connection_id}"] resize shrink left')
-        leaf.command(f'[con_id="{connection_id}"] resize shrink left')
+        #leaf.command(f'[con_id="{connection_id}"] resize shrink left')
+        #leaf.command(f'[con_id="{connection_id}"] resize shrink left')
+        #leaf.command(f'[con_id="{connection_id}"] resize shrink left')
