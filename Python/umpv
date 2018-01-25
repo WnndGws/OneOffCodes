@@ -90,7 +90,7 @@ else:
     os.mkfifo(FIFO, 0o600)
 
     opts = (os.getenv("MPV") or "mpv").split()
-    opts.extend(["--no-terminal", "--force-window", "--input-file=" + FIFO,
+    opts.extend(["--speed=1.2", "--no-terminal", "--force-window", "--input-file=" + FIFO,
                  "--"])
     opts.extend(files)
 
