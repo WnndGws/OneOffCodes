@@ -18,12 +18,13 @@ def print_paragraph_text(url):
 @click.option('--url')
 def save_images(url):
     file_number = 1
-    req = requests.get(url)
+    s = requests.Session()
+    req = s.get(url)
     soup = BeautifulSoup(req.content, "html.parser")
     for img in soup.find_all('img'):
         img = (img['src'])
         try:
-            req = requests.get(img, allow_redirects=True)
+            req = s.get(img, allow_redirects=True)
             print(f'/tmp/image{file_number}')
             with open(f'/tmp/image{file_number}.png', 'wb') as f:
                 f.write(r.content)
