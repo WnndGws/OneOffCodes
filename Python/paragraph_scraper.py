@@ -8,12 +8,11 @@ from bs4 import BeautifulSoup
 @click.command()
 @click.option('--url')
 def print_paragraph_text(url):
-    f = open('/tmp/para.txt', 'w')
     req = requests.get(url)
     soup = BeautifulSoup(req.content, "html.parser")
-    for words in soup.find_all('p'):
-        f = open('/tmp/para.txt', 'a')
-        f.write(f'\n\n {words.text}')
+    with open('/tmp/para.txt', 'a') as f:
+        for words in soup.find_all('p'):
+            f.write(f'\n\n {words.text}')
 
 @click.command()
 @click.option('--url')
@@ -26,7 +25,8 @@ def save_images(url):
         try:
             req = requests.get(img, allow_redirects=True)
             print(f'/tmp/image{file_number}')
-            open(f'/tmp/image{file_number}.png', 'wb').write(r.content)
+            with open(f'/tmp/image{file_number}.png', 'wb') as f:
+                f.write(r.content)
             file_number += 1
         except:
             pass
