@@ -27,7 +27,7 @@ def save_images(url):
             req = s.get(img, allow_redirects=True)
             print(f'/tmp/image{file_number}')
             with open(f'/tmp/image{file_number}.png', 'wb') as f:
-                f.write(r.content)
+                f.write(req.content)
             file_number += 1
         except:
             pass
