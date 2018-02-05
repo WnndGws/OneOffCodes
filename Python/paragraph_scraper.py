@@ -27,5 +27,5 @@ def save_images(url):
             f.write(req.content)
 
 if __name__ == '__main__':
-    #print_paragraph_text()
+    print_paragraph_text()
     save_images()
