@@ -8,6 +8,7 @@ from oauth2client import tools
 from oauth2client.file import Storage
 
 import argparse
+import calendar
 import datetime
 import httplib2
 import os
@@ -57,7 +58,7 @@ def get_credentials():
     store = Storage(credential_path)
     credentials = store.get()
     if not credentials or credentials.invalid:
-        flow = client.flow_from_clientsecrets('~/.credentials/client_secrets_boxing2.0.json', scope='https://www.googleapis.com/auth/calendar')
+        flow = client.flow_from_clientsecrets('/home/wynand/.credentials/client_secrets_boxing2.0.json', scope='https://www.googleapis.com/auth/calendar')
         flow.user_agent = 'Boxing2.0'
         if flags:
             credentials = tools.run_flow(flow, store, flags)
@@ -70,9 +71,16 @@ credentials = get_credentials()
 http = credentials.authorize(httplib2.Http())
 service = discovery.build('calendar', 'v3', http=http)
 
-now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-nowMonth = datetime.datetime.utcnow() + datetime.timedelta(days=31)
-nowMonth = nowMonth.isoformat() + 'Z'
+def add_months(sourcedate,months):
+    month = sourcedate.month - 1 + months
+    year = sourcedate.year + month // 12
+    month = month % 12 + 1
+    day = min(sourcedate.day,calendar.monthrange(year,month)[1])
+    return datetime.date(year,month,day)
+
+now = datetime.date.today().isoformat() + 'T00:00:00Z' # 'Z' indicates UTC time
+nowMonth = add_months(datetime.date.today(), 1)
+nowMonth = nowMonth.isoformat() + 'T00:00:00Z'
 
 eventsResult = service.events().list(
     calendarId='1krp7iu4q65i0qt6eagdjj5ucs@group.calendar.google.com', timeMin=now, timeMax=nowMonth, singleEvents=True,
@@ -88,4 +96,16 @@ for event in events:
     nextMonthEvents.append(boxer_two[0])
 
 boxer_i_care_about = set(unique_boxers).intersection(nextMonthEvents)
-print(boxer_i_care_about)
+
+for event in events:
+    eventTitle = event['summary']
+    boxer_one = re.findall(r'.+?(?= vs )', eventTitle)
+    boxer_two = re.findall(r'(?<=vs )(.*)(?= -)', eventTitle)
+    if len(set(boxer_one).intersection(boxer_i_care_about)) > 0:
+        newEvent = {}
+        for item in ['summary', 'location', 'description', 'start', 'end', 'description']:
+            newEvent[item] = event[item]
+        service.events().insert(calendarId='nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com', body=newEvent).execute()
+    elif len(set(boxer_two).intersection(boxer_i_care_about)) > 0:
+        service.events().insert(calendarId='nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com', body=newEvent).execute()
+
