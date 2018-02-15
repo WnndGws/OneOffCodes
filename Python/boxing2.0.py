@@ -1,3 +1,4 @@
+#!/usr/bin/python
 ## Script made to check when there is a middleweight+ title fight, or when 'the ring' top 10 fight
 
 from __future__ import print_function
