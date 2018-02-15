@@ -24,13 +24,6 @@ def scrape_content(url):
         for words in soup.findAll('p'):
             f.write(f'\n\n {words.text}')
 
-    for file_number, img in enumerate(soup.findAll('img'), start=1):
-        img = (img['src'])
-        if re.match(r'(http).*', img) is not None:
-            req = s.get(img, allow_redirects=True)
-            with open(f'/tmp/image{file_number}.png', 'wb') as f:
-                f.write(req.content)
-
 if __name__ == '__main__':
     from sys import argv
     myargs = getopts(argv)
