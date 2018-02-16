@@ -12,35 +12,33 @@ import argparse
 import calendar
 import datetime
 import httplib2
-import optparse
 import os
 import re
-import sys
 import urllib.request
 
-def scrape_wikitables():
-    champURL = 'https://en.wikipedia.org/wiki/List_of_current_boxing_rankings'
-    page = urllib.request.urlopen(champURL)
-    soup = BeautifulSoup(page, "lxml")
+champURL = 'https://en.wikipedia.org/wiki/List_of_current_boxing_rankings'
+page = urllib.request.urlopen(champURL)
+soup = BeautifulSoup(page, "lxml")
 
-    tables = soup.find_all('table', { "class" : "wikitable"})
-    unique_boxers = []
+tables = soup.find_all('table', { "class" : "wikitable"})
+unique_boxers = []
 
-    for table_number in range(2,6):
-        table = tables[table_number]
-        rows = table.find_all('tr')
-        for row in rows:
-            data = row.find_all('td')
-            text = [i.text for i in data]
-            for boxer_name in range(len(text)):
-                if len(text[boxer_name]) > 3:
-                    boxer_name = re.findall(r'\S{3,}\ .[^\ \(]+', text[boxer_name])
-                    if len(boxer_name) > 0:
-                        if boxer_name[0] not in unique_boxers:
-                            unique_boxers.append(boxer_name[0])
+for table_number in range(2,6):
+    table = tables[table_number]
+    rows = table.find_all('tr')
+    for row in rows:
+        data = row.find_all('td')
+        text = [i.text for i in data]
+        for boxer_name in range(len(text)):
+            if len(text[boxer_name]) > 3:
+                boxer_name = re.findall(r'\S{3,}\ .[^\ \(]+', text[boxer_name])
+                if len(boxer_name) > 0:
+                    if boxer_name[0] not in unique_boxers:
+                        unique_boxers.append(boxer_name[0])
 
-    unique_boxers.sort()
-    return unique_boxers
+unique_boxers.sort()
+
+flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
 
 def get_credentials():
     """Gets valid user credentials from storage.
@@ -51,7 +49,6 @@ def get_credentials():
     Returns:
         Credentials, the obtained credential.
     """
-    flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
     home_dir = os.path.expanduser('~')
     credential_dir = os.path.join(home_dir, '.credentials')
     if not os.path.exists(credential_dir):
@@ -71,6 +68,10 @@ def get_credentials():
         print('Storing credentials to ' + credential_path)
     return credentials
 
+credentials = get_credentials()
+http = credentials.authorize(httplib2.Http())
+service = discovery.build('calendar', 'v3', http=http)
+
 def add_months(sourcedate,months):
     month = sourcedate.month - 1 + months
     year = sourcedate.year + month // 12
@@ -78,59 +79,34 @@ def add_months(sourcedate,months):
     day = min(sourcedate.day,calendar.monthrange(year,month)[1])
     return datetime.date(year,month,day)
 
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--start', action="store", dest="start", default=datetime.date.today().isoformat(), help='Date in YYYY-MM-DD format')
-    parser.add_argument('--end', action="store", dest="end", default=add_months(datetime.date.today(), 1), help='Date in YYYY-MM-DD format')
-    args = parser.parse_args()
-    return args
+now = datetime.date.today().isoformat() + 'T00:00:00Z' # 'Z' indicates UTC time
+nowMonth = add_months(datetime.date.today(), 1)
+nowMonth = nowMonth.isoformat() + 'T00:00:00Z'
 
-def list_important(start, end):
-    credentials = get_credentials()
-    http = credentials.authorize(httplib2.Http())
-    service = discovery.build('calendar', 'v3', http=http)
+eventsResult = service.events().list(
+    calendarId='1krp7iu4q65i0qt6eagdjj5ucs@group.calendar.google.com', timeMin=now, timeMax=nowMonth, singleEvents=True,
+    orderBy='startTime').execute()
+events = eventsResult.get('items', [])
 
-    start = start + 'T00:00:00Z' # 'Z' indicates UTC time
-    if type(end) == 'str':
-        end = end + 'T00:00:00Z'
-    else:
-        end = end.isoformat() + 'T00:00:00Z'
+nextMonthEvents = []
+for event in events:
+    eventTitle = event['summary']
+    boxer_one = re.findall(r'.+?(?= vs )', eventTitle)
+    boxer_two = re.findall(r'(?<=vs )(.*)(?= -)', eventTitle)
+    nextMonthEvents.append(boxer_one[0])
+    nextMonthEvents.append(boxer_two[0])
 
-    eventsResult = service.events().list(
-        calendarId='1krp7iu4q65i0qt6eagdjj5ucs@group.calendar.google.com', timeMin=start, timeMax=end, singleEvents=True,
-        orderBy='startTime').execute()
-    events = eventsResult.get('items', [])
+boxer_i_care_about = set(unique_boxers).intersection(nextMonthEvents)
 
-    nextMonthEvents = []
-    for event in events:
-        eventTitle = event['summary']
-        boxer_one = re.findall(r'.+?(?= vs )', eventTitle)
-        boxer_two = re.findall(r'(?<=vs )(.*)(?= -)', eventTitle)
-        nextMonthEvents.append(boxer_one[0])
-        nextMonthEvents.append(boxer_two[0])
-
-    unique_boxers = scrape_wikitables()
-    boxer_i_care_about = set(unique_boxers).intersection(nextMonthEvents)
-    return boxer_i_care_about
-    print(boxer_i_care_about)
-
-def add_to_cal():
-    list_important()
-    for event in events:
-        eventTitle = event['summary']
-        boxer_one = re.findall(r'.+?(?= vs )', eventTitle)
-        boxer_two = re.findall(r'(?<=vs )(.*)(?= -)', eventTitle)
-        if len(set(boxer_one).intersection(boxer_i_care_about)) > 0:
-            newEvent = {}
-            for item in ['summary', 'location', 'description', 'start', 'end', 'description']:
-                newEvent[item] = event[item]
-            service.events().insert(calendarId='nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com', body=newEvent).execute()
-        elif len(set(boxer_two).intersection(boxer_i_care_about)) > 0:
-            service.events().insert(calendarId='nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com', body=newEvent).execute()
-
-if __name__ == '__main__':
-    arguments = parse_args()
-    arguments = vars(arguments)
-    list_important(arguments['start'], arguments['end'])
-    print(arguments['start'])
+for event in events:
+    eventTitle = event['summary']
+    boxer_one = re.findall(r'.+?(?= vs )', eventTitle)
+    boxer_two = re.findall(r'(?<=vs )(.*)(?= -)', eventTitle)
+    if len(set(boxer_one).intersection(boxer_i_care_about)) > 0:
+        newEvent = {}
+        for item in ['summary', 'location', 'description', 'start', 'end', 'description']:
+            newEvent[item] = event[item]
+        service.events().insert(calendarId='nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com', body=newEvent).execute()
+    elif len(set(boxer_two).intersection(boxer_i_care_about)) > 0:
+        service.events().insert(calendarId='nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com', body=newEvent).execute()
 
