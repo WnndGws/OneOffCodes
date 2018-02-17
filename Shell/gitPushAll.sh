@@ -14,13 +14,11 @@ for i in "${repos[@]}"; do
     for file in $(git ls-files --others --exclude-standard); do
         git add $file
         git commit -oS $file
-        git tag
     done
 
     for file in $(git diff --name-only); do
         git add -p $file
         git commit -oS $file
-        git tag
     done
 
     git push
