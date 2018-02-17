@@ -108,5 +108,8 @@ for event in events:
             newEvent[item] = event[item]
         service.events().insert(calendarId='nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com', body=newEvent).execute()
     elif len(set(boxer_two).intersection(boxer_i_care_about)) > 0:
+        newEvent = {}
+        for item in ['summary', 'location', 'description', 'start', 'end', 'description']:
+            newEvent[item] = event[item]
         service.events().insert(calendarId='nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com', body=newEvent).execute()
 
