@@ -84,7 +84,8 @@ def run_list_important():
 @click.option('--start', default=datetime.date.today().isoformat(), help="Date in YYYY-MM-DD format (DEFAULT=today)")
 @click.option('--months', default=1, help="Number of months to add to start date (DEFAULT=1)")
 @click.option('--verbose', is_flag=True, help="Will print out the results")
-def list_important(start, months, verbose):
+@click.option('--calendar', is_flag=True, help="Add results to your calendar")
+def list_important(start, months, verbose, calendar):
     """Scrapes calendar of all fights and lists those containing any of the current top fighters"""
 
     credentials = get_credentials()
@@ -110,7 +111,35 @@ def list_important(start, months, verbose):
     boxer_i_care_about = set(unique_boxers).intersection(nextMonthEvents)
 
     if verbose:
-        click.echo(boxer_i_care_about)
+        for event in events:
+            eventTitle = event['summary']
+            boxer_one = re.findall(r'.+?(?= vs )', eventTitle)
+            boxer_two = re.findall(r'(?<=vs )(.*)(?= -)', eventTitle)
+            if len(set(boxer_one).intersection(boxer_i_care_about)) > 0:
+                for item in ['summary', 'location', 'start']:
+                    click.echo(f'{item}: {event[item]}')
+                click.echo('\n')
+            elif len(set(boxer_two).intersection(boxer_i_care_about)) > 0:
+                for item in ['summary', 'location', 'start']:
+                    click.echo(f'{item}: {event[item]}')
+                click.echo('\n')
+
+    if calendar:
+        for event in events:
+            eventTitle = event['summary']
+            boxer_one = re.findall(r'.+?(?= vs )', eventTitle)
+            boxer_two = re.findall(r'(?<=vs )(.*)(?= -)', eventTitle)
+            if len(set(boxer_one).intersection(boxer_i_care_about)) > 0:
+                for item in ['summary', 'location', 'description', 'start', 'end', 'description']:
+                    newEvent[item] = event[item]
+                service.events().insert(calendarId='nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com', body=newEvent).execute()
+                click.echo('Adding event(s) to calendar......')
+            elif len(set(boxer_two).intersection(boxer_i_care_about)) > 0:
+                for item in ['summary', 'location', 'description', 'start', 'end', 'description']:
+                    newEvent[item] = event[item]
+                service.events().insert(calendarId='nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com', body=newEvent).execute()
+                click.echo('Adding event(s) to calendar......')
+
     return boxer_i_care_about
 
 LIST_UPCOMING = click.CommandCollection(sources=[run_list_important])
