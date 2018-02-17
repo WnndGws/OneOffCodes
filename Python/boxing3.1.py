@@ -130,11 +130,13 @@ def list_important(start, months, verbose, calendar):
             boxer_one = re.findall(r'.+?(?= vs )', eventTitle)
             boxer_two = re.findall(r'(?<=vs )(.*)(?= -)', eventTitle)
             if len(set(boxer_one).intersection(boxer_i_care_about)) > 0:
+                newEvent = {}
                 for item in ['summary', 'location', 'description', 'start', 'end', 'description']:
                     newEvent[item] = event[item]
                 service.events().insert(calendarId='nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com', body=newEvent).execute()
                 click.echo('Adding event(s) to calendar......')
             elif len(set(boxer_two).intersection(boxer_i_care_about)) > 0:
+                newEvent = {}
                 for item in ['summary', 'location', 'description', 'start', 'end', 'description']:
                     newEvent[item] = event[item]
                 service.events().insert(calendarId='nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com', body=newEvent).execute()
