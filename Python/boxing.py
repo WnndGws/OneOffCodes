@@ -1,72 +1,150 @@
+#!/usr/bin/python
 ## Script made to check when there is a middleweight+ title fight, or when 'the ring' top 10 fight
 
-from bs4 import BeautifulSoup
-import numpy as np
-import pandas as pd
+import os
+import httplib2
+from apiclient import discovery
+from oauth2client import client
+from oauth2client import tools
+from oauth2client.file import Storage
+import datetime
+import calendar
+import click
+import bs4
 import re
-import urllib.request
+import html5lib
+import urllib
 
-# Step 01-import list of names I care about from wiki
-#champURL = 'http://fightnews.com/rankings-2'
-champURL = 'https://en.wikipedia.org/wiki/List_of_current_boxing_rankings'
-page = urllib.request.urlopen(champURL)
-soup = BeautifulSoup(page, "lxml")
+def get_credentials():
+    """Gets valid user credentials from storage.
 
-# Find the names of each sanctioning body
-sanctioningBodies = [td.getText() for td in soup.findAll('tr', limit=4)[3].findAll('td')]
-# I am finding the first 4 table rows, then reading the 4th row, in that i am finding
-# the td of that row, and using list comprehension to print the contents, giving me
-# table headers
+    If nothing has been stored, or if the stored credentials are invalid,
+    the OAuth2 flow is completed to obtain the new credentials.
 
-table = soup.find_all('table')
-k = 3
-all_boxers = []
+    Returns:
+        Credentials, the obtained credential.
+    """
 
-while k < 136:
-    tableRows = table.find_all('tr')[k:k+1]
-    for tr in tableRows:
-        td = tr.find_all('td')
-        row = [i.text for i in td]
-    ## I now lists, where each list is a row of the table
+    home_dir = os.path.expanduser('~')
+    credential_dir = os.path.join(home_dir, '.credentials')
+    if not os.path.exists(credential_dir):
+        os.makedirs(credential_dir)
+    credential_path = os.path.join(credential_dir, 'boxing3.1_client_id.json')
+    store = Storage(credential_path)
+    credentials = store.get()
+    if not credentials or credentials.invalid:
+        flow_path = os.path.join(home_dir, '.credentials/client_secrets_boxing3.1.json')
+        flow = client.flow_from_clientsecrets(flow_path, scope='https://www.googleapis.com/auth/calendar')
+        flow.user_agent = 'Boxing'
+        credentials = tools.run_flow(flow, store)
+        print('Storing credentials to ' + credential_path)
+    return credentials
 
-    if len(row[0].split('\n'))<15:
-        for boxer_in_row in row:
-            boxer_name = re.findall(r'[a-zA-Z]{3,}\ [a-zA-Z]+', boxer_in_row)
-            if len(boxer_name) > 0:
-                all_boxers.append(boxer_name[0])
-        k += 1
-    else:
-        rank = []
-        i = 0
-        while i < len(row[0].split('\n')):
-            j = 0
-            boxers = []
-            while j < len(row):
-                boxer_in_row = row[j].split('\n')[i]
-                boxers.append(boxer_in_row)
-                boxer_name = re.findall(r'[a-zA-Z]{3,}\ [a-zA-Z]+', boxer_in_row)
-                if len(boxer_name) > 0:
-                    all_boxers.append(boxer_name[0])
-                j += 1
-            rank.append(boxers)
-            i += 1
-        ## Now have 'rank' which is a list of the number i ranked in each sanctioning body
 
-        df = pd.DataFrame(rank, columns=sanctioningBodies)
-        ## Now have a DataFrame with 4 columns and the ranks in each
-        #print(df.head(3))
+def scrape_wikitables():
+    """Scrapes wikipedia for the list of current top boxers"""
 
-        k += 1
+    champURL = 'https://en.wikipedia.org/wiki/List_of_current_boxing_rankings'
+    page = urllib.request.urlopen(champURL)
+    soup = bs4.BeautifulSoup(page, "html5lib")
 
-unique_boxers = []
-for boxer in all_boxers:
-    if boxer not in unique_boxers:
-        unique_boxers.append(boxer)
+    tables = soup.find_all('table', { "class" : "wikitable"})
+    unique_boxers = []
 
-print(unique_boxers)
-## Now have a list of boxer names that i care about
+    for table_number in range(2,6):
+        table = tables[table_number]
+        rows = table.find_all('tr')
+        for row in rows:
+            data = row.find_all('td')
+            text = [i.text for i in data]
+            for boxer_name in range(len(text)):
+                if len(text[boxer_name]) > 3:
+                    boxer_name = re.findall(r'\S{3,}\ .[^\ \(]+', text[boxer_name])
+                    if len(boxer_name) > 0:
+                        if boxer_name[0] not in unique_boxers:
+                            unique_boxers.append(boxer_name[0])
 
-## Next step is import events from google calendar and scrape them
-##https://gist.github.com/wassname/5b10774dfcd61cdd3f28
-    ## https://github.com/rocheio/wiki-table-scrape/blob/master/wikitablescrape.py
-    ## http://savvastjortjoglou.com/nba-draft-part01-scraping.html
+    unique_boxers.sort()
+    return unique_boxers
+
+def add_months(sourcedate,months):
+    """Takes a sourcedate and adds months to it, outputting datetime"""
+
+    month = sourcedate.month - 1 + months
+    year = sourcedate.year + month // 12
+    month = month % 12 + 1
+    day = min(sourcedate.day,calendar.monthrange(year,month)[1])
+    return datetime.date(year,month,day)
+
+@click.group()
+def run_list_important():
+    pass
+
+@run_list_important.command()
+@click.option('--start', default=datetime.date.today().isoformat(), help="Date in YYYY-MM-DD format (DEFAULT=today)")
+@click.option('--months', default=1, help="Number of months to add to start date (DEFAULT=1)")
+@click.option('--verbose', is_flag=True, help="Will print out the results")
+@click.option('--calendar', is_flag=True, help="Add results to your calendar")
+def list_important(start, months, verbose, calendar):
+    """Scrapes calendar of all fights and lists those containing any of the current top fighters"""
+
+    credentials = get_credentials()
+    http = credentials.authorize(httplib2.Http())
+    service = discovery.build('calendar', 'v3', http=http)
+
+    end = add_months(datetime.datetime.strptime(start, '%Y-%m-%d'), months)
+    start = start + 'T00:00:00Z'
+    end = end.isoformat() + 'T00:00:00Z'
+
+    eventsResult = service.events().list(calendarId='1krp7iu4q65i0qt6eagdjj5ucs@group.calendar.google.com', timeMin=start, timeMax=end, singleEvents=True, orderBy='startTime').execute()
+    events = eventsResult.get('items', [])
+
+    nextMonthEvents = []
+    for event in events:
+        eventTitle = event['summary']
+        boxer_one = re.findall(r'.+?(?= vs )', eventTitle)
+        boxer_two = re.findall(r'(?<=vs )(.*)(?= -)', eventTitle)
+        nextMonthEvents.append(boxer_one[0])
+        nextMonthEvents.append(boxer_two[0])
+
+    unique_boxers = scrape_wikitables()
+    boxer_i_care_about = set(unique_boxers).intersection(nextMonthEvents)
+
+    if verbose:
+        for event in events:
+            eventTitle = event['summary']
+            boxer_one = re.findall(r'.+?(?= vs )', eventTitle)
+            boxer_two = re.findall(r'(?<=vs )(.*)(?= -)', eventTitle)
+            if len(set(boxer_one).intersection(boxer_i_care_about)) > 0:
+                for item in ['summary', 'location', 'start']:
+                    click.echo(f'{item}: {event[item]}')
+                click.echo('\n')
+            elif len(set(boxer_two).intersection(boxer_i_care_about)) > 0:
+                for item in ['summary', 'location', 'start']:
+                    click.echo(f'{item}: {event[item]}')
+                click.echo('\n')
+
+    if calendar:
+        for event in events:
+            eventTitle = event['summary']
+            boxer_one = re.findall(r'.+?(?= vs )', eventTitle)
+            boxer_two = re.findall(r'(?<=vs )(.*)(?= -)', eventTitle)
+            if len(set(boxer_one).intersection(boxer_i_care_about)) > 0:
+                newEvent = {}
+                for item in ['summary', 'location', 'description', 'start', 'end', 'description']:
+                    newEvent[item] = event[item]
+                service.events().insert(calendarId='nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com', body=newEvent).execute()
+                click.echo('Adding event(s) to calendar......')
+            elif len(set(boxer_two).intersection(boxer_i_care_about)) > 0:
+                newEvent = {}
+                for item in ['summary', 'location', 'description', 'start', 'end', 'description']:
+                    newEvent[item] = event[item]
+                service.events().insert(calendarId='nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com', body=newEvent).execute()
+                click.echo('Adding event(s) to calendar......')
+
+    return boxer_i_care_about
+
+LIST_UPCOMING = click.CommandCollection(sources=[run_list_important])
+
+if __name__ == '__main__':
+    LIST_UPCOMING()
