@@ -70,7 +70,28 @@ def scrape_wikitables():
 def add_months(sourcedate,months):
     """Takes a sourcedate and adds months to it, outputting datetime"""
 
-    month = sourcedate.month - 1 + months
+    months_fine = False
+    while not months_fine:
+        try:
+            val = int(months)
+            if not 1 < val < 12:
+                months = abs(months)
+                months = months - (months//12)*12
+                if months == 0 or months == 12:
+                    print (f"Months must be a positive integer between 1-11, resorting to default of months=1")
+                    months = 1
+                else:
+                    print (f"Months must be a positive integer between 1-11, assuming you meant {months}")
+                months_fine = True
+            else:
+                months_fine = True
+        except ValueError:
+            print ("That's not an int!")
+            print (f"Months must be a positive integer between 1-11, resorting to default of months=1")
+            months = 1
+            months_fine = True
+
+    month = sourcedate.month  -1 + months
     year = sourcedate.year + month // 12
     month = month % 12 + 1
     day = min(sourcedate.day,calendar.monthrange(year,month)[1])
