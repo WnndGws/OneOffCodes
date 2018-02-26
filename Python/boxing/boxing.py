@@ -51,7 +51,7 @@ def scrape_wikitables():
     tables = soup.find_all('table', { "class" : "wikitable"})
     unique_boxers = []
 
-    for table_number in range(2,6):
+    for table_number in range(1,6):
         table = tables[table_number]
         rows = table.find_all('tr')
         for row in rows:
