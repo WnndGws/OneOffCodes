@@ -17,7 +17,7 @@ xsel -cp
 while [[ $(xsel -op) == "" ]]
 do
     sleep 0.1
-    insync-headless get_link $file_to_share | xsel -ip
+    insync-headless get_public_link $file_to_share | xsel -ip
 done
 feh --scale-down $file_to_share
 
