@@ -8,6 +8,7 @@ from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
 import datetime
+from dateutil.parser import parse
 import calendar
 import click
 import bs4
@@ -117,7 +118,7 @@ def list_important(start, months, verbose, calendar):
     start = start + 'T00:00:00Z'
     end = end.isoformat() + 'T00:00:00Z'
 
-    eventsResult = service.events().list(calendarId='1krp7iu4q65i0qt6eagdjj5ucs@group.calendar.google.com', timeMin=start, timeMax=end, singleEvents=True, orderBy='startTime').execute()
+    eventsResult = service.events().list(calendarId='6souuam0ccm9ht4jlbbp75iua8@group.calendar.google.com', timeMin=start, timeMax=end, singleEvents=True, orderBy='startTime').execute()
     events = eventsResult.get('items', [])
 
     nextMonthEvents = []
@@ -152,15 +153,27 @@ def list_important(start, months, verbose, calendar):
             boxer_two = re.findall(r'(?<=vs )(.*)(?= -)', eventTitle)
             if len(set(boxer_one).intersection(boxer_i_care_about)) > 0:
                 newEvent = {}
+                reminderEvent = {}
                 for item in ['summary', 'location', 'description', 'start', 'end', 'description']:
                     newEvent[item] = event[item]
+                reminderEvent['summary'] = f'REMINDER: Download {event["summary"]}'
+                reminderEvent['start'] = {'dateTime': f'{datetime.datetime.strftime(parse(event["start"]["dateTime"]) + datetime.timedelta(days=1), "%Y-%m-%dT19:00:00%z")}'}
+                reminderEvent['end'] = {'dateTime': f'{datetime.datetime.strftime(parse(event["end"]["dateTime"]) + datetime.timedelta(days=1), "%Y-%m-%dT19:00:00%z")}'}
+                reminderEvent['description'] = f'{event["description"]}'
                 service.events().insert(calendarId='nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com', body=newEvent).execute()
+                service.events().insert(calendarId='nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com', body=reminderEvent).execute()
                 click.echo('Adding event(s) to calendar......')
             elif len(set(boxer_two).intersection(boxer_i_care_about)) > 0:
                 newEvent = {}
+                reminderEvent = {}
                 for item in ['summary', 'location', 'description', 'start', 'end', 'description']:
                     newEvent[item] = event[item]
+                reminderEvent['summary'] = f'REMINDER: Download {event["summary"]}'
+                reminderEvent['start'] = {'dateTime': f'{datetime.datetime.strftime(parse(event["start"]["dateTime"]) + datetime.timedelta(days=1), "%Y-%m-%dT19:00:00%z")}'}
+                reminderEvent['end'] = {'dateTime': f'{datetime.datetime.strftime(parse(event["end"]["dateTime"]) + datetime.timedelta(days=1), "%Y-%m-%dT19:00:00%z")}'}
+                reminderEvent['description'] = f'{event["description"]}'
                 service.events().insert(calendarId='nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com', body=newEvent).execute()
+                service.events().insert(calendarId='nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com', body=reminderEvent).execute()
                 click.echo('Adding event(s) to calendar......')
 
     return boxer_i_care_about
