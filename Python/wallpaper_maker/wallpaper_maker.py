@@ -138,10 +138,14 @@ def change_wallpaper(self, ctx, wallpaper_dir, quote_file, font, font_size, bing
         quote_pool = f.read().splitlines()
     random_quote = random.choice(quote_pool)
     if agenda:
-        agenda_text = check_output(["gcalcli","agenda","12am","11:59pm"]).decode()
+        seven_am_tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y%m%dT07:00")
+        midnight_tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y%m%dT00:01")
+        agenda_text = check_output(["gcalcli","agenda","--refresh","12am","11:59pm"]).decode()
         agenda_text = re.findall(r'\d*:[^\\]*', str(agenda_text.encode("ascii","ignore")))
+        agenda_morning = check_output(["gcalcli","agenda",midnight_tomorrow,seven_am_tomorrow]).decode()
+        agenda_morning = re.findall(r'\d*:[^\\]*', str(agenda_morning.encode("ascii","ignore")))
     quote_lines = textwrap.wrap(random_quote, width=60)
-    quote_lines = quote_lines + [" "] + [datetime.date.today().strftime("%a %d/%m/%Y")] + agenda_text
+    quote_lines = quote_lines + [" "] + [datetime.date.today().strftime("%a %d/%m/%Y")] + agenda_text + [" "] + [(datetime.date.today()+datetime.timedelta(days=1)).strftime("%a %d/%m/%Y")] + agenda_morning
 
     # get a drawing context
     draw = ImageDraw.Draw(text_image)
