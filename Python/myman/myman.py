@@ -15,7 +15,7 @@ def run_try_tldr():
 def try_tldr(program):
     """Checks to see if there is a tldr"""
     success = False
-    program_list = subprocess.check_output(["tldr", "--list-all", "--single-column"]).strip()
+    program_list = subprocess.check_output(["tldr", "--list"]).strip()
     match = re.findall(r'(%s)' %program, str(program_list))
     if len(match) > 0:
         try:
