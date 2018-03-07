@@ -158,7 +158,7 @@ def list_important(start, months, verbose, calendar):
                     newEvent[item] = event[item]
                 reminderEvent['summary'] = f'REMINDER: Download {event["summary"]}'
                 reminderEvent['start'] = {'dateTime': f'{datetime.datetime.strftime(parse(event["start"]["dateTime"]) + datetime.timedelta(days=1), "%Y-%m-%dT19:00:00%z")}'}
-                reminderEvent['end'] = {'dateTime': f'{datetime.datetime.strftime(parse(event["end"]["dateTime"]) + datetime.timedelta(days=1), "%Y-%m-%dT19:00:00%z")}'}
+                reminderEvent['end'] = {'dateTime': f'{datetime.datetime.strftime(parse(event["end"]["dateTime"]) + datetime.timedelta(days=1), "%Y-%m-%dT20:00:00%z")}'}
                 reminderEvent['description'] = f'{event["description"]}'
                 service.events().insert(calendarId='nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com', body=newEvent).execute()
                 service.events().insert(calendarId='nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com', body=reminderEvent).execute()
@@ -170,7 +170,7 @@ def list_important(start, months, verbose, calendar):
                     newEvent[item] = event[item]
                 reminderEvent['summary'] = f'REMINDER: Download {event["summary"]}'
                 reminderEvent['start'] = {'dateTime': f'{datetime.datetime.strftime(parse(event["start"]["dateTime"]) + datetime.timedelta(days=1), "%Y-%m-%dT19:00:00%z")}'}
-                reminderEvent['end'] = {'dateTime': f'{datetime.datetime.strftime(parse(event["end"]["dateTime"]) + datetime.timedelta(days=1), "%Y-%m-%dT19:00:00%z")}'}
+                reminderEvent['end'] = {'dateTime': f'{datetime.datetime.strftime(parse(event["end"]["dateTime"]) + datetime.timedelta(days=1), "%Y-%m-%dT20:00:00%z")}'}
                 reminderEvent['description'] = f'{event["description"]}'
                 service.events().insert(calendarId='nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com', body=newEvent).execute()
                 service.events().insert(calendarId='nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com', body=reminderEvent).execute()
