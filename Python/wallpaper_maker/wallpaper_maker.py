@@ -10,10 +10,12 @@ TODO:
 * add option to set bing wallpaper dir (defaulting to tmp/)
 '''
 
+import datetime
 import json
 import os
 import random
-from subprocess import call
+import re
+from subprocess import call, check_output
 import textwrap
 import socket
 
@@ -108,10 +110,15 @@ def run_change_wallpaper():
     is_flag=True,
     help="Use this flag if you want to use the daily Bing wallpaper instead of a local image"
 )
+@click.option(
+    '--agenda',
+    is_flag=True,
+    help="Use if want to append your day's agenda to the quote")
+
 @click.pass_context
 @click.argument('leftover_args', nargs=-1, type=click.UNPROCESSED)
 
-def change_wallpaper(self, ctx, wallpaper_dir, quote_file, font, font_size, bing, leftover_args):
+def change_wallpaper(self, ctx, wallpaper_dir, quote_file, font, font_size, bing, agenda, leftover_args):
     '''Add quote selected from text file over images in a folder'''
 
     # set font
@@ -130,7 +137,11 @@ def change_wallpaper(self, ctx, wallpaper_dir, quote_file, font, font_size, bing
     with open(quote_file) as f:
         quote_pool = f.read().splitlines()
     random_quote = random.choice(quote_pool)
+    if agenda:
+        agenda_text = check_output(["gcalcli","agenda","12am","11:59pm"]).decode()
+        agenda_text = re.findall(r'\d*:[^\\]*', str(agenda_text.encode("ascii","ignore")))
     quote_lines = textwrap.wrap(random_quote, width=60)
+    quote_lines = quote_lines + [" "] + [datetime.date.today().strftime("%a %d/%m/%Y")] + agenda_text
 
     # get a drawing context
     draw = ImageDraw.Draw(text_image)
