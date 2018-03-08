@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-## Makes a gif from video file using ffmpeg
+## Makes a webm from video file using ffmpeg
 
 import click
 import datetime
