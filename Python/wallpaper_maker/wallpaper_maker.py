@@ -145,7 +145,12 @@ def change_wallpaper(self, ctx, wallpaper_dir, quote_file, font, font_size, bing
         agenda_morning = check_output(["gcalcli","agenda",midnight_tomorrow,seven_am_tomorrow]).decode()
         agenda_morning = re.findall(r'\d*:[^\\]*', str(agenda_morning.encode("ascii","ignore")))
     quote_lines = textwrap.wrap(random_quote, width=60)
-    quote_lines = quote_lines + [" "] + [datetime.date.today().strftime("%a %d/%m/%Y")] + agenda_text + [" "] + [(datetime.date.today()+datetime.timedelta(days=1)).strftime("%a %d/%m/%Y")] + agenda_morning
+    if len(agenda_morning) > 0:
+        quote_lines = quote_lines + [" "] + [datetime.date.today().strftime("%a %d/%m/%Y")] + agenda_text + [" "] + [(datetime.date.today()+datetime.timedelta(days=1)).strftime("%a %d/%m/%Y")] + agenda_morning
+    elif len(agenda_text) > 0:
+        quote_lines = quote_lines + [" "] + [datetime.date.today().strftime("%a %d/%m/%Y")] + agenda_text + [" "]
+    else:
+        quote_lines = quote_lines
 
     # get a drawing context
     draw = ImageDraw.Draw(text_image)
