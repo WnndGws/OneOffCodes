@@ -20,24 +20,25 @@ def try_tldr(program):
     if len(match) > 0:
         try:
             args = ["tldr", program]
-            subprocess.call(args)
+            subprocess.check_call(args)
             success = True
         except subprocess.CalledProcessError:
             success = False
     if not success:
         try:
-            args = ["vimman", program]
-            subprocess.call(args)
+            args = ["man", program]
+            subprocess.check_call(args)
             success = True
         except subprocess.CalledProcessError:
             success = False
     if not success:
         try:
             args = [program, "--help"]
-            subprocess.call(args)
+            subprocess.check_call(args)
             success = True
-        except subprocess.CalledProcessError:
+        except OSError:
             success = False
+            click.echo(f'There either is no program called {program}, or it does not have a man-page')
 
 TRY_TLDR = click.CommandCollection(sources=[run_try_tldr])
 if __name__ == '__main__':
