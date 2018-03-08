@@ -28,9 +28,10 @@ def make_gif(start, duration, video):
     ## Find video height
     ffprobe_command_height = ['ffprobe', '-show_entries', 'stream=height', video]
     height = subprocess.check_output(ffprobe_command_height).decode()
-    height = re.findall(r'\d{3}', height)
+    height = re.findall(r'\d+', height)
+    bitrate_to_use = int(height[0])*2
 
-    ffmpeg_command_make_gif = ['ffmpeg', '-ss', start, '-t', str(duration), '-i', video, '-c:v', 'libvpx', '-crf', '4', '-b:v', '2000K', '-vf', f'scale={height[0]}:-1', '-an', file_full_path]
+    ffmpeg_command_make_gif = ['ffmpeg', '-ss', start, '-t', str(duration), '-i', video, '-c:v', 'libvpx', '-crf', '4', '-b:v', f'{bitrate_to_use}K', '-vf', f'scale={height[0]}:-1', '-an', file_full_path]
     subprocess.call(ffmpeg_command_make_gif)
 
     file_to_share = file_full_path
