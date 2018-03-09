@@ -34,7 +34,7 @@ def try_tldr(program):
     if not success:
         try:
             args = [program, "--help"]
-            subprocess.check_call(args)
+            subprocess.call(args)
             success = True
         except OSError:
             success = False
