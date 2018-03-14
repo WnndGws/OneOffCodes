@@ -21,11 +21,4 @@ for leaf in windows_open:
     if re.match('.*(- mpv).*', leaf.name, re.IGNORECASE) is not None:
         connection_id = leaf.id
         print(connection_id)
-        leaf.command(f'[con_id="{connection_id}"] resize shrink left')
-        leaf.command(f'[con_id="{connection_id}"] resize shrink left')
-        leaf.command(f'[con_id="{connection_id}"] resize shrink left')
-        leaf.command(f'[con_id="{connection_id}"] resize shrink left')
-        leaf.command(f'[con_id="{connection_id}"] resize shrink left')
-        leaf.command(f'[con_id="{connection_id}"] resize grow left')
-        leaf.command(f'[con_id="{connection_id}"] resize grow left')
-        # Shrinks as small as possible, then two up fromt hat
+        leaf.command(f'[con_id="{connection_id}"] resize set 20 ppt 100 ppt')
