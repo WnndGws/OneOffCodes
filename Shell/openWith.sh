@@ -5,10 +5,10 @@
 # A function containing a case list of options
 open() {
     case "$1" in
-        *streamable*|*gfycat*|*v.redd.it*|*imgtc*|*youtube.com*|*youtu.be*|*vodlocker.com*|*.webm*|*.mp4*|*.avi|*.gif|*vimeo|*vimeo.com*) $HOME/Git/OneOffCodes/Python/umpv "$1" &! ;;
+        *stream*|*gfycat*|*v.redd.it*|*imgtc*|*youtube.com*|*youtu.be*|*vodlocker.com*|*.webm*|*.mp4*|*.avi|*.gif|*vimeo|*vimeo.com*) $HOME/Git/OneOffCodes/Python/umpv "$1" &! ;;
         *imgur*|*.png*|*.jpeg*|*.jpg*) feh --scale-down "$1";;  # feh -. = opens to fit window.
         *) others "$1"
-        #*) google-chrome-stable "$1";  # For everything else.;
+        #*) firefox "$1";  # For everything else.;
     esac
 }
 
@@ -23,7 +23,7 @@ then
     find /tmp/image* -print0 | xargs -0 identify -format "%w %f\n" | awk '$1<200' | xargs -0 | cut -d' ' -f2 | xargs -I{} rm /tmp/{}
     feh --scale-down /tmp/image*
 else
-    google-chrome-stable "$1"
+    firefox "$1"
 fi
 }
 
