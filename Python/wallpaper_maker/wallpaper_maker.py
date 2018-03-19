@@ -1,28 +1,27 @@
-#!/bin/python
+#!/bin/python3
 '''Takes a image from wallpaper_dir and adds a random quote from quote_file
 then sets this as the wallpaper
-
-TODO:
-* create a click.option, that when used doesnt need a wallpaper directory,
-  instead uses the daily bing wallpaper
-* cleanup option names
-* cleanup errors that occur when forget to run "change_wallpaper" or "download_bing_wallpaper"
-* add option to set bing wallpaper dir (defaulting to tmp/)
 '''
 
+import click
 import datetime
 import json
 import os
+from PIL import Image, ImageDraw, ImageFont
 import random
 import re
+import requests
+import socket
 from subprocess import call, check_output
 import textwrap
-import socket
 
-import click
-from PIL import Image, ImageDraw, ImageFont
-import requests
-
+def test_internet(host='8.8.8.8', port=53, timeout=3):
+    try:
+        socket.setdefaulttimeout(timeout)
+        socket.socket(socket.AF_INET, socket.SOCK_STREAM).connect((host, port))
+        return True
+    except Exception:
+        return False
 
 # create a click group to download bing wallpaper
 @click.group()
@@ -82,14 +81,13 @@ def run_change_wallpaper():
 )
 @click.pass_context
 @click.option(
-    '--wallpaper-dir',
+    '--wallpaper_dir',
     type=click.Path(),
     default='~/Pictures',
     help="Path to the wallpaper directory [DEFAULT: ~/Pictures]"
 )
-
 @click.option(
-    '--quote-file',
+    '--quote_file',
     type=click.Path(),
     default='~/.config/wallpaperMaker/quotes.txt',
     help="Path to the newline seperated quotes file"
@@ -117,7 +115,6 @@ def run_change_wallpaper():
 
 @click.pass_context
 @click.argument('leftover_args', nargs=-1, type=click.UNPROCESSED)
-
 def change_wallpaper(self, ctx, wallpaper_dir, quote_file, font, font_size, bing, agenda, leftover_args):
     '''Add quote selected from text file over images in a folder'''
 
@@ -125,9 +122,12 @@ def change_wallpaper(self, ctx, wallpaper_dir, quote_file, font, font_size, bing
     quote_font = ImageFont.truetype(font, font_size)
     # get an image
     if bing:
-        ctx.invoke(download_bing_wallpaper)
-        base_image = Image.open('/tmp/bing.jpg').convert('RGBA')
-        #call(["wal", "-c", "-i", "/tmp/bing.jpg"])
+        if test_internet():
+            ctx.invoke(download_bing_wallpaper)
+            base_image = Image.open('/tmp/bing.jpg').convert('RGBA')
+        else:
+            random_wallpaper = random.choice(os.listdir(wallpaper_dir))
+            base_image = Image.open(wallpaper_dir + "/" + random_wallpaper).convert('RGBA')
     else:
         random_wallpaper = random.choice(os.listdir(wallpaper_dir))
         base_image = Image.open(wallpaper_dir + "/" + random_wallpaper).convert('RGBA')
@@ -138,12 +138,23 @@ def change_wallpaper(self, ctx, wallpaper_dir, quote_file, font, font_size, bing
         quote_pool = f.read().splitlines()
     random_quote = random.choice(quote_pool)
     if agenda:
-        seven_am_tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y%m%dT07:00")
-        midnight_tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y%m%dT00:01")
-        agenda_text = check_output(["gcalcli","agenda","--refresh","12am","11:59pm"]).decode()
-        agenda_text = re.findall(r'\d*:[^\\]*', str(agenda_text.encode("ascii","ignore")))
-        agenda_morning = check_output(["gcalcli","agenda",midnight_tomorrow,seven_am_tomorrow]).decode()
-        agenda_morning = re.findall(r'\d*:[^\\]*', str(agenda_morning.encode("ascii","ignore")))
+        if test_internet():
+            seven_am_tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y%m%dT07:00")
+            midnight_tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y%m%dT00:01")
+            agenda_text = check_output(["gcalcli","agenda","--refresh","12am","11:59pm"]).decode()
+            agenda_text = re.findall(r'\d*:[^\\]*', str(agenda_text.encode("ascii","ignore")))
+            agenda_morning = check_output(["gcalcli","agenda",midnight_tomorrow,seven_am_tomorrow]).decode()
+            agenda_morning = re.findall(r'\d*:[^\\]*', str(agenda_morning.encode("ascii","ignore")))
+            for event in agenda_text:
+                if event[-5:] == "Sleep":
+                    agenda_text.remove(event)
+            for event in agenda_morning:
+                if event[-5:] == "Sleep":
+                    agenda_text.remove(event)
+        else:
+            agenda_text = []
+            agenda_morning = []
+
     quote_lines = textwrap.wrap(random_quote, width=60)
     if len(agenda_morning) > 0:
         quote_lines = quote_lines + [" "] + [datetime.date.today().strftime("%a %d/%m/%Y")] + agenda_text + [" "] + [(datetime.date.today()+datetime.timedelta(days=1)).strftime("%a %d/%m/%Y")] + agenda_morning
@@ -187,19 +198,5 @@ def change_wallpaper(self, ctx, wallpaper_dir, quote_file, font, font_size, bing
 
 RUN_WALLPAPER = click.CommandCollection(sources=[run_download_bing_wallpaper, run_change_wallpaper])
 
-def is_connected():
-    remote_server = "www.google.com"
-    try:
-    # see if we can resolve the host name -- tells us if there is
-    # a DNS listening
-        host = socket.gethostbyname(remote_server)
-    # connect to the host -- tells us if the host is actually
-    # reachable
-        s = socket.create_connection((host, 80), 2)
-        return True
-    except:
-        pass
-    return False
-
-if __name__ == "__main__" and is_connected() is True:
+if __name__ == "__main__":
     RUN_WALLPAPER()
