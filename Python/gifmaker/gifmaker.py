@@ -17,7 +17,8 @@ def run_make_gif():
 @click.option('--start', default="00:00:00", help="Timestamp where to start gif. DEFAULT=00:00:00")
 @click.option('--duration', default=10, help="Duration of the gif in seconds. DEFAULT=10")
 @click.option('--video', help="Path to input video")
-def make_gif(start, duration, video):
+@click.option('--sound', is_flag=True, help="Creates the webm with sound enabled")
+def make_gif(start, duration, sound, video):
     ## Set file name and path
     user_home = os.path.expanduser("~/")
     save_dir = "GoogleDrive/01_Personal/01_Personal/05_Images/Gifs"
@@ -31,7 +32,10 @@ def make_gif(start, duration, video):
     height = re.findall(r'\d+', height)
     bitrate_to_use = int(height[0])*2
 
-    ffmpeg_command_make_gif = ['ffmpeg', '-ss', start, '-t', str(duration), '-i', video, '-c:v', 'libvpx', '-crf', '4', '-b:v', f'{bitrate_to_use}K', '-vf', f'scale={height[0]}:-1', '-an', file_full_path]
+    if sound:
+        ffmpeg_command_make_gif = ['ffmpeg', '-ss', start, '-t', str(duration), '-i', video, '-c:v', 'libvpx', '-crf', '4', '-b:v', f'{bitrate_to_use}K', '-vf', f'scale={height[0]}:-1', '-acodec', 'libvorbis', file_full_path]
+    else:
+        ffmpeg_command_make_gif = ['ffmpeg', '-ss', start, '-t', str(duration), '-i', video, '-c:v', 'libvpx', '-crf', '4', '-b:v', f'{bitrate_to_use}K', '-vf', f'scale={height[0]}:-1', '-an', file_full_path]
     subprocess.call(ffmpeg_command_make_gif)
 
     file_to_share = file_full_path
