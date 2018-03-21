@@ -95,8 +95,8 @@ def run_change_wallpaper():
 @click.option(
     '--font',
     type=click.Path(),
-    default='/usr/share/fonts/TTF/Lato-Regular.ttf',
-    help="Path to the .ttf font file [DEFAULT: DroidSerif]"
+    default='/usr/share/fonts/TTF/DejaVuSansMono.ttf',
+    help="Path to the .ttf font file [DEFAULT: DejaVuSansMono]"
 )
 @click.option(
     '--font-size',
