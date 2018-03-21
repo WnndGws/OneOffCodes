@@ -2,7 +2,6 @@
 ## Script to push all my git repos at the same time
 
 declare -a repos=(\
-"$HOME/Git/CarPi-Diem"
 "$HOME/Git/OneOffCodes"
 "$HOME/Git/OneOffCodes/Expects"
 "$HOME/Git/OneOffCodes/Python"
