@@ -9,8 +9,9 @@ declare -a repos=(\
 )
 
 for i in "${repos[@]}"; do
+    cd "$i"
     while [[ $(git status . | tail -n 1) != "nothing to commit, working tree clean" ]]; do
-        cd "$i"
+
         for file in $(git ls-files --others --exclude-standard); do
             git add $file
             git commit -oS $file
