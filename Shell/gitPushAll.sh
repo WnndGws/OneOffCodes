@@ -13,7 +13,7 @@ for i in "${repos[@]}"; do
     cd "$i"
 
     for file in $(git ls-files --others --exclude-standard); do
-        git add -p $file
+        git add $file
         git commit -vS
     done
 
