@@ -9,15 +9,17 @@ declare -a repos=(\
 )
 
 for i in "${repos[@]}"; do
-    cd "$i"
-    for file in $(git ls-files --others --exclude-standard); do
-        git add $file
-        git commit -oS $file
-    done
+    while [[ $(git status . | tail -n 1) != "nothing to commit, working tree clean" ]]; do
+        cd "$i"
+        for file in $(git ls-files --others --exclude-standard); do
+            git add $file
+            git commit -oS $file
+        done
 
-    for file in $(git diff --name-only); do
-        git add -p $file
-        git commit -oS $file
+        for file in $(git diff --name-only); do
+            git add -p $file
+            git commit -oS $file
+        done
     done
 
     git push
