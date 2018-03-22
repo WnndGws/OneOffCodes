@@ -11,6 +11,7 @@ declare -a repos=(\
 
 for i in "${repos[@]}"; do
     cd "$i"
+    git pull
 
     for file in $(git ls-files --others --exclude-standard); do
         git add $file
