@@ -19,7 +19,7 @@ for i in "${repos[@]}"; do
 
         for file in $(git diff --name-only); do
             git add -p $file
-            git commit -oS $file
+            git commit -vS
         done
     done
 
