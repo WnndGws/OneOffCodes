@@ -21,6 +21,8 @@ for i in "${repos[@]}"; do
         git add -p $file
         git commit -vS
     done
+    git add .
+    # To handle new files
 done
 
 git push
