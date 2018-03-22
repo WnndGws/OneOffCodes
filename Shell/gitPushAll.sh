@@ -6,6 +6,7 @@ declare -a repos=(\
 "$HOME/Git/OneOffCodes/Expects"
 "$HOME/Git/OneOffCodes/Python"
 "$HOME/Git/OneOffCodes/Shell"
+"$HOME/Git/DS18B20_email_alert"
 )
 
 for i in "${repos[@]}"; do
