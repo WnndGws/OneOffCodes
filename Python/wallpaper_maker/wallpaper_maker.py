@@ -137,6 +137,7 @@ def change_wallpaper(self, ctx, wallpaper_dir, quote_file, font, font_size, bing
     with open(quote_file) as f:
         quote_pool = f.read().splitlines()
     random_quote = random.choice(quote_pool)
+    quote_lines = textwrap.wrap(random_quote, width=60)
     if agenda:
         if test_internet():
             seven_am_tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y%m%dT07:00")
@@ -151,17 +152,16 @@ def change_wallpaper(self, ctx, wallpaper_dir, quote_file, font, font_size, bing
             for event in agenda_morning:
                 if event[-5:] == "Sleep":
                     agenda_text.remove(event)
+            if len(agenda_morning) > 0:
+                quote_lines = quote_lines + [" "] + [datetime.date.today().strftime("%a %d/%m/%Y")] + agenda_text + [" "] + [(datetime.date.today()+datetime.timedelta(days=1)).strftime("%a %d/%m/%Y")] + agenda_morning
+            elif len(agenda_text) > 0:
+                quote_lines = quote_lines + [" "] + [datetime.date.today().strftime("%a %d/%m/%Y")] + agenda_text + [" "]
+            else:
+                quote_lines = quote_lines
         else:
             agenda_text = []
             agenda_morning = []
 
-    quote_lines = textwrap.wrap(random_quote, width=60)
-    if len(agenda_morning) > 0:
-        quote_lines = quote_lines + [" "] + [datetime.date.today().strftime("%a %d/%m/%Y")] + agenda_text + [" "] + [(datetime.date.today()+datetime.timedelta(days=1)).strftime("%a %d/%m/%Y")] + agenda_morning
-    elif len(agenda_text) > 0:
-        quote_lines = quote_lines + [" "] + [datetime.date.today().strftime("%a %d/%m/%Y")] + agenda_text + [" "]
-    else:
-        quote_lines = quote_lines
 
     # get a drawing context
     draw = ImageDraw.Draw(text_image)
