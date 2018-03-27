@@ -18,11 +18,12 @@ def getopts(argv):
 
 def scrape_content(url):
     s = requests.Session()
-    req = s.get(url)
-    soup = BeautifulSoup(req.content, "html.parser")
-    with open('/tmp/para.txt', 'a') as f:
-        for words in soup.findAll('p'):
-            f.write(f'\n\n {words.text}')
+    req = s.get(url, allow_redirects=True)
+    if req.status_code == 200:
+        soup = BeautifulSoup(req.content, "html.parser")
+        with open('/tmp/para.txt', 'a') as f:
+            for words in soup.findAll('p'):
+                f.write(f'\n\n {words.text}')
 
 if __name__ == '__main__':
     from sys import argv
