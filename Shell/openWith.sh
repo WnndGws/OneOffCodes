@@ -16,7 +16,7 @@ others(){
 rm -f /tmp/image*
 rm -f /tmp/para.txt 
 python $HOME/Git/OneOffCodes/Python/paragraph_scraper/paragraph_scraper.py --url "$1" > /dev/null 2>&1
-if [[  $(wc -l /tmp/para.txt | awk '{print $1}') > 0  ]]
+if [[  $(wc -l /tmp/para.txt | awk '{print $1}') > 10  ]]
 then
     #urxvtc -geometry 50x2 -e speedread -w 375 /tmp/para.txt
     urxvtc -e speedread -w 375 /tmp/para.txt
