@@ -9,14 +9,18 @@ muteStatus=$(pacmd list-sinks | grep -A 15 'index: '$active_sink | grep 'muted' 
 # Mute even if already muted, but dont change muteStatus as this will be used as our 'before'
 pactl set-sink-mute $active_sink 1
 
-# Find resolution of screen(s)
+# Find resolution of screen(s) and minus half the dimension of the lock image
 resolution=$(xdpyinfo | grep dimensions | awk '{print $2}')
+height=$(echo $resolution | cut -d"x" -f2)
+half_height=$(bc <<< ($height/2)-64)
+width=$(echo $resolution | cut -d"x" -f1)
+half_width=$(bc <<< ($width/2)-64)
 
 # Location of lock image
 lock_image=$HOME/Git/dotfiles/i3/.config/i3/lock.png
 
-# Set filters to apply to the image(with Screen 1 resolution of 1475x775)
-filters='noise=alls=10,scale=iw*.05:-1,scale=iw*20:-1:flags=neighbor,overlay=737.5:387.5'
+# Set filters to apply to the image
+filters=$(echo 'noise=alls=10,scale=iw*.05:-1,scale=iw*20:-1:flags=neighbor,overlay='$half_width':'$half_height)
 
 # Output file location
 output_loc=/tmp/screen.png
