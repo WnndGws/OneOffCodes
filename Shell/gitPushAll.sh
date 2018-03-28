@@ -19,9 +19,10 @@ for i in "${repos[@]}"; do
         git commit -vS $file
     done
 
-    for file in $(git diff --name-only)
+    for file in $(git diff --name-only); do
         git add -p $file
         git commit -vS $file
     done
+done
 
 git push
