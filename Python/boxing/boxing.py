@@ -26,21 +26,27 @@ def get_credentials():
         Credentials, the obtained credential.
     """
 
+    # If modifying these scopes, delete your previously saved credentials
+    SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
+    CLIENT_SECRET_FILE = 'boxing_client_secrets.json'
+    APPLICATION_NAME = 'Boxing'
+    flags = None
+
     home_dir = os.path.expanduser('~')
     credential_dir = os.path.join(home_dir, '.credentials')
     if not os.path.exists(credential_dir):
         os.makedirs(credential_dir)
-    credential_path = os.path.join(credential_dir, 'boxing3.1_client_id.json')
+    credential_path = os.path.join(credential_dir,'boxing_saved_credentials.json')
+    CLIENT_SECRET_FILE = os.path.join(credential_dir, CLIENT_SECRET_FILE)
+
     store = Storage(credential_path)
     credentials = store.get()
     if not credentials or credentials.invalid:
-        flow_path = os.path.join(home_dir, '.credentials/client_secrets_boxing3.1.json')
-        flow = client.flow_from_clientsecrets(flow_path, scope='https://www.googleapis.com/auth/calendar')
-        flow.user_agent = 'Boxing'
-        credentials = tools.run_flow(flow, store)
+        flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
+        flow.user_agent = APPLICATION_NAME
+        credentials = tools.run_flow(flow, store, flags)
         print('Storing credentials to ' + credential_path)
     return credentials
-
 
 def scrape_wikitables():
     """Scrapes wikipedia for the list of current top boxers"""
