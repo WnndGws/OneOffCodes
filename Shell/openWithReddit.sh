@@ -6,7 +6,7 @@
 open() {
     case "$1" in
         *stream*|*gfycat*|*v.redd.it*|*imgtc*|*youtube.com*|*youtu.be*|*vodlocker.com*|*.webm*|*.mp4*|*.avi|*.gif*|*vimeo*) mpv "$1" &! ;;
-        *imgur.com*|*.png*|*.jpeg*|*.jpg*) feh --scale-down "$1";;  # feh -. = opens to fit window.
+        *imgur*|*.png*|*.jpeg*|*.jpg*) gallery-dl --dest /tmp "$1" ; feh --scale-down /tmp/imgur && rm -rf /tmp/imgur;;  # feh -. = opens to fit window.
         *) firefox "$1";  # For everything else.;
     esac
 }
