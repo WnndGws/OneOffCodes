@@ -56,7 +56,7 @@ def make_gif(start, duration, sound, video):
 
     ## Use Insync to get public link of file and copy it to primary buffer
     print ("Getting public link.....")
-    copy_to_primary = subprocess.Popen(["xsel", "-pi"], stdin=subprocess.PIPE)
+    copy_to_primary = subprocess.Popen(["xclip", "-selection", "clipboard|primary|secondary", "-i"], stdin=subprocess.PIPE)
     public_url = b'\n'
     while public_url.decode() == "\n":
         time.sleep(5)
