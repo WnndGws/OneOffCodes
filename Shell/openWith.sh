@@ -6,7 +6,7 @@
 open() {
     case "$1" in
         *stream*|*gfycat*|*v.redd.it*|*imgtc*|*youtube.com*|*youtu.be*|*vodlocker.com*|*.webm*|*.mp4*|*.avi|*.gif|*vimeo|*vimeo.com*) $HOME/Git/OneOffCodes/Python/umpv "$1" &! ;;
-        *imgur*|*.png*|*.jpeg*|*.jpg*) gallery-dl --dest /tmp "$1" ; feh --scale-down /tmp/imgur && rm -rf /tmp/imgur;;  # feh -. = opens to fit window.
+        *imgur*|*.png|*.jpeg|*.jpg) rm -rf /tmp/imgur ; gallery-dl --dest /tmp/imgur "$1" ; feh --scale-down --recursive /tmp/imgur;;  # feh -. = opens to fit window.
         *) others "$1"
         #*) firefox "$1";  # For everything else.;
     esac
