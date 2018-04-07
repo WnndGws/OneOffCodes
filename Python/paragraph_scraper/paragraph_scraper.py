@@ -24,6 +24,7 @@ def scrape_content(url):
         with open('/tmp/para.txt', 'a') as f:
             for words in soup.findAll('p'):
                 f.write(f'\n\n {words.text}')
+                f.close()
 
 if __name__ == '__main__':
     from sys import argv
