@@ -41,8 +41,9 @@ avg_sentance_value = int(sum_value/len(sentance_value)) #avg value of each senta
 
 summary_text = ''
 for sentance in sentances:
-    if sentance_value[sentance] > (1.05 * avg_sentance_value):
+    if sentance_value[sentance] > (1.15 * avg_sentance_value):
         summary_text += " " + sentance
 
 with open('/tmp/para_summarise.txt', 'a') as f:
     f.write(summary_text)
+    f.close()
