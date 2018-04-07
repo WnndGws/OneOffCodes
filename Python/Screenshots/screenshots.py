@@ -43,6 +43,7 @@ subprocess.Popen(["xsel", "-cc"])
 ## Copy the actual image to the clipboard buffer
 print ("Copying image to clipboard.....")
 subprocess.run(["xclip", "-selection", "clipboard|primary|secondary", "-t", "image/png", "-i", f"{user_home}{save_dir}{file_to_share}"])
+subprocess.run(["feh", f"{user_home}{save_dir}{file_to_share}"])
 
 ## Use Insync to get public link of file and copy it to primary buffer
 print ("Getting public link.....")
