@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-## Summarises articles into n sentances
+## Summarises articles into n sentences
 
 import nltk
 
@@ -22,27 +22,27 @@ for word in words:
     else:
         word_freq[word] = 1
 
-#Rank sentances by how many popular words they have
-sentances = nltk.tokenize.sent_tokenize(text) #turn text into token sentances
-sentance_value = dict()
-#Add frequency of every word in sentance to create a sentance score
-for sentance in sentances:
+#Rank sentences by how many popular words they have
+sentences = nltk.tokenize.sent_tokenize(text) #turn text into token sentences
+sentence_value = dict()
+#Add frequency of every word in sentence to create a sentence score
+for sentence in sentences:
     for word_key in word_freq:
-        if word_key in sentance.lower():
-            if sentance in sentance_value:
-                sentance_value[sentance] += word_freq[word_key]
+        if word_key in sentence.lower():
+            if sentence in sentence_value:
+                sentence_value[sentence] += word_freq[word_key]
             else:
-                sentance_value[sentance] = word_freq[word_key]
-#Account for longer sentances having an advantage by dividing it by sentance length
+                sentence_value[sentence] = word_freq[word_key]
+#Account for longer sentences having an advantage by dividing it by sentence length
 sum_value = 0
-for sentance in sentance_value:
-    sum_value += sentance_value[sentance]
-avg_sentance_value = int(sum_value/len(sentance_value)) #avg value of each sentance in original text
+for sentence in sentence_value:
+    sum_value += sentence_value[sentence]
+avg_sentence_value = int(sum_value/len(sentence_value)) #avg value of each sentence in original text
 
 summary_text = ''
-for sentance in sentances:
-    if sentance_value[sentance] > (1.15 * avg_sentance_value):
-        summary_text += " " + sentance
+for sentence in sentences:
+    if sentence_value[sentence] > (1.15 * avg_sentence_value):
+        summary_text += " " + sentence
 
 with open('/tmp/para_summarise.txt', 'a') as f:
     f.write(summary_text)
