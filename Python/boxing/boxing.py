@@ -27,7 +27,7 @@ def get_credentials():
     """
 
     # If modifying these scopes, delete your previously saved credentials
-    SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
+    SCOPES = 'https://www.googleapis.com/auth/calendar'
     CLIENT_SECRET_FILE = 'boxing_client_secrets.json'
     APPLICATION_NAME = 'Boxing'
     flags = None
@@ -104,16 +104,12 @@ def add_months(sourcedate,months):
     day = min(sourcedate.day,calendar.monthrange(year,month)[1])
     return datetime.date(year,month,day)
 
-@click.group()
-def run_list_important():
-    pass
-
-@run_list_important.command()
+@click.command()
 @click.option('--start', default=datetime.date.today().isoformat(), help="Date in YYYY-MM-DD format (DEFAULT=today)")
 @click.option('--months', default=1, help="Number of months to add to start date (DEFAULT=1)")
 @click.option('--verbose', is_flag=True, help="Will print out the results")
 @click.option('--calendar', is_flag=True, help="Add results to your calendar")
-def list_important(start, months, verbose, calendar):
+def main(start, months, verbose, calendar):
     """Scrapes calendar of all fights and lists those containing any of the current top fighters"""
 
     credentials = get_credentials()
@@ -184,7 +180,5 @@ def list_important(start, months, verbose, calendar):
 
     return boxer_i_care_about
 
-LIST_UPCOMING = click.CommandCollection(sources=[run_list_important])
-
 if __name__ == '__main__':
-    LIST_UPCOMING()
+    main()
