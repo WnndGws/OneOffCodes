@@ -17,7 +17,7 @@ rm -f /tmp/para.txt
 python $HOME/Git/OneOffCodes/Python/paragraph_scraper/paragraph_scraper.py --url "$1" > /dev/null 2>&1
 if [[  $(wc -l /tmp/para.txt | awk '{print $1}') > 0  ]]
 then
-    urxvtc -geometry 50x2 -e speedread -w 375 /tmp/para.txt
+    speedread -w 325 /tmp/para_summary.txt
     python $HOME/Git/OneOffCodes/Python/image_scraper/image_scraper.py --url "$1" > /dev/null 2>&1
     find /tmp/image* -print0 | xargs -0 identify -format "%w %f\n" | awk '$1<200' | xargs -0 | cut -d' ' -f2 | xargs -I{} rm /tmp/{}
     feh --scale-down /tmp/image*
