@@ -35,13 +35,17 @@ for sentence in sentences:
                 sentence_value[sentence] = word_freq[word_key]
 # Account for longer sentences having an advantage by dividing it by sentence length
 sum_value = 0
+sum_value_list = []
 for sentence in sentence_value:
     sum_value += sentence_value[sentence]
+    sum_value_list.append(sentence_value[sentence])
 avg_sentence_value = int(sum_value/len(sentence_value))  # avg value of each sentence in original text
 
+number_of_sentances_to_keep = 5
+nth_number_interesting_score = sorted(sum_value_list, reverse=True)[number_of_sentances_to_keep]
 summary_text = ''
 for sentence in sentences:
-    if sentence_value[sentence] > (1.25 * avg_sentence_value):
+    if sentence_value[sentence] > (nth_number_interesting_score):
         summary_text += " " + sentence
 
 with open('/tmp/para_summarise.txt', 'a') as f:
