@@ -25,7 +25,7 @@ def scrape_content(url):
         img = (img['src'])
         if re.match(r'(http).*', img) is not None:
             req = s.get(img, allow_redirects=True)
-            with open(f'/tmp/image{file_number}.png', 'wb') as f:
+            with open(f'/tmp/images/image{file_number}.png', 'wb') as f:
                 f.write(req.content)
 
 if __name__ == '__main__':
