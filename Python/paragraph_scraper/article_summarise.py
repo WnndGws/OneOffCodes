@@ -41,8 +41,10 @@ for sentence in sentence_value:
     sum_value_list.append(sentence_value[sentence])
 avg_sentence_value = int(sum_value/len(sentence_value))  # avg value of each sentence in original text
 
-number_of_sentances_to_keep = 5
-nth_number_interesting_score = sorted(sum_value_list, reverse=True)[number_of_sentances_to_keep]
+number_of_sentances_to_keep = 8
+if len(sum_value_list) < number_of_sentances_to_keep:
+    number_of_sentances_to_keep = len(sum_value_list)
+nth_number_interesting_score = sorted(sum_value_list, reverse=True)[number_of_sentances_to_keep - 1]
 summary_text = ''
 for sentence in sentences:
     if sentence_value[sentence] > (nth_number_interesting_score):
