@@ -25,7 +25,7 @@ then
     cat /tmp/para_summarise.txt
     #speedread -w 325 /tmp/para_summarise.txt
     mkdir /tmp/images > /dev/null 2>&1
-    gallery-dl --dest /tmp/imgur "$1" > /dev/null 2>&1
+    #gallery-dl --dest /tmp/imgur "$1" > /dev/null 2>&1
     python $HOME/Git/OneOffCodes/Python/image_scraper/image_scraper.py --url "$1" > /dev/null 2>&1
     feh --scale-down --recursive /tmp/images &
     mpv --ytdl "$1" > /dev/null 2>&1
