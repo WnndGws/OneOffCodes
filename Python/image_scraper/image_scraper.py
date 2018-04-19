@@ -34,4 +34,3 @@ if __name__ == '__main__':
     if '--url' in myargs:
         url = myargs['--url']
     scrape_content(url)
-
