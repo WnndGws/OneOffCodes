@@ -13,12 +13,12 @@ echo $visual
 
 x=$(echo -e "summary\numpv\numpv_180p\nmpv\nmpv_loop\nfeh\nfirefox\nparagraph" | dmenu -h 40 -fn "Sauce Code Pro Nerd Font Complete Mono:pixelsize=14;0" -i -p "How should I open '$visual'?")
 case "$x" in
-    summary) clear; rm -f /tmp/para* > /dev/null 2>&1; python $HOME/Git/OneOffCodes/Python/paragraph_scraper/paragraph_scraper.py --url "$1"; python $HOME/Git/OneOffCodes/Python/paragraph_scraper/article_summarise.py; cat /tmp/para_summarise.txt & sleep 600 ;;
+    summary) clear; rm -f /tmp/para* > /dev/null 2>&1; python $HOME/Git/OneOffCodes/Python/paragraph_scraper/paragraph_scraper.py --url "$1"; python $HOME/Git/OneOffCodes/Python/paragraph_scraper/article_summarise.py; vim /tmp/para_summarise.txt;;
 	umpv) clear; python $HOME/Git/OneOffCodes/Python/umpv "$1" > /dev/null 2>&1 & disown ;;
 	umpv_180p) clear; $HOME/Git/OneOffCodes/Python/umpv_180p "$1" > /dev/null 2>&1 & disown ;;
 	mpv) clear; zsh -c mpv -quiet "$1" 2&>/dev/null & disown ;;
 	mpv_loop) clear; zsh -c mpv -quiet --loop "$1" 2&>/dev/null & disown ;;
 	firefox) clear; firefox "$1" 2&>/dev/null & disown ;;
 	feh) clear; rm -rf /tmp/images/* 2>&1 /dev/null; python $HOME/Git/OneOffCodes/Python/image_scraper/image_scraper.py --url "$1" ; feh --scale-down --recursive /tmp/images & disown;;
-    paragraph) clear; rm -f /tmp/para* > /dev/null 2>&1; python $HOME/Git/OneOffCodes/Python/paragraph_scraper/paragraph_scraper.py --url "$1"; cat /tmp/para.txt & sleep 600 ;;
+    paragraph) clear; rm -f /tmp/para* > /dev/null 2>&1; python $HOME/Git/OneOffCodes/Python/paragraph_scraper/paragraph_scraper.py --url "$1"; vim /tmp/para.txt ;;
 esac
