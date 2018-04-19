@@ -15,7 +15,7 @@ x=$(echo -e "summary\numpv\numpv_180p\nmpv\nmpv_loop\nfeh\nfirefox\nparagraph" |
 case "$x" in
     summary) clear; rm -f /tmp/para* > /dev/null 2>&1; python $HOME/Git/OneOffCodes/Python/paragraph_scraper/paragraph_scraper.py --url "$1"; python $HOME/Git/OneOffCodes/Python/paragraph_scraper/article_summarise.py; vim /tmp/para_summarise.txt;;
 	umpv) clear; python $HOME/Git/OneOffCodes/Python/umpv "$1" > /dev/null 2>&1 & disown ;;
-	umpv_180p) clear; $HOME/Git/OneOffCodes/Python/umpv_180p "$1" > /dev/null 2>&1 & disown ;;
+	umpv_180p) clear; python $HOME/Git/OneOffCodes/Python/umpv_180p "$1" > /dev/null 2>&1 & disown ;;
 	mpv) clear; mpv -quiet "$1" 2&>/dev/null & disown ;;
 	mpv_loop) clear; mpv -quiet --loop "$1" 2&>/dev/null & disown ;;
 	firefox) clear; firefox "$1" 2&>/dev/null & disown ;;
