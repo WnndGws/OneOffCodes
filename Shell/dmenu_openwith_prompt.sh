@@ -19,6 +19,6 @@ case "$x" in
 	mpv) clear; mpv -quiet "$1" 2&>/dev/null & disown ;;
 	mpv_loop) clear; mpv -quiet --loop "$1" 2&>/dev/null & disown ;;
 	firefox) clear; firefox "$1" 2&>/dev/null & disown ;;
-	feh) clear; rm -rf /tmp/images/* 2>&1 /dev/null; python $HOME/Git/OneOffCodes/Python/image_scraper/image_scraper.py --url "$1" ; feh --scale-down --recursive /tmp/images & disown;;
+	feh) clear; rm -rf /tmp/images/* 2>&1 /dev/null; gallery-dl --dest /tmp/images "$1" >/dev/null 2>&1 ; feh --scale-down --recursive /tmp/images & disown;;
     paragraph) clear; rm -f /tmp/para* > /dev/null 2>&1; python $HOME/Git/OneOffCodes/Python/paragraph_scraper/paragraph_scraper.py --url "$1"; vim /tmp/para.txt ;;
 esac
