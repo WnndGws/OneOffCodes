@@ -9,7 +9,10 @@ declare -a repos=(\
 "$HOME/Git/OneOffCodes/Shell"
 )
 
-ssh-add
+if [[ $(ssh-add -l) == 0 ]]; then
+    ssh-add
+fi
+
 for i in "${repos[@]}"; do
     cd "$i"
     git pull
