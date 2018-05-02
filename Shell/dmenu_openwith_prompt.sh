@@ -21,4 +21,5 @@ case "$x" in
 	firefox) clear; firefox "$1" 2&>/dev/null & disown ;;
 	feh) clear; rm -rf /tmp/images/* 2>&1 /dev/null; gallery-dl --dest /tmp/images "$1" >/dev/null 2>&1 ; feh --scale-down --recursive /tmp/images & disown;;
     paragraph) clear; rm -f /tmp/para* > /dev/null 2>&1; python $HOME/Git/OneOffCodes/Python/paragraph_scraper/paragraph_scraper.py --url "$1"; vim /tmp/para.txt ;;
+    *) "$x" "$1"
 esac
