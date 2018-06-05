@@ -6,5 +6,5 @@ x=$(echo -e "clip->primary\nprimary->clip\npaste" | dmenu -h 40 -fn "Sauce Code 
 case "$x" in
 	"clip->primary") xsel -ob | xsel -ip ;;
 	"primary->clip") xsel -op | xsel -ib ;;
-	"paste") xsel -ob | xsel -ip && xsel -op 2> /dev/null ;;
+	"paste") xsel -ob | xsel -ip && xsel -op ;;
 esac
