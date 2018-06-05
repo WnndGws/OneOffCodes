@@ -17,7 +17,7 @@ width=$(echo $resolution | cut -d"x" -f1)
 half_width=$(bc <<< ($width/2)-64)
 
 # Location of lock image
-lock_image=$HOME/Git/dotfiles/i3/.config/i3/lock.png
+lock_image=$HOME/.config/i3/lock.png
 
 # Set filters to apply to the image
 filters=$(echo 'noise=alls=10,scale=iw*.05:-1,scale=iw*20:-1:flags=neighbor,overlay='$half_width':'$half_height)
