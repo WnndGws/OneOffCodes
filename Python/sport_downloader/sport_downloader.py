@@ -8,6 +8,7 @@ import pprint
 import sys
 import time
 from collections import namedtuple
+
 # Third party modules
 import httplib2
 import lxml.html
@@ -21,7 +22,7 @@ from bs4 import BeautifulSoup
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.file import Storage
 
-download_url = 'http://pastebin.com/u/reborn4HD-nfl'
+download_url = "http://pastebin.com/u/reborn4HD-nfl"
 # The URL where the nfl games live
 
 rd = requests.get(download_url)
@@ -39,6 +40,7 @@ for link in raw_links_dl:
 # We now have a reference dictionary of all of the pastbin links and their titles
 # We now want to find the latest week
 
+
 def search_dl(dl, lookup):
     for k, v in dl.items():
         if lookup in v:
@@ -54,7 +56,7 @@ rsf = requests.get(sf_url)
 soup_rsf = BeautifulSoup(rsf.content)
 raw_links_sf = soup_rsf.findAll("td")
 
-Game = namedtuple('Game', 'date time where opponent result')
+Game = namedtuple("Game", "date time where opponent result")
 # This creates out named tuple with all of the headings inside it
 
 schedule = soup_rsf.select("div.md tbody")[1]
@@ -144,7 +146,9 @@ for row in raw_links_pastebin:
 # We now have a tuple with the 5 download links (1 for full game + 4 quarters) in it
 # Next we need to add these links to a text file, and upload it to google drive
 
-f = open('/home/wynand/Desktop/Python Programs/Sport Downloader/Download Links.txt', "w")
+f = open(
+    "/home/wynand/Desktop/Python Programs/Sport Downloader/Download Links.txt", "w"
+)
 for t in download_links:
     f.write("\ntext={0}\nautoStart=TRUE\n".format(t))
 f.close()
@@ -154,31 +158,35 @@ f.close()
 # Next we have to upload it to google drive
 # The next lines of code come from "https://developers.google.com/drive/web/examples/python"
 
-flow = flow_from_clientsecrets('/home/wynand/Desktop/Python Programs/Sport Downloader/client_secrets.json',
-                               scope='https://www.googleapis.com/auth/drive',
-                               redirect_uri='urn:ietf:wg:oauth:2.0:oob')
+flow = flow_from_clientsecrets(
+    "/home/wynand/Desktop/Python Programs/Sport Downloader/client_secrets.json",
+    scope="https://www.googleapis.com/auth/drive",
+    redirect_uri="urn:ietf:wg:oauth:2.0:oob",
+)
 
 # retrieve if available
-storage = Storage('/home/wynand/Desktop/Python Programs/Sport Downloader/OAuthcredentials.txt')
+storage = Storage(
+    "/home/wynand/Desktop/Python Programs/Sport Downloader/OAuthcredentials.txt"
+)
 credentials = storage.get()
 
 if credentials is None:
     # step 1
     auth_uri = flow.step1_get_authorize_url()  # Redirect the user to auth_uri
-    print('Go to the following link in your browser: ' + auth_uri)
-    code = input('Enter verification code: ').strip()
+    print("Go to the following link in your browser: " + auth_uri)
+    code = input("Enter verification code: ").strip()
     # step 2
     credentials = flow.step2_exchange(code)
 else:
-    print('GDrive credentials are still current')
+    print("GDrive credentials are still current")
 
 # authorise
 http = httplib2.Http()
 http = credentials.authorize(http)
-print('Authorisation successfully completed')
+print("Authorisation successfully completed")
 
 # build
-drive = discovery.build('drive', 'v2', http=http)
+drive = discovery.build("drive", "v2", http=http)
 
 # store for next time
 storage.put(credentials)
@@ -186,12 +194,14 @@ storage.put(credentials)
 # We are now authorised to upload to drive, now need to do the actual uploading
 
 # Path to the file to upload.
-file_name = '/home/wynand/Desktop/Python Programs/Sport Downloader/Download Links.txt'
+file_name = "/home/wynand/Desktop/Python Programs/Sport Downloader/Download Links.txt"
 
 # Metadata about the file.
-file_title = 'Download Links.txt'
-file_description = 'A shiny new text file containing the download links for the games i care about.'
-parent_id = [{'id': "0BzOWafUuF9rvUkx6MTR6NjE5bFE"}]
+file_title = "Download Links.txt"
+file_description = (
+    "A shiny new text file containing the download links for the games i care about."
+)
+parent_id = [{"id": "0BzOWafUuF9rvUkx6MTR6NjE5bFE"}]
 # Parent id is the folder location, can be found as the last code in the browser window
 
 # Insert a file. Files are comprised of contents and metadata.
@@ -199,7 +209,7 @@ parent_id = [{'id': "0BzOWafUuF9rvUkx6MTR6NjE5bFE"}]
 media_body = MediaFileUpload(file_name, mimetype="", resumable=True)
 
 # The body contains the metadata for the file.
-body = {'title': file_title, 'description': file_description, 'parents': parent_id}
+body = {"title": file_title, "description": file_description, "parents": parent_id}
 
 # Perform the request and print the result.
 file_upload = drive.files().insert(body=body, media_body=media_body).execute()
