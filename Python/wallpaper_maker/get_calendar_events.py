@@ -13,16 +13,19 @@ import datetime
 
 try:
     import argparse
+
     flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
 except ImportError:
     flags = None
 
 # If modifying these scopes, delete your previously saved credentials
 # at ~/.credentials/calendar-python-quickstart.json
-SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
-home_dir = os.path.expanduser('~')
-CLIENT_SECRET_FILE = os.path.join(home_dir, '.config/api-secrets/wallpaper_client_secrets.json')
-APPLICATION_NAME = 'Wallpaper_maker'
+SCOPES = "https://www.googleapis.com/auth/calendar.readonly"
+home_dir = os.path.expanduser("~")
+CLIENT_SECRET_FILE = os.path.join(
+    home_dir, ".config/api-secrets/wallpaper_client_secrets.json"
+)
+APPLICATION_NAME = "Wallpaper_maker"
 
 
 def get_credentials():
@@ -34,12 +37,11 @@ def get_credentials():
     Returns:
         Credentials, the obtained credential.
     """
-    home_dir = os.path.expanduser('~')
-    credential_dir = os.path.join(home_dir, '.config/apiclient')
+    home_dir = os.path.expanduser("~")
+    credential_dir = os.path.join(home_dir, ".config/apiclient")
     if not os.path.exists(credential_dir):
         os.makedirs(credential_dir)
-    credential_path = os.path.join(credential_dir,
-                                   'wallpaper_maker_credentials.json')
+    credential_path = os.path.join(credential_dir, "wallpaper_maker_credentials.json")
 
     store = Storage(credential_path)
     credentials = store.get()
@@ -48,10 +50,11 @@ def get_credentials():
         flow.user_agent = APPLICATION_NAME
         if flags:
             credentials = tools.run_flow(flow, store, flags)
-        else: # Needed only for compatibility with Python 2.6
+        else:  # Needed only for compatibility with Python 2.6
             credentials = tools.run(flow, store)
-        print('Storing credentials to ' + credential_path)
+        print("Storing credentials to " + credential_path)
     return credentials
+
 
 def main():
     """Shows basic usage of the Google Calendar API.
@@ -61,24 +64,32 @@ def main():
     """
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
-    service = discovery.build('calendar', 'v3', http=http)
+    service = discovery.build("calendar", "v3", http=http)
 
     now = datetime.date.today().isoformat()
-    now = now + 'T00:00:00Z'
+    now = now + "T00:00:00Z"
     tomorrow = (datetime.date.today + datetime.timedelta(days=1)).isoformat()
-    tomorrow = tomorrow + 'T00:00:00Z'
-    print('Getting the upcoming 10 events')
-    eventsResult = service.events().list(
-        calendarId='primary', timeMin=now, timeMax=tomorrow, singleEvents=True,
-        orderBy='startTime').execute()
-    events = eventsResult.get('items', [])
+    tomorrow = tomorrow + "T00:00:00Z"
+    print("Getting the upcoming 10 events")
+    eventsResult = (
+        service.events()
+        .list(
+            calendarId="primary",
+            timeMin=now,
+            timeMax=tomorrow,
+            singleEvents=True,
+            orderBy="startTime",
+        )
+        .execute()
+    )
+    events = eventsResult.get("items", [])
 
     if not events:
-        print('No upcoming events found.')
+        print("No upcoming events found.")
     for event in events:
-        start = event['start'].get('dateTime', event['start'].get('date'))
-        print(start, event['summary'])
+        start = event["start"].get("dateTime", event["start"].get("date"))
+        print(start, event["summary"])
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
