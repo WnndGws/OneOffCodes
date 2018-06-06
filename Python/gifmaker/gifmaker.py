@@ -9,70 +9,134 @@ import requests
 import subprocess
 import time
 
+
 @click.group()
 def run_make_gif():
     pass
 
+
 @run_make_gif.command()
-@click.option('--start', default="00:00:00", help="Timestamp where to start gif. DEFAULT=00:00:00")
-@click.option('--duration', default=10, help="Duration of the gif in seconds. DEFAULT=10")
-@click.option('--video', help="Path to input video")
-@click.option('--sound', is_flag=True, help="Creates the webm with sound enabled")
+@click.option(
+    "--start", default="00:00:00", help="Timestamp where to start gif. DEFAULT=00:00:00"
+)
+@click.option(
+    "--duration", default=10, help="Duration of the gif in seconds. DEFAULT=10"
+)
+@click.option("--video", help="Path to input video")
+@click.option("--sound", is_flag=True, help="Creates the webm with sound enabled")
 def make_gif(start, duration, sound, video):
     ## Set file name and path
     user_home = os.path.expanduser("~/")
     save_dir = "GoogleDrive/01_Personal/01_Personal/05_Images/Gifs"
     file_name = datetime.datetime.strftime(datetime.datetime.now(), "%Y-%m-%d-%T")
-    #file_full_path = f'{user_home}{save_dir}/{file_name}.gif'
-    file_full_path = f'{user_home}{save_dir}/{file_name}.webm'
+    # file_full_path = f'{user_home}{save_dir}/{file_name}.gif'
+    file_full_path = f"{user_home}{save_dir}/{file_name}.webm"
 
     ## Find video height
-    ffprobe_command_height = ['ffprobe', '-show_entries', 'stream=height', video]
+    ffprobe_command_height = ["ffprobe", "-show_entries", "stream=height", video]
     height = subprocess.check_output(ffprobe_command_height).decode()
-    height = re.findall(r'\d+', height)
-    bitrate_to_use = int(height[0])*2
+    height = re.findall(r"\d+", height)
+    bitrate_to_use = int(height[0]) * 2
 
     if sound:
-        ffmpeg_command_make_gif = ['ffmpeg', '-ss', start, '-t', str(duration), '-i', video, '-c:v', 'libvpx', '-crf', '4', '-b:v', f'{bitrate_to_use}K', '-vf', f'scale={height[0]}:-1', '-acodec', 'libvorbis', file_full_path]
+        ffmpeg_command_make_gif = [
+            "ffmpeg",
+            "-ss",
+            start,
+            "-t",
+            str(duration),
+            "-i",
+            video,
+            "-c:v",
+            "libvpx",
+            "-crf",
+            "4",
+            "-b:v",
+            f"{bitrate_to_use}K",
+            "-vf",
+            f"scale={height[0]}:-1",
+            "-acodec",
+            "libvorbis",
+            file_full_path,
+        ]
     else:
-        ffmpeg_command_make_gif = ['ffmpeg', '-ss', start, '-t', str(duration), '-i', video, '-c:v', 'libvpx', '-crf', '4', '-b:v', f'{bitrate_to_use}K', '-vf', f'scale={height[0]}:-1', '-an', file_full_path]
+        ffmpeg_command_make_gif = [
+            "ffmpeg",
+            "-ss",
+            start,
+            "-t",
+            str(duration),
+            "-i",
+            video,
+            "-c:v",
+            "libvpx",
+            "-crf",
+            "4",
+            "-b:v",
+            f"{bitrate_to_use}K",
+            "-vf",
+            f"scale={height[0]}:-1",
+            "-an",
+            file_full_path,
+        ]
     subprocess.call(ffmpeg_command_make_gif)
 
     file_to_share = file_full_path
 
     ## Upload to GoogleDrive using Insync-headless
-    sync_progress = subprocess.Popen(["insync-headless", "get_sync_progress"], stdout=subprocess.PIPE, universal_newlines=True)
+    sync_progress = subprocess.Popen(
+        ["insync-headless", "get_sync_progress"],
+        stdout=subprocess.PIPE,
+        universal_newlines=True,
+    )
 
     ## Since insync has a delay, need to wait for status change first, and
     # only then can check if done uploading
-    print ("Uploading.....\033[0K\r")
+    print("Uploading.....\033[0K\r")
     while sync_progress.stdout.readline() != "Uploading\n":
         time.sleep(1)
-        sync_progress = subprocess.Popen(["insync-headless", "get_sync_progress"], stdout=subprocess.PIPE, universal_newlines=True)
+        sync_progress = subprocess.Popen(
+            ["insync-headless", "get_sync_progress"],
+            stdout=subprocess.PIPE,
+            universal_newlines=True,
+        )
 
     while sync_progress.stdout.readline() != "No syncing activities\n":
         time.sleep(1)
-        sync_progress = subprocess.Popen(["insync-headless", "get_sync_progress"], stdout=subprocess.PIPE, universal_newlines=True)
+        sync_progress = subprocess.Popen(
+            ["insync-headless", "get_sync_progress"],
+            stdout=subprocess.PIPE,
+            universal_newlines=True,
+        )
 
     ## Use Insync to get public link of file and copy it to primary buffer
-    print ("Getting public link.....")
-    copy_to_primary = subprocess.Popen(["xclip", "-selection", "clipboard|primary|secondary", "-i"], stdin=subprocess.PIPE)
-    public_url = b'\n'
+    print("Getting public link.....")
+    copy_to_primary = subprocess.Popen(
+        ["xclip", "-selection", "clipboard|primary|secondary", "-i"],
+        stdin=subprocess.PIPE,
+    )
+    public_url = b"\n"
     while public_url.decode() == "\n":
         time.sleep(5)
-        public_url = subprocess.check_output(["insync-headless", "get_public_link", file_full_path])
-    image_id = re.findall(r'[^\/]{33}', public_url.decode())
-    public_url = requests.get(f"https://drive.google.com/uc?id={image_id[0]}&export=image", allow_redirects=True)
+        public_url = subprocess.check_output(
+            ["insync-headless", "get_public_link", file_full_path]
+        )
+    image_id = re.findall(r"[^\/]{33}", public_url.decode())
+    public_url = requests.get(
+        f"https://drive.google.com/uc?id={image_id[0]}&export=image",
+        allow_redirects=True,
+    )
     copy_to_primary.communicate(public_url.url.encode())
 
     ## Delete any file in save_dir older than 7d
     time_now = float(datetime.datetime.now().strftime("%s"))
-    for file in os.listdir(f'{user_home}{save_dir}'):
-        time_creation = os.path.getctime(f'{user_home}{save_dir}/{file}')
-        if (time_now - time_creation) // (24*3600) >= 7:
-            print (f'Removing {file}')
+    for file in os.listdir(f"{user_home}{save_dir}"):
+        time_creation = os.path.getctime(f"{user_home}{save_dir}/{file}")
+        if (time_now - time_creation) // (24 * 3600) >= 7:
+            print(f"Removing {file}")
+
 
 MAKE_GIF = click.CommandCollection(sources=[run_make_gif])
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     MAKE_GIF()
