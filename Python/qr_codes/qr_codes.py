@@ -22,11 +22,11 @@ while pageNumber < 11:
     createdCodes.append(fileNumber)
 
 
-def load_from_file(file_path='filename.png'):
-    with open(file_path, 'rb') as image_file:
+def load_from_file(file_path="filename.png"):
+    with open(file_path, "rb") as image_file:
         image = Image.open(image_file)
         image.load()
 
-    codes = zbarlight.scan_codes('qrcode', image)
-    codes = codes[0].decode('ascii')
-    print('QR codes: %s' % codes)
+    codes = zbarlight.scan_codes("qrcode", image)
+    codes = codes[0].decode("ascii")
+    print("QR codes: %s" % codes)
