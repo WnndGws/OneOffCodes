@@ -3,7 +3,7 @@
 
 import nltk
 
-with open('/tmp/para.txt', 'r') as f:
+with open("/tmp/para.txt", "r") as f:
     text = f.read()
     f.close()
 
@@ -14,7 +14,9 @@ words = nltk.tokenize.word_tokenize(text)  # turn text into set of tokens
 word_freq = dict()
 for word in words:
     word = word.lower()
-    word = nltk.stem.PorterStemmer().stem(word)  # stems similar words (mom, mommy, mother etc) as one word
+    word = nltk.stem.PorterStemmer().stem(
+        word
+    )  # stems similar words (mom, mommy, mother etc) as one word
     if word in stop_words:
         continue
     if word in word_freq:
@@ -39,17 +41,21 @@ sum_value_list = []
 for sentence in sentence_value:
     sum_value += sentence_value[sentence]
     sum_value_list.append(sentence_value[sentence])
-avg_sentence_value = int(sum_value/len(sentence_value))  # avg value of each sentence in original text
+avg_sentence_value = int(
+    sum_value / len(sentence_value)
+)  # avg value of each sentence in original text
 
 number_of_sentances_to_keep = 8
 if len(sum_value_list) < number_of_sentances_to_keep:
     number_of_sentances_to_keep = len(sum_value_list)
-nth_number_interesting_score = sorted(sum_value_list, reverse=True)[number_of_sentances_to_keep - 1]
-summary_text = ''
+nth_number_interesting_score = sorted(sum_value_list, reverse=True)[
+    number_of_sentances_to_keep - 1
+]
+summary_text = ""
 for sentence in sentences:
     if sentence_value[sentence] > (nth_number_interesting_score):
         summary_text += " " + sentence
 
-with open('/tmp/para_summarise.txt', 'a') as f:
+with open("/tmp/para_summarise.txt", "a") as f:
     f.write(summary_text)
     f.close()
