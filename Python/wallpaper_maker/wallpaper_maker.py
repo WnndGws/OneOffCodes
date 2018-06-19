@@ -146,50 +146,71 @@ def change_wallpaper(
     quote_lines = textwrap.wrap(random_quote, width=60)
     if agenda:
         if test_internet():
-            seven_am_tomorrow = (
+            midday_tomorrow = (
                 datetime.date.today() + datetime.timedelta(days=1)
-            ).strftime("%Y%m%dT07:00")
+            ).strftime("%Y%m%dT23:59")
             midnight_tomorrow = (
                 datetime.date.today() + datetime.timedelta(days=1)
             ).strftime("%Y%m%dT00:01")
             agenda_text = check_output(
-                ["gcalcli", "agenda", "--refresh", "12am", "11:59pm"]
+                ["gcalcli", "agenda", "--refresh", "2am", "11:59pm"]
             ).decode()
             agenda_text = re.findall(
                 r"\d*:[^\\]*", str(agenda_text.encode("ascii", "ignore"))
             )
             agenda_morning = check_output(
-                ["gcalcli", "agenda", midnight_tomorrow, seven_am_tomorrow]
+                ["gcalcli", "agenda", midnight_tomorrow, midday_tomorrow]
             ).decode()
             agenda_morning = re.findall(
                 r"\d*:[^\\]*", str(agenda_morning.encode("ascii", "ignore"))
             )
+            # Remove my sleep entries
             for event in agenda_text:
                 if event[-5:] == "Sleep":
                     agenda_text.remove(event)
             for event in agenda_morning:
                 if event[-5:] == "Sleep":
                     agenda_text.remove(event)
-            if len(agenda_morning) > 0:
+
+            # Remove duplicate entries
+            for duplicate in set(agenda_morning).intersection(agenda_text):
+                agenda_morning.remove(duplicate)
+
+            # Pad entries to be the same length
+            longest_string_length = max(len(max(agenda_text,key=len)), len(max(agenda_morning,key=len)))
+            agenda_text_padded = []
+            agenda_morning_padded = []
+            for event in agenda_text:
+                if event[6] == " ":
+                    event = "0" + event
+                event = event.ljust(longest_string_length,".")
+                agenda_text_padded.append(event)
+            for event in agenda_morning:
+                if event[6] == " ":
+                    event = "0" + event
+                event = event.ljust(longest_string_length,".")
+                agenda_morning_padded.append(event)
+
+            if len(agenda_morning_padded) > 0:
                 quote_lines = (
                     quote_lines
                     + [" "]
-                    + [datetime.date.today().strftime("%a %d/%m/%Y")]
-                    + agenda_text
+                    + [datetime.date.today().strftime("%a %d/%m/%Y").ljust(longest_string_length)]
+                    + agenda_text_padded
                     + [" "]
                     + [
                         (datetime.date.today() + datetime.timedelta(days=1)).strftime(
                             "%a %d/%m/%Y"
-                        )
+                        ).ljust(longest_string_length)
                     ]
-                    + agenda_morning
+                    + agenda_morning_padded
                 )
-            elif len(agenda_text) > 0:
+            elif len(agenda_text_padded) > 0:
                 quote_lines = (
                     quote_lines
                     + [" "]
                     + [datetime.date.today().strftime("%a %d/%m/%Y")]
-                    + agenda_text
+                    + agenda_text_padded
                     + [" "]
                 )
             else:
