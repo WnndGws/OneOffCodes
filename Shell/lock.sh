@@ -9,13 +9,6 @@ muteStatus=$(pacmd list-sinks | grep -A 15 'index: '$active_sink | grep 'muted' 
 # Mute even if already muted, but dont change muteStatus as this will be used as our 'before'
 pactl set-sink-mute $active_sink 1
 
-# Find resolution of screen(s) and minus half the dimension of the lock image
-resolution=$(xdpyinfo | grep dimensions | awk '{print $2}')
-height=$(echo $resolution | cut -d"x" -f2)
-half_height=$(bc <<< ($height/2)-64)
-width=$(echo $resolution | cut -d"x" -f1)
-half_width=$(bc <<< ($width/2)-64)
-
 # Location of lock image
 lock_image=$HOME/.config/i3/lock.png
 
@@ -25,8 +18,17 @@ filters=$(echo 'noise=alls=10,scale=iw*.05:-1,scale=iw*20:-1:flags=neighbor,over
 # Output file location
 output_loc=/tmp/screen.png
 
+# Take screenshot
+scrot $output_loc
+
+# Apply filters (blur image by resizing twice)
+convert -scale 10% -scale 1000% /tmp/screen.png /tmp/screen.png
+
+# Overlay lock
+magick composite -gravity center $lock_image $output_loc $output_loc
+
 # Take screenshot and apply filters, and overlay lock_image
-ffmpeg -y -loglevel 0 -s "$resolution" -f x11grab -i $DISPLAY -i $lock_image -vframes 1 -filter_complex $filters $output_loc
+#ffmpeg -y -loglevel 0 -s "$resolution" -f x11grab -i $DISPLAY -i $lock_image -vframes 1 -filter_complex $filters $output_loc
 
 i3lock --ignore-empty-password --image=$output_loc --nofork &&\
 
@@ -38,4 +40,4 @@ else
     exit
 fi
 
-trash-empty
+trash-empty 7
