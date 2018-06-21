@@ -7,13 +7,14 @@ import click
 import datetime
 import json
 import os
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageStat
 import random
 import re
 import requests
 import socket
 from subprocess import call, check_output
 import textwrap
+import time
 
 
 def test_internet(host="8.8.8.8", port=53, timeout=3):
@@ -127,7 +128,13 @@ def change_wallpaper(
     # get an image
     if bing:
         if test_internet():
-            ctx.invoke(download_bing_wallpaper)
+            # Test if bing file exists and check age
+            if os.path.isfile("/tmp/bing.jpg"):
+                age_of_bing_image = time.time() - os.stat("/tmp/bing.jpg").st_mtime
+                if age_of_bing_image > 43200:
+                    ctx.invoke(download_bing_wallpaper)
+            else:
+                ctx.invoke(download_bing_wallpaper)
             base_image = Image.open("/tmp/bing.jpg").convert("RGBA")
         else:
             random_wallpaper = random.choice(os.listdir(wallpaper_dir))
@@ -177,31 +184,40 @@ def change_wallpaper(
                 agenda_morning.remove(duplicate)
 
             # Pad entries to be the same length
-            longest_string_length = max(len(max(agenda_text,key=len)), len(max(agenda_morning,key=len)))
+            longest_string_length = max(
+                len(max(agenda_text, key=len)), len(max(agenda_morning, key=len))
+            ) + 1
+
+            # Zero pad single digit times
             agenda_text_padded = []
             agenda_morning_padded = []
             for event in agenda_text:
                 if event[6] == " ":
                     event = "0" + event
-                event = event.ljust(longest_string_length,".")
+                event = event.ljust(longest_string_length, ".")
                 agenda_text_padded.append(event)
             for event in agenda_morning:
                 if event[6] == " ":
                     event = "0" + event
-                event = event.ljust(longest_string_length,".")
+                event = event.ljust(longest_string_length, ".")
                 agenda_morning_padded.append(event)
 
+            # Concatonate into one long string
             if len(agenda_morning_padded) > 0:
                 quote_lines = (
                     quote_lines
                     + [" "]
-                    + [datetime.date.today().strftime("%a %d/%m/%Y").ljust(longest_string_length)]
+                    + [
+                        datetime.date.today()
+                        .strftime("%a %d/%m/%Y")
+                        .ljust(longest_string_length)
+                    ]
                     + agenda_text_padded
                     + [" "]
                     + [
-                        (datetime.date.today() + datetime.timedelta(days=1)).strftime(
-                            "%a %d/%m/%Y"
-                        ).ljust(longest_string_length)
+                        (datetime.date.today() + datetime.timedelta(days=1))
+                        .strftime("%a %d/%m/%Y")
+                        .ljust(longest_string_length)
                     ]
                     + agenda_morning_padded
                 )
@@ -230,6 +246,10 @@ def change_wallpaper(
     # put the quote so the centre always matches the centre of the image
     y_loc = base_image.size[1] / 2 - (quote_size_y / 2)
 
+    # get average background image brightness by converting to greyscale and getting RMS
+    mean_brightness = int(ImageStat.Stat(base_image.convert("L")).mean[0])
+    square_brightness = int(255 - mean_brightness)
+
     # draw text
     for line in quote_lines:
         line_width, line_height = quote_font.getsize(line)
@@ -237,7 +257,7 @@ def change_wallpaper(
             ((x_loc - line_width - 20), y_loc),
             line,
             font=quote_font,
-            fill=((255, 255, 255, 128)),
+            fill=((255, 255, 255, square_brightness)),
         )
         y_loc += line_height
 
@@ -252,7 +272,7 @@ def change_wallpaper(
             x_loc - 10,
             y_loc + quote_size_y + 10,
         ),
-        (0, 0, 0, 128),
+        (0, 0, 0, square_brightness),
     )
 
     image_out = Image.alpha_composite(base_image, textbox_image)
