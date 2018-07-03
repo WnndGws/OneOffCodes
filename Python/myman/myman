@@ -21,6 +21,13 @@ def try_tldr(program):
     match = re.findall(r"(%s)" % program, str(program_list))
     if len(match) > 0:
         try:
+            args = ["curl", f"cht.sh/{program}"]
+            subprocess.check_call(args)
+            success = True
+        except subprocess.CalledProcessError:
+            success = False
+    if not success:
+        try:
             args = ["tldr", program]
             subprocess.check_call(args)
             success = True
