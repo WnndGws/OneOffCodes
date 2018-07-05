@@ -21,4 +21,4 @@ for leaf in windows_open:
     if re.match(".*(- mpv)|(Plex).*", leaf.name, re.IGNORECASE) is not None:
         connection_id = leaf.id
         print(connection_id)
-        leaf.command(f'[con_id="{connection_id}"] resize set 50 ppt 100 ppt')
+        leaf.command(f'[con_id="{connection_id}"] resize set 50 ppt 50 ppt')
