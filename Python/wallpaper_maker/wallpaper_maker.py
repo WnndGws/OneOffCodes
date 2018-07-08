@@ -184,9 +184,19 @@ def change_wallpaper(
                 agenda_morning.remove(duplicate)
 
             # Pad entries to be the same length
-            longest_string_length = max(
-                len(max(agenda_text, key=len)), len(max(agenda_morning, key=len))
-            ) + 1
+            try:
+                morning_max = (
+                    len(max(agenda_morning, key=len))) + 1
+            except:
+                morning_max = 0
+
+            try:
+                agenda_max = (
+                    len(max(agenda_text, key=len))) + 1
+            except:
+                agenda_max = 0
+
+            longest_string_length = max(morning_max, agenda_max)
 
             # Zero pad single digit times
             agenda_text_padded = []
