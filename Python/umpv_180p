@@ -97,7 +97,7 @@ else:
         [
             "--speed=1.2",
             "--no-terminal",
-            "--ytdl-format=36",
+            "--ytdl-format=17",
             "--force-window",
             "--demuxer-thread=yes",
             "--demuxer-readahead-secs=180",
