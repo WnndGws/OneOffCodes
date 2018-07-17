@@ -153,40 +153,37 @@ def change_wallpaper(
     quote_lines = textwrap.wrap(random_quote, width=60)
     if agenda:
         if test_internet():
-            midday_tomorrow = (
-                datetime.date.today() + datetime.timedelta(days=1)
-            ).strftime("%Y%m%dT23:59")
-            midnight_tomorrow = (
-                datetime.date.today() + datetime.timedelta(days=1)
-            ).strftime("%Y%m%dT00:01")
+            today = datetime.date.today().strftime("%Y-%m-%d")
+            tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+            later_day = (datetime.date.today() + datetime.timedelta(days=2)).strftime("%Y-%m-%d")
             agenda_text = check_output(
-                ["gcalcli", "agenda", "--refresh", "2am", "11:59pm"]
+                ["gcalcli", "--refresh", "search", "\*", f"{today}", f"{tomorrow}"]
+            ).decode()
+            agenda_tomorrow = check_output(
+                ["gcalcli", "--refresh", "search", "\*", f"{tomorrow}", f"{later_day}"]
             ).decode()
             agenda_text = re.findall(
-                r"\d*:[^\\]*", str(agenda_text.encode("ascii", "ignore"))
+                r"\ [^\\]*", str(agenda_text.encode("ascii", "ignore"))
             )
-            agenda_morning = check_output(
-                ["gcalcli", "agenda", midnight_tomorrow, midday_tomorrow]
-            ).decode()
-            agenda_morning = re.findall(
-                r"\d*:[^\\]*", str(agenda_morning.encode("ascii", "ignore"))
+            agenda_tomorrow = re.findall(
+                r"\ [^\\]*", str(agenda_tomorrow.encode("ascii", "ignore"))
             )
             # Remove my sleep entries
             for event in agenda_text:
                 if event[-5:] == "Sleep":
                     agenda_text.remove(event)
-            for event in agenda_morning:
+            for event in agenda_tomorrow:
                 if event[-5:] == "Sleep":
                     agenda_text.remove(event)
 
             # Remove duplicate entries
-            for duplicate in set(agenda_morning).intersection(agenda_text):
-                agenda_morning.remove(duplicate)
+            for duplicate in set(agenda_tomorrow).intersection(agenda_text):
+                agenda_tomorrow.remove(duplicate)
 
             # Pad entries to be the same length
             try:
                 morning_max = (
-                    len(max(agenda_morning, key=len))) + 1
+                    len(max(agenda_tomorrow, key=len))) + 1
             except:
                 morning_max = 0
 
@@ -200,20 +197,20 @@ def change_wallpaper(
 
             # Zero pad single digit times
             agenda_text_padded = []
-            agenda_morning_padded = []
+            agenda_tomorrow_padded = []
             for event in agenda_text:
-                if event[6] == " ":
-                    event = "0" + event
+                if event[2] == " " and event[8] == "m":
+                    event = "  0" + event[3:]
                 event = event.ljust(longest_string_length, ".")
                 agenda_text_padded.append(event)
-            for event in agenda_morning:
-                if event[6] == " ":
-                    event = "0" + event
+            for event in agenda_tomorrow:
+                if event[2] == " " and event[8] == "m":
+                    event = "  0" + event[3:]
                 event = event.ljust(longest_string_length, ".")
-                agenda_morning_padded.append(event)
+                agenda_tomorrow_padded.append(event)
 
             # Concatonate into one long string
-            if len(agenda_morning_padded) > 0:
+            if len(agenda_tomorrow_padded) > 0:
                 quote_lines = (
                     quote_lines
                     + [" "]
@@ -229,7 +226,7 @@ def change_wallpaper(
                         .strftime("%a %d/%m/%Y")
                         .ljust(longest_string_length)
                     ]
-                    + agenda_morning_padded
+                    + agenda_tomorrow_padded
                 )
             elif len(agenda_text_padded) > 0:
                 quote_lines = (
@@ -243,7 +240,7 @@ def change_wallpaper(
                 quote_lines = quote_lines
         else:
             agenda_text = []
-            agenda_morning = []
+            agenda_tomorrow = []
 
     # get a drawing context
     draw = ImageDraw.Draw(text_image)
