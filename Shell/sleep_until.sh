@@ -9,7 +9,7 @@ nowtime=$(date -d now +%s)
 time_ts=$(echo "$shutdowntime - $nowtime" | bc)
 
 while [ $time_ts -gt 0 ]; do
-    echo -ne "Shutdown will occur in $(date -u -d @$time_ts +'%T')......\033[0K\r"
+    echo -ne "Sleep will end in $(date -u -d @$time_ts +'%T')......\033[0K\r"
     sleep 1
     ((time_ts--))
 done
