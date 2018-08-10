@@ -255,7 +255,8 @@ def change_wallpaper(
 
     # get average background image brightness by converting to greyscale and getting RMS
     mean_brightness = int(ImageStat.Stat(base_image.convert("L")).mean[0])
-    square_brightness = int(255 - mean_brightness)
+    #square_brightness = int(255 - mean_brightness)
+    square_brightness = int(100 + mean_brightness)
 
     # draw text
     for line in quote_lines:
@@ -274,7 +275,7 @@ def change_wallpaper(
     y_loc = base_image.size[1] / 2 - (quote_size_y / 2)
     draw.rectangle(
         (
-            (x_loc - quote_size_x * 1.15),
+            (x_loc - quote_size_x * 1.5),
             y_loc - 10,
             x_loc - 10,
             y_loc + quote_size_y + 10,
