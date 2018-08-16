@@ -19,7 +19,7 @@ case "$x" in
 	mpv) clear; mpv --ytdl-format="best[height<=720]" --quiet "$1" 2&>/dev/null & disown ;;
 	mpv_loop) clear; mpv -quiet --loop "$1" 2&>/dev/null & disown ;;
 	firefox) clear; firefox "$1" 2&>/dev/null & disown ;;
-	feh) clear; rm -rf /tmp/images/* 2>&1 /dev/null; gallery-dl --dest /tmp/images "$1" >/dev/null 2>&1 ; feh --scale-down --recursive /tmp/images --title "%S %n" & disown;;
+	feh) clear; feh --scale-down --recursive "$1" --title "%S %n" & disown;;
     paragraph) clear; rm -f /tmp/para* > /dev/null 2>&1; python $HOME/Git/OneOffCodes/Python/paragraph_scraper/paragraph_scraper.py --url "$1"; gvim /tmp/para.txt ;;
     ytdl) clear; youtube-dl "$1" > /dev/null 2>&1 & ;;
     *) "$x" "$1"
