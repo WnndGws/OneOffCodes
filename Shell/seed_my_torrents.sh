@@ -3,5 +3,5 @@
 
 for file in $(fd . /home/wynand/wynZFS/Media/ --hidden -e torrent); do
     directory=$(dirname $file)
-    aria2c --bt-detach-seed-only --bt-seed-unverified $file --dir $directory & disown
+    aria2c --bt-detach-seed-only --bt-seed-unverified $file --dir $directory > /dev/null 2>&1 & disown
 done
