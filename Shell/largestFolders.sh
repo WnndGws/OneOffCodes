@@ -13,4 +13,4 @@ find $pat -maxdepth 1 -type d -print0 |
     tail -n +2 |
     cut -f2 |
     sed "s/'/\\\'/" |
-    xargs -I{} du -sh {}
+    xargs -I{} ncdu --color dark -rr -x -f - {}
