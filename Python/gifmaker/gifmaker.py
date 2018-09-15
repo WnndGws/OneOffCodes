@@ -17,12 +17,12 @@ def run_make_gif():
 
 @run_make_gif.command()
 @click.option(
-    "--start", default="00:00:00", help="Timestamp where to start gif. DEFAULT=00:00:00"
+    "--start", default="00:00:00", help="Timestamp where to start gif. DEFAULT=00:00:00", prompt=True
 )
 @click.option(
-    "--duration", default=10, help="Duration of the gif in seconds. DEFAULT=10"
+    "--duration", default=10, help="Duration of the gif in seconds. DEFAULT=10", prompt=True
 )
-@click.option("--video", help="Path to input video")
+@click.option("--video", help="Path to input video", prompt=True)
 @click.option("--sound", is_flag=True, help="Creates the webm with sound enabled")
 def make_gif(start, duration, sound, video):
     ## Set file name and path
