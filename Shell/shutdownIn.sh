@@ -25,5 +25,4 @@ done
 ## Countdown in terminal
 
 systemctl poweroff
-#sudo shutdown
 ## Had to set linux to run shutdown without confirmation
