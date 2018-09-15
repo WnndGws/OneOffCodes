@@ -7,7 +7,7 @@ from subprocess import Popen, DEVNULL
 def main():
     message = get_message()
     url = message.get('url')
-    args = ['mpv', '--loop', '--no-terminal', '--', url]
+    args = ['mpv', '--no-terminal', '--', url]
     Popen(args, stdin=DEVNULL, stdout=DEVNULL, stderr=DEVNULL)
     # Need to respond something to avoid "Error: An unexpected error occurred"
     # in Browser Console.
