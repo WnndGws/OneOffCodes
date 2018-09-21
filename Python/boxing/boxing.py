@@ -15,6 +15,7 @@ import bs4
 import re
 import html5lib
 import urllib
+from unidecode import unidecode
 
 
 def get_credentials():
@@ -34,7 +35,7 @@ def get_credentials():
     flags = None
 
     home_dir = os.path.expanduser("~")
-    credential_dir = os.path.join(home_dir, ".credentials")
+    credential_dir = os.path.join(home_dir, ".config/credentials")
     if not os.path.exists(credential_dir):
         os.makedirs(credential_dir)
     credential_path = os.path.join(credential_dir, "boxing_saved_credentials.json")
@@ -68,10 +69,11 @@ def scrape_wikitables():
             text = [i.text for i in data]
             for boxer_name in range(len(text)):
                 if len(text[boxer_name]) > 3:
-                    boxer_name = re.findall(r"\S{3,}\ .[^\ \(]+", text[boxer_name])
+                    boxer_name = text[boxer_name].rstrip('\n')
+                    boxer_name = re.findall(r"\S{3,}\ .[^\ \(]+", boxer_name)
                     if len(boxer_name) > 0:
-                        if boxer_name[0] not in unique_boxers:
-                            unique_boxers.append(boxer_name[0])
+                        if unidecode(boxer_name[0]) not in unique_boxers:
+                            unique_boxers.append(unidecode(boxer_name[0]))
 
     unique_boxers.sort()
     return unique_boxers
