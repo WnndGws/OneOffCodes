@@ -198,7 +198,7 @@ def main(start, months, verbose, calendar):
                     "dateTime": f'{datetime.datetime.strftime(parse(event["start"]["dateTime"]) + datetime.timedelta(days=1), "%Y-%m-%dT19:00:00%z")}'
                 }
                 reminderEvent["end"] = {
-                    "dateTime": f'{datetime.datetime.strftime(parse(event["end"]["dateTime"]) + datetime.timedelta(days=1), "%Y-%m-%dT20:00:00%z")}'
+                    "dateTime": f'{datetime.datetime.strftime(parse(event["start"]["dateTime"]) + datetime.timedelta(days=1), "%Y-%m-%dT20:00:00%z")}'
                 }
                 reminderEvent["description"] = f'{event["description"]}'
                 service.events().insert(
