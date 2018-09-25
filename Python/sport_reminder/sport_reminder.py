@@ -1,16 +1,17 @@
 #!/usr/bin/python3
 ## A python script to add events to my calendar to remind me to watch sport that happened overnight
 
-# Step 01: Get credentials
-# Step 02: Define timeline (before and after)
-# Step 03: add verbose and calendar flag to be able to output to shell or calendar
+## TODO: Handle events without description/location etc
 
+import calendar
+import httplib2
 import os
 from apiclient import discovery
 from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
 import datetime
+from dateutil.parser import parse
 import click
 
 def get_credentials():
@@ -91,9 +92,10 @@ def add_months(sourcedate, months):
     "--months", default=1, help="Number of months to add to start date (DEFAULT=1)"
 )
 @click.option("--verbose", is_flag=True, help="Will print out the results")
-@click.option("--calendar", is_flag=True, help="Add results to your calendar")
-def main(start, months, verbose, calendar):
-    """Scrapes calendar of all fights and lists those containing any of the current top fighters"""
+@click.option("--add-to-calendar", is_flag=True, help="Add results to your calendar")
+@click.option("--source-calendar-url", help="The URL to the calendar to check. In the form 'aaaaaaaaaaaaa@group.calendar.google.com'", prompt=True)
+def main(start, months, verbose, add_to_calendar, source_calendar_url):
+    """Scrapes source calendar and adds reminders to calendar to watch sport that occured overnight"""
 
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
@@ -106,7 +108,7 @@ def main(start, months, verbose, calendar):
     eventsResult = (
         service.events()
         .list(
-            calendarId="6souuam0ccm9ht4jlbbp75iua8@group.calendar.google.com",
+            calendarId=source_calendar_url,
             timeMin=start,
             timeMax=end,
             singleEvents=True,
@@ -116,4 +118,24 @@ def main(start, months, verbose, calendar):
     )
     events = eventsResult.get("items", [])
 
+    if verbose:
+        for event in events:
+            eventTitle = event["summary"]
+            click.echo(f'{eventTitle}')
 
+    if add_to_calendar:
+        for event in events:
+            reminderEvent = {}
+            for item in ["summary", "location", "description", "start", "end"]:
+                reminderEvent[item] = event[item]
+
+            reminderEvent["summary"] = f'REMINDER: {event["summary"]}'
+            reminderEvent["start"] = {"dateTime": f'{datetime.datetime.strftime(parse(event["start"]["dateTime"]) + datetime.timedelta(days=1), "%Y-%m-%dT19:00:00%z")}'}
+            reminderEvent["end"] = {"dateTime": f'{datetime.datetime.strftime(parse(event["start"]["dateTime"]) + datetime.timedelta(days=1), "%Y-%m-%dT20:00:00%z")}'}
+            service.events().insert(
+                calendarId="u7ugbsmj7rq7rcopeli5q7vmgc@group.calendar.google.com",
+                body=reminderEvent).execute()
+            click.echo(f"Adding {reminderEvent['summary']} to calendar......")
+
+if __name__ == "__main__":
+    main()
