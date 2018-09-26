@@ -24,14 +24,18 @@ chmod +x script.py
     * ARCHIVED: Written to determine when to give students a new clue about puzzle
 #### dustin_off_the_degree
 #### ff2mpv.py
+    * Used to open videos from Firefox in mpv [Source](https://github.com/woodruffw/ff2mpv)
 #### file_lock
 #### gifmaker
+    * Make a webm video/gif out of a source video and uploads it to GoogleDrive
 #### i3_alternating_windows
 #### image_scraper
 #### myman
+    * Check tldr for a program, and if not there then show manual or --help for it
 #### offlineimap
 #### only_give_code_on_fridays
 #### paragraph_scraper
+    * Checks url and scrapes the paragraph tags
 #### qr_codes
 #### reboot_router
 #### reddit_maker
