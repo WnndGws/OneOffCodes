@@ -76,10 +76,11 @@ ___
 * **sport_downloader**
 ___
 * **umpv**
-    * Creates a mpv playlist from urls/files
+    * Creates a mpv playlist from urls/files [Original Source. Heavily edited](https://github.com/mpv-player/mpv/blob/master/TOOLS/umpv)
 ___
 * **umpv_180p**
-    * Creates a mpv playlist from urls/files with all videos being 180p
+    * Creates a mpv playlist from urls/files with all videos being 180p [Original Source. Heavily edited](https://github.com/mpv-player/mpv/blob/master/TOOLS/umpv)
+
 ___
 * **wallpaper_maker**
     * My biggest script to scrape bing wallpaper and add quotes over it and set it as the wallpaper
