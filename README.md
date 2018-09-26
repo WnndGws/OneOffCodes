@@ -29,6 +29,7 @@ ___
 ___
 
 * **dustin_off_the_degree**
+    * __ARCHIVED__ Written to extract dustin_off_the_degree from AtheistNomads podcast
 ___
 * **ff2mpv.py**
     * Used to open videos from Firefox in mpv [Source](https://github.com/woodruffw/ff2mpv)
@@ -43,6 +44,7 @@ ___
 * **i3_alternating_windows**
 ___
 * **image_scraper**
+    * Checks url and scrapes the image tags
 ___
 * **myman**
     * Check tldr for a program, and if not there then show manual or --help for it
@@ -63,6 +65,7 @@ ___
 * **reddit_maker**
 ___
 * **science_or_fiction_scraper**
+    * Scrapes science_or_fiction from the SGU podcast website
 ___
 * **Screenshots**
 ___
@@ -73,10 +76,13 @@ ___
 * **sport_downloader**
 ___
 * **umpv**
+    * Creates a mpv playlist from urls/files
 ___
 * **umpv_180p**
+    * Creates a mpv playlist from urls/files with all videos being 180p
 ___
 * **wallpaper_maker**
+    * My biggest script to scrape bing wallpaper and add quotes over it and set it as the wallpaper
 ___
  
 ### Shell
