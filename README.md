@@ -17,25 +17,25 @@ chmod +x script.py
 ## Descriptions
 ### Python
 #### bisection_method
-    * ARCHIVED/UNFINSIHED: written to try and solve a quadratic.
+    **ARCHIVED/UNFINSIHED**: written to try and solve a quadratic.
 #### boxing
-    * Written to check list of top boxers, and see when their next fight is
+    Written to check list of top boxers, and see when their next fight is
 #### clue_days
-    * ARCHIVED: Written to determine when to give students a new clue about puzzle
+    **ARCHIVED**: Written to determine when to give students a new clue about puzzle
 #### dustin_off_the_degree
 #### ff2mpv.py
-    * Used to open videos from Firefox in mpv [Source](https://github.com/woodruffw/ff2mpv)
+    Used to open videos from Firefox in mpv [Source](https://github.com/woodruffw/ff2mpv)
 #### file_lock
 #### gifmaker
-    * Make a webm video/gif out of a source video and uploads it to GoogleDrive
+    Make a webm video/gif out of a source video and uploads it to GoogleDrive
 #### i3_alternating_windows
 #### image_scraper
 #### myman
-    * Check tldr for a program, and if not there then show manual or --help for it
+    Check tldr for a program, and if not there then show manual or --help for it
 #### offlineimap
 #### only_give_code_on_fridays
 #### paragraph_scraper
-    * Checks url and scrapes the paragraph tags
+    Checks url and scrapes the paragraph tags
 #### qr_codes
 #### reboot_router
 #### reddit_maker
