@@ -130,10 +130,10 @@ def main(start, months, verbose, add_to_calendar, source_calendar_url):
                 reminderEvent[item] = event[item]
 
             reminderEvent["summary"] = f'REMINDER: {event["summary"]}'
-            reminderEvent["start"] = {"dateTime": f'{datetime.datetime.strftime(parse(event["start"]["dateTime"]) + datetime.timedelta(days=1), "%Y-%m-%dT19:00:00%z")}'}
-            reminderEvent["end"] = {"dateTime": f'{datetime.datetime.strftime(parse(event["start"]["dateTime"]) + datetime.timedelta(days=1), "%Y-%m-%dT20:00:00%z")}'}
+            reminderEvent["start"] = {"dateTime": f'{datetime.datetime.strftime(parse(event["end"]["dateTime"]) + datetime.timedelta(days=0), "%Y-%m-%dT19:00:00%z")}'}
+            reminderEvent["end"] = {"dateTime": f'{datetime.datetime.strftime(parse(event["end"]["dateTime"]) + datetime.timedelta(days=0), "%Y-%m-%dT20:00:00%z")}'}
             service.events().insert(
-                calendarId="u7ugbsmj7rq7rcopeli5q7vmgc@group.calendar.google.com",
+                calendarId="ucuu438np9dss601ueh11d2vp4@group.calendar.google.com",
                 body=reminderEvent).execute()
             click.echo(f"Adding {reminderEvent['summary']} to calendar......")
 
