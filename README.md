@@ -81,56 +81,80 @@ ___
  
 ### Shell
 * **archived**
+    * Folder of archived scripts
 ___
 * **bar_avgtemp.sh**
+    * Outputs avg temp for use in polybar
 ___
 * **bar_pkg.sh**
+    * Checks updateds for display in polybar
 ___
 * **battery_brightness.sh**
+    * Sets laptop display brightness based on how much laptop battery is left
 ___
 * **Compile_Latex.sh**
+    * Compiles latex and shows output
 ___
 * **dmenu_clipboard_management.sh**
+    * Uses dmenu to swap between buffer and clipboard
 ___
 * **dmenu_openwith_prompt.sh**
+    * Script to choose how to open file/link
 ___
 * **dmenu_yn_prompt.sh**
+    * Prompt for yes/no in dmenu
 ___
 * **dotmake.sh**
+    * Series of commands to commit dotfiles using dotgit
 ___
 * **gitPushAll.sh**
+    * Push all mu gits
 ___
 * **gpgEncrypt.sh**
 ___
 * **largestFiles.sh**
+    * Output the largest files in a folder
 ___
 * **largestFolders.sh**
+    * Outputs largest folders in a folder
 ___
 * **lock.sh**
+    * Lock pc
 ___
 * **md2pdf.sh**
+    * Convert markdown to pdf
 ___
 * **ocr_pdf.sh**
+    * OCR a pdf using tesseract
 ___
 * **prettyping**
+    * Use prettyping
 ___
 * **pytest.sh**
+    * Test python files as i write them
 ___
 * **rcp.sh**
+    * Use rsync to copy
 ___
 * **rmv.sh**
+    * Use rsync to move
 ___
 * **Screenshots.sh**
 ___
 * **seed_my_torrents.sh**
+    * Seed all my torrents in the background
 ___
 * **shutdownAt.sh**
+    * Shutdown at time
 ___
 * **shutdownIn.sh**
+    * Shutdown after set amount of time
 ___
 * **sleep_until.sh**
+    * Use rtcwake to sleep until wake time
 ___
 * **textcleaner**
+    * Remove latex cruft
 ___
 
 ## Contributing
