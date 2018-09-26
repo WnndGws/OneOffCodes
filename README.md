@@ -17,11 +17,11 @@ chmod +x script.py
 ## Descriptions
 ### Python
 #### bisection_method
-    __ARCHIVED/UNFINSIHED__: written to try and solve a quadratic.
+    __ARCHIVED/UNFINSIHED__ written to try and solve a quadratic.
 #### boxing
     Written to check list of top boxers, and see when their next fight is
 #### clue_days
-    __ARCHIVED__: Written to determine when to give students a new clue about puzzle
+    __ARCHIVED__ Written to determine when to give students a new clue about puzzle
 #### dustin_off_the_degree
 #### ff2mpv.py
     Used to open videos from Firefox in mpv [Source](https://github.com/woodruffw/ff2mpv)
