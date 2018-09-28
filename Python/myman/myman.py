@@ -6,8 +6,13 @@ import os
 import re
 import subprocess
 
+
+def get_programs(ctx, args, incomplete):
+    programs = subprocess.run(["pacman", "-Qqe"], stdout=subprocess.PIPE).stdout.decode('utf-8').split("\n")
+    return [k for k in programs if incomplete in k]
+
 @click.command()
-@click.option("--program", help="The program who's manual we want to read")
+@click.argument("program", type=click.STRING, autocompletion=get_programs)
 def try_tldr(program):
     """Checks to see if there is a tldr"""
     success = False
