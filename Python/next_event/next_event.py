@@ -44,19 +44,24 @@ def get_credentials():
     return credentials
 
 def get_next_event():
+    """ Loops to find how many calendars, then gets next event for each calendar, but only keeps the next one
+    """
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     service = discovery.build("calendar", "v3", http=http)
 
+    # 'Z' needed for calendar API
     now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
 
-    possible_events = []
+    # TODO: add click option for this
     tz = timezone('Australia/Perth')
+    # Need to change times to non-naive
     event_time_low = tz.localize(datetime.datetime.now() + datetime.timedelta(days=2))
     event_time_now = tz.localize((datetime.datetime.now()))
     page_token = None
     while True:
         calendar_list = service.calendarList().list(pageToken=page_token).execute()
+        # Get next event in each calendar
         for calendar_list_entry in calendar_list['items']:
             eventsResult = (
                 service.events()
