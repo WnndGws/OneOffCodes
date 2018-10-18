@@ -57,6 +57,7 @@ def get_next_event():
     tz = timezone('Australia/Perth')
     # Need to change times to non-naive
     event_time_low = tz.localize(datetime.datetime.now() + datetime.timedelta(days=2))
+    event_time_high = tz.localize(datetime.datetime.now() + datetime.timedelta(hours=24))
     event_time_now = tz.localize((datetime.datetime.now()))
     page_token = None
     while True:
@@ -83,15 +84,20 @@ def get_next_event():
                 except KeyError:
                     event_time = event[0]['start']['date']
                     event_time = tz.localize(datetime.datetime.strptime(event_time, '%Y-%m-%d'))
-                if event_time < event_time_low and event_time > event_time_now:
+                if event_time < event_time_low and event_time > event_time_now and event_time < event_time_high:
                     event_time_low = event_time
                     event_title = event[0]['summary']
+                else:
+                    break
         page_token = calendar_list.get('nextPageToken')
         if not page_token:
             break
 
     event_time_low = event_time_low.strftime('%H:%M')
-    print(f'{event_time_low} {event_title}')
+    try:
+        print(f'{event_time_low} {event_title}')
+    except:
+        pass
 
 if __name__ == "__main__":
     get_next_event()
