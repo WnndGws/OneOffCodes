@@ -43,6 +43,48 @@ def get_credentials():
         print("Storing credentials to " + credential_path)
     return credentials
 
+def print_events():
+    credentials = get_credentials()
+    http = credentials.authorize(httplib2.Http())
+    service = discovery.build("calendar", "v3", http=http)
+
+    # 'Z' needed for calendar API
+    now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+
+    # TODO: add click option for this
+    tz = timezone('Australia/Perth')
+    # Need to change times to non-naive
+    event_time_low = tz.localize(datetime.datetime.now() + datetime.timedelta(days=2))
+    event_time_high = tz.localize(datetime.datetime.now() + datetime.timedelta(hours=24))
+    event_time_now = tz.localize((datetime.datetime.now()))
+    page_token = None
+
+    calendar_list = service.calendarList().list(pageToken=page_token).execute()
+    # Get next event in each calendar
+    for calendar_list_entry in calendar_list['items']:
+        eventsResult = (
+            service.events()
+            .list(
+                calendarId=calendar_list_entry['id'],
+                timeMin=now,
+                singleEvents=True,
+                orderBy="startTime",
+                maxResults=1,
+            )
+            .execute()
+        )
+        event = eventsResult.get("items", [])
+        if event != []:
+            event_title = event[0]['summary']
+            try:
+                event_time = event[0]['start']['dateTime']
+                event_time = datetime.datetime.strptime(event_time, '%Y-%m-%dT%H:%M:%S%z')
+            except KeyError:
+                event_time = event[0]['start']['date']
+                event_time = tz.localize(datetime.datetime.strptime(event_time, '%Y-%m-%d'))
+
+            print(f"{event_time}: {event_title}")
+
 def get_next_event():
     """ Loops to find how many calendars, then gets next event for each calendar, but only keeps the next one
     """
@@ -60,38 +102,37 @@ def get_next_event():
     event_time_high = tz.localize(datetime.datetime.now() + datetime.timedelta(hours=24))
     event_time_now = tz.localize((datetime.datetime.now()))
     page_token = None
-    while True:
-        calendar_list = service.calendarList().list(pageToken=page_token).execute()
-        # Get next event in each calendar
-        for calendar_list_entry in calendar_list['items']:
-            eventsResult = (
-                service.events()
-                .list(
-                    calendarId=calendar_list_entry['id'],
-                    timeMin=now,
-                    singleEvents=True,
-                    orderBy="startTime",
-                    maxResults=1,
-                )
-                .execute()
+
+    calendar_list = service.calendarList().list(pageToken=page_token).execute()
+    # Get next event in each calendar
+    for calendar_list_entry in calendar_list['items']:
+        eventsResult = (
+            service.events()
+            .list(
+                calendarId=calendar_list_entry['id'],
+                timeMin=now,
+                singleEvents=True,
+                orderBy="startTime",
+                maxResults=1,
             )
-            #possible_events.append(eventsResult.get("items", []))
-            event = eventsResult.get("items", [])
-            if event != []:
-                try:
-                    event_time = event[0]['start']['dateTime']
-                    event_time = datetime.datetime.strptime(event_time, '%Y-%m-%dT%H:%M:%S%z')
-                except KeyError:
-                    event_time = event[0]['start']['date']
-                    event_time = tz.localize(datetime.datetime.strptime(event_time, '%Y-%m-%d'))
-                if event_time < event_time_low and event_time > event_time_now and event_time < event_time_high:
-                    event_time_low = event_time
-                    event_title = event[0]['summary']
-                else:
-                    break
-        page_token = calendar_list.get('nextPageToken')
-        if not page_token:
-            break
+            .execute()
+        )
+        #possible_events.append(eventsResult.get("items", []))
+        event = eventsResult.get("items", [])
+        if event != []:
+            try:
+                event_time = event[0]['start']['dateTime']
+                event_time = datetime.datetime.strptime(event_time, '%Y-%m-%dT%H:%M:%S%z')
+            except KeyError:
+                event_time = event[0]['start']['date']
+                event_time = tz.localize(datetime.datetime.strptime(event_time, '%Y-%m-%d'))
+            if event_time < event_time_low and event_time > event_time_now and event_time < event_time_high:
+                event_time_low = event_time
+                event_title = event[0]['summary']
+
+    #page_token = calendar_list.get('nextPageToken')
+    #if not page_token:
+        #break
 
     event_time_low = event_time_low.strftime('%H:%M')
     try:
@@ -101,3 +142,4 @@ def get_next_event():
 
 if __name__ == "__main__":
     get_next_event()
+    #print_events()
