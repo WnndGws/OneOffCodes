@@ -69,21 +69,28 @@ def print_events():
                 timeMin=now,
                 singleEvents=True,
                 orderBy="startTime",
-                maxResults=1,
+                maxResults=2,
             )
             .execute()
         )
         event = eventsResult.get("items", [])
-        if event != []:
-            event_title = event[0]['summary']
-            try:
-                event_time = event[0]['start']['dateTime']
-                event_time = datetime.datetime.strptime(event_time, '%Y-%m-%dT%H:%M:%S%z')
-            except KeyError:
-                event_time = event[0]['start']['date']
-                event_time = tz.localize(datetime.datetime.strptime(event_time, '%Y-%m-%d'))
 
-            print(f"{event_time}: {event_title}")
+        i = 0
+        size_of_list = len(event)
+        #breakpoint()
+        while i < size_of_list:
+            if event != []:
+                event_title = event[i]['summary']
+                try:
+                    event_time = event[i]['start']['dateTime']
+                    event_time = datetime.datetime.strptime(event_time, '%Y-%m-%dT%H:%M:%S%z')
+                except KeyError:
+                    event_time = event[i]['start']['date']
+                    event_time = tz.localize(datetime.datetime.strptime(event_time, '%Y-%m-%d'))
+
+                print(f"{event_time}: {event_title}")
+
+            i += 1
 
 def get_next_event():
     """ Loops to find how many calendars, then gets next event for each calendar, but only keeps the next one
@@ -113,22 +120,31 @@ def get_next_event():
                 timeMin=now,
                 singleEvents=True,
                 orderBy="startTime",
-                maxResults=1,
+                maxResults=2,
             )
             .execute()
         )
         #possible_events.append(eventsResult.get("items", []))
         event = eventsResult.get("items", [])
-        if event != []:
-            try:
-                event_time = event[0]['start']['dateTime']
-                event_time = datetime.datetime.strptime(event_time, '%Y-%m-%dT%H:%M:%S%z')
-            except KeyError:
-                event_time = event[0]['start']['date']
-                event_time = tz.localize(datetime.datetime.strptime(event_time, '%Y-%m-%d'))
-            if event_time < event_time_low and event_time > event_time_now and event_time < event_time_high:
-                event_time_low = event_time
-                event_title = event[0]['summary']
+
+        #breakpoint()
+
+        i = 0
+        size_of_list = len(event)
+        while i < size_of_list:
+            if event != []:
+                try:
+                    event_time = event[0]['start']['dateTime']
+                    event_time = datetime.datetime.strptime(event_time, '%Y-%m-%dT%H:%M:%S%z')
+                except KeyError:
+                    event_time = event[0]['start']['date']
+                    event_time = tz.localize(datetime.datetime.strptime(event_time, '%Y-%m-%d'))
+                if event_time < event_time_low and event_time > event_time_now and event_time < event_time_high:
+                    event_time_low = event_time
+                    event_title = event[0]['summary']
+                elif event_time == event_time_low:
+                    event_title = event[0]['summary'][:9] + " Multiple events"
+            i += 1
 
     #page_token = calendar_list.get('nextPageToken')
     #if not page_token:
