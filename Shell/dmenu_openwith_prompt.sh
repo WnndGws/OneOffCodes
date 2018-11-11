@@ -21,7 +21,7 @@ case "$x" in
 	firefox) clear; firefox "$1" 2&>/dev/null & disown ;;
 	feh) clear; feh --scale-down --recursive "$1" --title "%S %n" & disown;;
     paragraph) clear; rm -f /tmp/para* > /dev/null 2>&1; python $HOME/Git/OneOffCodes/Python/paragraph_scraper/paragraph_scraper_2.0.py --url "$1"; gvim /tmp/para.txt ;;
-    speedread) clear; rm -f /tmp/para* > /dev/null 2>&1; python $HOME/Git/OneOffCodes/Python/paragraph_scraper/paragraph_scraper_2.0.py --url "$1"; kitty --hold -e speedread -w 380 /tmp/para.txt ;;
+    speedread) clear; rm -f /tmp/para* > /dev/null 2>&1; python $HOME/Git/OneOffCodes/Python/paragraph_scraper/paragraph_scraper_2.0.py --url "$1"; kitty --hold -e speedread -w 380 /tmp/para.txt & ;;
     ytdl) clear; youtube-dl "$1" > /dev/null 2>&1 & ;;
     *) "$x" "$1"
 esac
