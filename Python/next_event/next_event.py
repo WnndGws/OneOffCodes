@@ -134,16 +134,16 @@ def get_next_event():
         while i < size_of_list:
             if event != []:
                 try:
-                    event_time = event[0]['start']['dateTime']
+                    event_time = event[i]['start']['dateTime']
                     event_time = datetime.datetime.strptime(event_time, '%Y-%m-%dT%H:%M:%S%z')
                 except KeyError:
-                    event_time = event[0]['start']['date']
+                    event_time = event[i]['start']['date']
                     event_time = tz.localize(datetime.datetime.strptime(event_time, '%Y-%m-%d'))
                 if event_time < event_time_low and event_time > event_time_now and event_time < event_time_high:
                     event_time_low = event_time
-                    event_title = event[0]['summary']
+                    event_title = event[i]['summary']
                 elif event_time == event_time_low:
-                    event_title = event[0]['summary'][:9] + " Multiple events"
+                    event_title = event[i]['summary'][:9] + " Multiple events"
             i += 1
 
     #page_token = calendar_list.get('nextPageToken')
