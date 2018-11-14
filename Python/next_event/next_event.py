@@ -106,6 +106,7 @@ def get_next_event():
     tz = timezone('Australia/Perth')
     # Need to change times to non-naive
     event_time_low = tz.localize(datetime.datetime.now() + datetime.timedelta(days=2))
+    event_end_low = event_time_low
     event_time_high = tz.localize(datetime.datetime.now() + datetime.timedelta(hours=24))
     event_time_now = tz.localize((datetime.datetime.now()))
     page_token = None
@@ -136,22 +137,26 @@ def get_next_event():
                 try:
                     event_time = event[i]['start']['dateTime']
                     event_time = datetime.datetime.strptime(event_time, '%Y-%m-%dT%H:%M:%S%z')
+                    event_end = event[i]['end']['dateTime']
+                    event_end = datetime.datetime.strptime(event_end, '%Y-%m-%dT%H:%M:%S%z')
+                    if event_end < event_end_low and event_time < event_time_high:
+                        event_end_low = event_end
+                        event_time_low = event_time
+                        event_title = event[i]['summary']
+                        if event_time < event_time_now < event_end:
+                            i = len(event)
+                    elif event_time == event_time_low:
+                        event_title = event[i]['summary'][:9] + " Multiple events"
                 except KeyError:
-                    event_time = event[i]['start']['date']
-                    event_time = tz.localize(datetime.datetime.strptime(event_time, '%Y-%m-%d'))
-                if event_time < event_time_low and event_time > event_time_now and event_time < event_time_high:
-                    event_time_low = event_time
-                    event_title = event[i]['summary']
-                elif event_time == event_time_low:
-                    event_title = event[i]['summary'][:9] + " Multiple events"
+                    break
+
             i += 1
 
-    #page_token = calendar_list.get('nextPageToken')
-    #if not page_token:
-        #break
-
-    event_time_low = event_time_low.strftime('%H:%M')
     try:
+        if event_time_low < event_time_now < event_end:
+            event_time_low = "NOW:"
+        else:
+            event_time_low = event_time_low.strftime('%H:%M')
         print(f'{event_time_low} {event_title}')
     except:
         pass
