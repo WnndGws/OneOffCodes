@@ -23,9 +23,9 @@ sed -i '/xf86-.*/d' $HOME/.config/installed_packages/packages_unique.txt
 rm $HOME/.config/installed_packages/explicit_packages.txt
 
 echo "Updating dotfiles (may take some time)....."
-dotgit decrypt
+#dotgit decrypt
 dotgit update $computer
-dotgit encrypt
+#dotgit encrypt
 dotgit generate
 
 git add .
