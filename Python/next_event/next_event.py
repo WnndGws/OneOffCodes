@@ -145,7 +145,7 @@ def get_next_event(print_all, location, allday_events):
             event_time_low = event_time_low.strftime('%H:%M')
 
         if len(event_title_low) > 25:
-            event_title_low = event_title_low[:22] + '...'
+            event_title_low = event_title_low[:22] + '……'
 
         print(f'{event_time_low} {event_title_low}')
     except:
