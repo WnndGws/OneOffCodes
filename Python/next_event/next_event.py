@@ -6,12 +6,6 @@ from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
 
-import click
-import datetime
-from apiclient import discovery
-import httplib2
-from pytz import timezone
-
 def get_credentials():
     """Gets valid user credentials from storage.
 
@@ -44,6 +38,13 @@ def get_credentials():
         print("Storing credentials to " + credential_path)
     return credentials
 
+import click
+import datetime
+from apiclient import discovery
+import httplib2
+from pytz import timezone
+import re
+
 @click.command()
 @click.option(
     '--print-all',
@@ -71,7 +72,10 @@ def get_next_event(print_all, location, allday_events):
     service = discovery.build("calendar", "v3", http=http)
 
     # 'Z' needed for calendar API
-    now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+    #now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+    now = datetime.datetime.now().isoformat() + 'Z' # 'Z' indicates UTC time
+    today = datetime.date.today().isoformat()
+    today = datetime.datetime.strptime(today, "%Y-%m-%d")
 
     tz = timezone(location)
     # Need to change times to non-naive
@@ -125,7 +129,7 @@ def get_next_event(print_all, location, allday_events):
                         event_time = datetime.datetime.strptime(event_time, '%Y-%m-%d')
                         event_end = tz.localize(event_time)
                         event_title = event[i]['summary']
-                        if event_title_low is None:
+                        if event_title_low is None and event_time == today:
                             event_title_low = event_title
                             event_time_low = tz.localize(event_time)
                         if print_all:
@@ -143,6 +147,10 @@ def get_next_event(print_all, location, allday_events):
             event_time_low = "Now:"
         else:
             event_time_low = event_time_low.strftime('%H:%M')
+
+        if 'Forecast' in event_title_low:
+            forecast = re.findall(r'[0-9](?:(?!\)).)*', event_title_low)
+            event_title_low = 'Forecast ' + forecast[0].replace(' | ', ' … ')
 
         if len(event_title_low) > 25:
             event_title_low = event_title_low[:22] + '……'
