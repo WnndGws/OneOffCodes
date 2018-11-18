@@ -101,7 +101,6 @@ else:
             "--demuxer-thread=yes",
             "--demuxer-readahead-secs=180",
             "--ytdl-format=best",
-            "--volume=130",
             "--input-file=" + FIFO,
             "--",
         ]
