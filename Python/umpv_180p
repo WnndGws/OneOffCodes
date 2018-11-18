@@ -101,7 +101,6 @@ else:
             "--force-window",
             "--demuxer-thread=yes",
             "--demuxer-readahead-secs=180",
-            "--volume=130",
             "--input-file=" + FIFO,
             "--",
         ]
