@@ -1,13 +1,17 @@
 #!/usr/bin/python3
-## Written to add calendar events from the cli
-## TODO: add a list-calendars option
+'''Written to add calendar events from the cli
+    TODO: add a list-calendars option'''
 
 import os
+import datetime
+import sys
+import httplib2
+import click
 from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
-import httplib2
 from apiclient import discovery
+from pytz import timezone
 
 def get_credentials():
     """Gets valid user credentials from storage.
@@ -20,9 +24,9 @@ def get_credentials():
     """
 
     # If modifying these scopes, delete your previously saved credentials
-    SCOPES = "https://www.googleapis.com/auth/calendar"
-    CLIENT_SECRET_FILE = "calcadd_client_secrets.json"
-    APPLICATION_NAME = "Next Event"
+    scopes = "https://www.googleapis.com/auth/calendar"
+    client_secret_file = "calcadd_client_secrets.json"
+    application_name = "Next Event"
     flags = None
 
     home_dir = os.path.expanduser("~")
@@ -30,45 +34,61 @@ def get_credentials():
     if not os.path.exists(credential_dir):
         os.makedirs(credential_dir)
     credential_path = os.path.join(credential_dir, "calcadd_saved_credentials.json")
-    CLIENT_SECRET_FILE = os.path.join(credential_dir, CLIENT_SECRET_FILE)
+    client_secret_file = os.path.join(credential_dir, client_secret_file)
 
     store = Storage(credential_path)
     credentials = store.get()
     if not credentials or credentials.invalid:
-        flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE, SCOPES)
-        flow.user_agent = APPLICATION_NAME
+        flow = client.flow_from_clientsecrets(client_secret_file, scopes)
+        flow.user_agent = application_name
         credentials = tools.run_flow(flow, store, flags)
         print("Storing credentials to " + credential_path)
     return credentials
 
 
-import click
-import datetime
-from pytz import timezone
-import sys
+CREDENTIALS = get_credentials()
+HTTP = CREDENTIALS.authorize(httplib2.Http())
+SERVICE = discovery.build("calendar", "v3", http=HTTP)
+PAGE_TOKEN = None
 
 def validate_calendar(calendar):
-    credentials = get_credentials()
-    http = credentials.authorize(httplib2.Http())
-    service = discovery.build("calendar", "v3", http=http)
-    page_token = None
+    '''Function to check if input calendar string is a calendar the api has access to'''
+
     calendar_id = None
 
-    calendar_list = service.calendarList().list(pageToken=page_token).execute()
+    calendar_list = SERVICE.calendarList().list(pageToken=PAGE_TOKEN).execute()
 
     for calendar_list_entry in calendar_list['items']:
         if calendar in calendar_list_entry['summary']:
-            calendar_name = calendar_list_entry['summary']
             calendar_id = calendar_list_entry['id']
 
     if calendar_id is None:
-        print ("No calendar found with that name. Names are case sensitive")
+        print("No calendar found with that name. Names are case sensitive")
         sys.exit(0)
     else:
         return calendar_id
 
+def print_calendars(ctx, param, value):
+    '''Function to print all avaliable calendars'''
+
+    #Check if value is passed in, otherwise will always run
+    if not value or ctx.resilient_parsing:
+        return
+
+    #Actual print function
+    calendar_list = SERVICE.calendarList().list(pageToken=PAGE_TOKEN).execute()
+    for calendar_list_entry in calendar_list['items']:
+        print(calendar_list_entry["summary"])
+    sys.exit(0)
 
 @click.command()
+@click.option(
+    '--print-calendars',
+    is_flag=True,
+    callback=print_calendars,
+    expose_value=False,
+    is_eager=True
+)
 @click.option(
     '--calendar',
     prompt=True,
@@ -106,24 +126,19 @@ def validate_calendar(calendar):
     '--end',
     prompt=True,
     type=click.DateTime(formats=['%Y-%m-%d %H:%M']),
-    default=datetime.datetime.strftime(datetime.datetime.now() + datetime.timedelta(hours = 1), "%Y-%m-%d %H:%M"),
+    default=datetime.datetime.strftime(datetime.datetime.now()\
+        + datetime.timedelta(hours=1), "%Y-%m-%d %H:%M"),
     required=True,
     help='End time of event in format "%Y-%m-%d %H:%M" [Default: Now + 1hr]'
 )
 def calcadd(calendar, title, location, description, start, end):
-
-    credentials = get_credentials()
-    http = credentials.authorize(httplib2.Http())
-    service = discovery.build("calendar", "v3", http=http)
-    page_token = None
-
     cal_id = validate_calendar(calendar)
     event_add = {}
 
-    tz = timezone('Australia/Perth')
-    start = tz.localize(start)
+    time_zone = timezone('Australia/Perth')
+    start = time_zone.localize(start)
     start = datetime.datetime.strftime(start, '%Y-%m-%dT%H:%M:00%z')
-    end = tz.localize(end)
+    end = time_zone.localize(end)
     end = datetime.datetime.strftime(end, '%Y-%m-%dT%H:%M:00%z')
 
     event_add['summary'] = title
@@ -134,11 +149,11 @@ def calcadd(calendar, title, location, description, start, end):
 
     #breakpoint()
 
-    service.events().insert(
+    SERVICE.events().insert(
         calendarId=cal_id,
         body=event_add).execute()
 
-    print (f"Adding {title} to calendar.....")
+    print(f"Adding {title} to calendar.....")
 
 if __name__ == "__main__":
     calcadd()
