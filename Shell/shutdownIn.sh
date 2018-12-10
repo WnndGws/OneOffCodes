@@ -24,5 +24,6 @@ while [ $time_ts -gt 0 ]; do
 done
 ## Countdown in terminal
 
+killall -9 aria2c
 systemctl poweroff
 ## Had to set linux to run shutdown without confirmation
