@@ -6,7 +6,7 @@ import subprocess
 
 
 def get_installed_packages():
-    raw_installed_packages = subprocess.check_output(["trizen", "-Q"])
+    raw_installed_packages = subprocess.check_output(["pikaur", "-Q"])
     installed_packages = []
     for item in raw_installed_packages.splitlines():
         installed_packages.append(item.split(b" ")[0])
