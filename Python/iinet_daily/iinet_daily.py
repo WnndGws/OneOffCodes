@@ -6,9 +6,11 @@ from requests import get
 from datetime import datetime
 
 
-'''To get token run
-get("https://toolbox.iinet.net.au/cgi-bin/api.cgi",
-               params={"_USERNAME": user, "_PASSWORD": password}).json()
+'''To get token:
+1) %load in ipython
+2) set username and password as variables
+3) run 'get("https://toolbox.iinet.net.au/cgi-bin/api.cgi",
+               params={"_USERNAME": user, "_PASSWORD": password}).json()'
 '''
 
 config = configparser.ConfigParser()
