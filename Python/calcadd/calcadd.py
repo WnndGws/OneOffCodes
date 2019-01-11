@@ -81,7 +81,7 @@ def print_calendars(ctx, param, value):
         print(calendar_list_entry["summary"])
     sys.exit(0)
 
-@click.command()
+@click.command(ignore_unknown_options=True)
 @click.option(
     '--print-calendars',
     is_flag=True,
@@ -126,8 +126,7 @@ def print_calendars(ctx, param, value):
     '--end',
     prompt=True,
     type=click.DateTime(formats=['%Y-%m-%d %H:%M']),
-    default=datetime.datetime.strftime(datetime.datetime.now()\
-        + datetime.timedelta(hours=1), "%Y-%m-%d %H:%M"),
+    default=datetime.datetime.strftime(start + datetime.timedelta(hours=1), "%Y-%m-%d %H:%M"),
     required=True,
     help='End time of event in format "%Y-%m-%d %H:%M" [Default: Now + 1hr]'
 )
