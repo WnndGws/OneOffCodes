@@ -95,7 +95,7 @@ else:
     opts = (os.getenv("MPV") or "mpv").split()
     opts.extend(
         [
-            "--speed=1.2",
+            "--speed=1.0",
             "--no-terminal",
             "--force-window",
             "--demuxer-thread=yes",
