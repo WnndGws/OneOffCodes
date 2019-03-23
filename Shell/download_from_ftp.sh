@@ -3,5 +3,5 @@
 
 url="$1"
 
-curl $url | rg 'href=".*"' | awk -F\" '{print u"/"$2}' u=$url | parallel --jobs=1 --keep-order wget
+curl $url | rg 'href=".*"' | awk -F\" '{print u"/"$2}' u=$url | parallel --jobs=1 --keep-order wget -c
 rm index.html
