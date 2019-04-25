@@ -103,18 +103,36 @@ def get_next_event(print_all, location, allday_events):
         #possible_events.append(eventsResult.get("items", []))
         event = eventsResult.get("items", [])
 
+        #breakpoint()
+
         i = 0
         size_of_list = len(event)
         while i < size_of_list:
             if event != []:
                 try:
                     event_time = event[i]['start']['dateTime']
-                    event_time = datetime.datetime.strptime(event_time, '%Y-%m-%dT%H:%M:%S%z')
+                    if event_time[-1] == 'Z':
+                        #time_diff = int(event_time[-8])
+                        event_time = datetime.datetime.strptime(event_time, "%Y-%m-%dT%H:%M:%SZ")
+                        #event_time = event_time + datetime.timedelta(hours = (8-time_diff))
+                        event_time = event_time + datetime.timedelta(hours = 8)
+                        event_time = tz.localize(event_time)
+                        #event_time = datetime.datetime.strptime(event_time, '%Y-%m-%dT%H:%M:%S%z')
+                    else:
+                        event_time = datetime.datetime.strptime(event_time, '%Y-%m-%dT%H:%M:%S%z')
+
                     event_end = event[i]['end']['dateTime']
-                    event_end = datetime.datetime.strptime(event_end, '%Y-%m-%dT%H:%M:%S%z')
+                    if event_end[-1] == 'Z':
+                        event_end = datetime.datetime.strptime(event_end, '%Y-%m-%dT%H:%M:%SZ')
+                        event_end = event_end + datetime.timedelta(hours = 8)
+                        event_end = tz.localize(event_end)
+                    else:
+                        event_end = datetime.datetime.strptime(event_end, '%Y-%m-%dT%H:%M:%S%z')
+
                     event_title = event[i]['summary']
+
                     if print_all:
-                        print(f'{event_time}: {event_title}')
+                        print(f'{event_time} to {event_end}: {event_title}')
                     if event_end < event_end_low and event_time < event_time_high:
                         event_end_low = event_end
                         event_time_low = event_time
