@@ -1,0 +1,1 @@
+/home/wynand/Git/dotfiles3.0/dotfiles/desktop/.config/polybar/pkg.sh
