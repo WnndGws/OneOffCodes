@@ -155,7 +155,8 @@ def main(start, months, verbose, calendar):
     for event in events:
         eventTitle = event["summary"]
         boxer_one = re.findall(r".+?(?= vs )", eventTitle)
-        boxer_two = re.findall(r"(?<=vs )(.*)(?= -)", eventTitle)
+        #boxer_two = re.findall(r"(?<=vs )(.*)(?= -)", eventTitle)
+        boxer_two = re.findall(r"(?<=vs )(.*)$", eventTitle)
         nextMonthEvents.append(boxer_one[0])
         nextMonthEvents.append(boxer_two[0])
 
