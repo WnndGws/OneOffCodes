@@ -1,0 +1,7 @@
+#!/usr/bin/zsh
+## Use entr to watch tests as i code
+
+in_file="$1"
+actual_file=$(echo $in_file | sed 's/_test//')
+
+exa $actual_file | entr -cs 'pytest $in_file'
