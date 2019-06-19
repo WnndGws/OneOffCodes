@@ -1,7 +1,7 @@
 #!/usr/bin/zsh
 ## fuzzy cd using fzf
 
-local file
+#local file
 
 file="$(locate -Ai -0 $@ | grep -z -vE '~$' | fzf --read0 -0 -1)"
 
