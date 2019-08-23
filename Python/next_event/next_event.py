@@ -132,7 +132,7 @@ def get_next_event(print_all, location, allday_events):
                     event_title = event[i]['summary']
 
                     if print_all:
-                        print(f'{event_time} to {event_end}: {event_title}')
+                        print(f'{calendar_list_entry}: {event_time} to {event_end}: {event_title}')
                     if event_end < event_end_low and event_time < event_time_high:
                         event_end_low = event_end
                         event_time_low = event_time
