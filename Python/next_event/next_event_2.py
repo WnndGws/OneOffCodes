@@ -129,6 +129,7 @@ def getnextevent():
     event_start_low = timed_events[0][0]
     for i in timed_events:
         #Only want events shorter than 11hrs
+        #print(f'{i[0]} - {i[1]}: {i[2]}')
         if i[0] <= event_start_low and 1 < i[3] < 39601:
             event_start_low = i[0]
             lowest_timed = [i[0], i[1], i[2], i[3]]
