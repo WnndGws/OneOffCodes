@@ -138,9 +138,9 @@ def getnextevent():
     #Determine which is lower
     #If event occurs less than 24hrs after allday event starts its in the same day
     if (lowest_timed[0] - tz.localize(datetime.datetime.strptime(lowest_allday[0], "%Y-%m-%d"))).seconds < 86400:
-        start_time_print = humanize.naturalday(lowest_timed[0]).title() + " " + datetime.datetime.strftime(lowest_timed[0], "%H:%M")
+        start_time_print = humanize.naturalday(lowest_timed[0]).title() + "-" + datetime.datetime.strftime(lowest_timed[0], "%H:%M")
         #start_time_print = datetime.datetime.strftime(lowest_timed[0], "%H:%M")
-        print(f'{start_time_print}: {lowest_timed[2]}')
+        print(f'{start_time_print}-{lowest_timed[2]}')
         #print(lowest_timed)
     elif str(datetime.datetime.strftime(datetime.date.today(), "%Y-%m-%d %H:%M:%S")) == str(datetime.datetime.strptime(lowest_allday[0], "%Y-%m-%d")):
         print(f'Today: {lowest_allday[2]}')
