@@ -52,8 +52,8 @@ def getnextevent():
     service = discovery.build("calendar", "v3", http=http)
 
     # 'Z' needed for calendar API
-    #now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-    now = datetime.datetime.now().isoformat() + 'Z' # 'Z' indicates UTC time
+    now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+    #now = datetime.datetime.now().isoformat() + 'Z' # 'Z' indicates UTC time
     today = datetime.date.today().isoformat()
     today = datetime.datetime.strptime(today, "%Y-%m-%d")
 
