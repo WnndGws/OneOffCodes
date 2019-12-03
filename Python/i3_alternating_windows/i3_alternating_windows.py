@@ -7,7 +7,7 @@ import getopt
 import sys
 import os
 
-import i3
+import i3ipc
 
 
 def find_parent(window_id):
@@ -37,7 +37,7 @@ def set_layout():
         focused window to either vertical or
         horizontal, depending on its width/height
     """
-    current_win = i3.filter(nodes=[], focused=True)
+    current_win = i3ipc.filter(nodes=[], focused=True)
     for win in current_win:
         parent = find_parent(win["id"])
 
