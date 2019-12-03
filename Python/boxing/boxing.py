@@ -115,21 +115,9 @@ def add_months(sourcedate, months):
     day = min(sourcedate.day, calendar.monthrange(year, month)[1])
     return datetime.date(year, month, day)
 
-
-@click.command()
-@click.option(
-    "--start",
-    default=datetime.date.today().isoformat(),
-    help="Date in YYYY-MM-DD format (DEFAULT=today)",
-)
-@click.option(
-    "--months", default=1, help="Number of months to add to start date (DEFAULT=1)"
-)
-@click.option("--verbose", is_flag=True, help="Will print out the results")
-@click.option("--calendar", is_flag=True, help="Add results to your calendar")
-def main(start, months, verbose, calendar):
-    """Scrapes calendar of all fights and lists those containing any of the current top fighters"""
-
+def scrape_sunday_puncher(start, months):
+    '''Scrapes the Sunday puncher public calender to see whats coming
+    '''
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     service = discovery.build("calendar", "v3", http=http)
@@ -151,16 +139,55 @@ def main(start, months, verbose, calendar):
     )
     events = eventsResult.get("items", [])
 
+    return events
+
+def add_to_calendar(matchingEvent):
+    '''Adds an event to my google calendar'''
+
+    credentials = get_credentials()
+    http = credentials.authorize(httplib2.Http())
+    service = discovery.build("calendar", "v3", http=http)
+
+    newEvent = {}
+    for item in [
+        "summary",
+        "location",
+        "description",
+        "start",
+        "end",
+        "description",
+    ]:
+        newEvent[item] = matchingEvent[item]
+    service.events().insert(
+        calendarId="nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com",
+        body=newEvent,
+    ).execute()
+
+@click.command()
+@click.option(
+    "--start",
+    default=datetime.date.today().isoformat(),
+    help="Date in YYYY-MM-DD format (DEFAULT=today)",
+)
+@click.option(
+    "--months", default=1, help="Number of months to add to start date (DEFAULT=1)"
+)
+@click.option("--verbose", is_flag=True, help="Will print out the results")
+@click.option("--calendar", is_flag=True, help="Add results to your calendar")
+def main(start, months, verbose, calendar):
+    """Scrapes calendar of all fights and lists those containing any of the current top fighters"""
+
+    unique_boxers = scrape_wikitables()
+    events = scrape_sunday_puncher(start, months)
+
     nextMonthEvents = []
     for event in events:
         eventTitle = event["summary"]
-        boxer_one = re.findall(r".+?(?= vs )", eventTitle)
-        #boxer_two = re.findall(r"(?<=vs )(.*)(?= -)", eventTitle)
-        boxer_two = re.findall(r"(?<=vs )(.*)$", eventTitle)
+        boxer_one = re.findall(r"[a-zA-Z\s]+?(?= vs )", eventTitle)
+        boxer_two = re.findall(r"(?<=vs )(.*)(?= - )", eventTitle)
         nextMonthEvents.append(boxer_one[0])
         nextMonthEvents.append(boxer_two[0])
 
-    unique_boxers = scrape_wikitables()
     boxer_i_care_about = set(unique_boxers).intersection(nextMonthEvents)
 
     if verbose:
@@ -180,69 +207,16 @@ def main(start, months, verbose, calendar):
     if calendar:
         for event in events:
             eventTitle = event["summary"]
-            boxer_one = re.findall(r".+?(?= vs )", eventTitle)
-            boxer_two = re.findall(r"(?<=vs )(.*)(?= -)", eventTitle)
+            boxer_one = re.findall(r"[a-zA-Z\s]+?(?= vs )", eventTitle)
+            boxer_two = re.findall(r"(?<=vs )(.*)(?= - )", eventTitle)
             if len(set(boxer_one).intersection(boxer_i_care_about)) > 0:
-                newEvent = {}
-                reminderEvent = {}
-                for item in [
-                    "summary",
-                    "location",
-                    "description",
-                    "start",
-                    "end",
-                    "description",
-                ]:
-                    newEvent[item] = event[item]
-                reminderEvent["summary"] = f'REMINDER: Download {event["summary"]}'
-                reminderEvent["start"] = {
-                    "dateTime": f'{datetime.datetime.strftime(parse(event["start"]["dateTime"]) + datetime.timedelta(days=1), "%Y-%m-%dT19:00:00%z")}'
-                }
-                reminderEvent["end"] = {
-                    "dateTime": f'{datetime.datetime.strftime(parse(event["start"]["dateTime"]) + datetime.timedelta(days=1), "%Y-%m-%dT20:00:00%z")}'
-                }
-                reminderEvent["description"] = f'{event["description"]}'
-                service.events().insert(
-                    calendarId="nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com",
-                    body=newEvent,
-                ).execute()
-                service.events().insert(
-                    calendarId="nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com",
-                    body=reminderEvent,
-                ).execute()
+                add_to_calendar(event)
                 click.echo("Adding event(s) to calendar......")
             elif len(set(boxer_two).intersection(boxer_i_care_about)) > 0:
-                newEvent = {}
-                reminderEvent = {}
-                for item in [
-                    "summary",
-                    "location",
-                    "description",
-                    "start",
-                    "end",
-                    "description",
-                ]:
-                    newEvent[item] = event[item]
-                reminderEvent["summary"] = f'REMINDER: Download {event["summary"]}'
-                reminderEvent["start"] = {
-                    "dateTime": f'{datetime.datetime.strftime(parse(event["start"]["dateTime"]) + datetime.timedelta(days=1), "%Y-%m-%dT19:00:00%z")}'
-                }
-                reminderEvent["end"] = {
-                    "dateTime": f'{datetime.datetime.strftime(parse(event["end"]["dateTime"]) + datetime.timedelta(days=1), "%Y-%m-%dT20:00:00%z")}'
-                }
-                reminderEvent["description"] = f'{event["description"]}'
-                service.events().insert(
-                    calendarId="nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com",
-                    body=newEvent,
-                ).execute()
-                service.events().insert(
-                    calendarId="nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com",
-                    body=reminderEvent,
-                ).execute()
+                add_to_calendar(event)
                 click.echo("Adding event(s) to calendar......")
 
     return boxer_i_care_about
-
 
 if __name__ == "__main__":
     main()
