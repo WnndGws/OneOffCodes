@@ -1,5 +1,5 @@
 #!/bin/zsh
-## Moves lines from created aconfmgr to seperate files
+## Moves lines from created aconfmgr to separate files
 
 
 cat ./99-unsorted.sh | grep 'C.*File ' >> 98.tmp; cat ./99-unsorted.sh | grep 'C.*Link ' >> 98.tmp; sort 98.tmp | uniq -u >> ./04-AddFiles.sh; rm -f 98.tmp

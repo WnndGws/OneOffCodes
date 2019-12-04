@@ -17,7 +17,7 @@ while /bin/true; do
         timeout 1.0 ping -c1 google.com
         exit_code=$(echo $?)
         if [[ "$exit_code" -eq 124 ]]; then
-            notify-send "Resetting Network" "Reset occuring $(date -u -d @$time_elapsed +'%T') after last reset" --icon=network-wireless -t 10000 -u low
+            notify-send "Resetting Network" "Reset occurring $(date -u -d @$time_elapsed +'%T') after last reset" --icon=network-wireless -t 10000 -u low
             nmcli con up id $connected_network
             sleep_time=1
             time_elapsed=0

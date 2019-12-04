@@ -1652,7 +1652,7 @@ Laws Of Project Management: 1. No major project is ever installed on time, withi
 "Two things are infinite: the universe and human stupidity; and I'm not sure about the universe." -- Albert Einstein.
 "I have always found that plans are useless, but planning is indispensable." -- Dwight Eisenhower.
 "A foolish consistency is the hobgoblin of little minds, adored by little statesmen and philosophers and divines." -- Ralph Waldo Emerson.
-"For a sucessful technology, honesty must take precedence over public relations for nature cannot be fooled." -- Richard Feynman.
+"For a successful technology, honesty must take precedence over public relations for nature cannot be fooled." -- Richard Feynman.
 "The first principle is that you must not fool yourself - and you are the easiest person to fool." -- Richard Feynman.
 "The inside of a computer is as dumb as hell but it goes like mad!" -- Richard Feynman.
 "You can know the name of a bird in all the languages of the world, but when you're finished, you'll know absolutely nothing whatever about the bird... So let's look at the bird and see what it's doing -- that's what counts. I learned very early the difference between knowing the name of something and knowing something." -- Richard Feynman.
@@ -2716,7 +2716,7 @@ AMAZING BUT TRUE ...  There is so much sand in Northern Africa that if it were s
 "If computers get too powerful, we can organize them into a committee -- that will do them in." -- Bradley's Bromide.
 "The most likely way for the world to be destroyed, most experts agree, is by accident. That's where we come in; we're computer professionals. We cause accidents." -- Nathaniel Borenstein.
 "To err is human -- and to blame it on a computer is even more so." -- Robert Orben.
-"If the automobile had followed the same development cycle as the computer, a Rolls-Royce would today cost $100, get a million miles per gallon, and explode once a year, killing everyone inside." -- Robert X. Cringely.
+"If the automobile had followed the same development cycle as the computer, a Rolls-Royce would today cost $100, get a million miles per gallon, and explode once a year, killing everyone inside." -- Robert X. Cringey.
 "If you put tomfoolery into a computer, nothing comes out of it but tomfoolery. But this tomfoolery, having passed through a very expensive machine, is somehow enobled and no-one dares criticize it." -- Pierre Gallois.
 "Descended from the apes? Let us hope that it is not true. But if it is, let us pray that it may not become generally known." -- FA Montagu.
 "I am an expert of electricity. My father occupied the chair of applied electricity at the state prison." -- WC Fields.
@@ -2750,7 +2750,7 @@ AMAZING BUT TRUE ...  There is so much sand in Northern Africa that if it were s
 "I admire the Pope. I have a lot of respect for anyone who can tour without an album." -- Rita Rudner.
 "Thank God I'm an atheist." -- Luis Bunuel.
 "The Bible was a consolation to a fellow alone in the old cell.  The lovely thin paper with a bit of matress stuffing in it, if you could get a match, was as good a smoke as I ever tasted." -- Brendan Behan.
-"In the begining there was nothing and God said 'Let there be light', and there was still nothing but everybody could see it." -- Dave Thomas.
+"In the beginning there was nothing and God said 'Let there be light', and there was still nothing but everybody could see it." -- Dave Thomas.
 "Sailors ought never to go to church. They ought to go to hell, where it is much more comfortable." -- HG Wells.
 "If absolute power corrupts absolutely, where does that leave God?" -- George Deacon.
 "I don't believe in the after life, although I am bringing a change of underwear." -- Woody Allen.
@@ -2773,7 +2773,7 @@ AMAZING BUT TRUE ...  There is so much sand in Northern Africa that if it were s
 "And God said, 'Let there be light' and there was light, but the Electricity Board said He would have to wait until Thursday to be connected." -- Spike Milligan.
 "No mention of God. They keep Him up their sleeves for as long as they can, vicars do. They know it puts people off." -- Alan Bennett.
 "I'm Jewish. I don't work out. If God had wanted us to bend over, He would have put diamonds on the floor." -- Joan Rivers.
-"There is a charm about the forbidden that makes it unspeakably diserable." -- Mark Twain.
+"There is a charm about the forbidden that makes it unspeakably desirable." -- Mark Twain.
 "Always go to other people's funerals, otherwise they won't come to yours." -- Yogi Berra.
 "Death is a low chemical trick played on everybody except sequoia trees." -- JJ Furnas.
 "Dying is a very dull, dreary affair. And my advice to you is to have nothing whatever to do with it." -- W. Somerset Maugham.

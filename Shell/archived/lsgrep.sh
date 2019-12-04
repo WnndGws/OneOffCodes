@@ -2,7 +2,7 @@
 #Allows me to find a file or folder, list them, and open a chosen one. My not elegant solution to a common problem
 
 IFS=$'\n'
-# Internal Field Seperator is newlines
+# Internal Field Separator is newlines
 
 if [ "$#" -eq "1" ]; then
     if [[ "$1" =$HOME "\+" ]];then

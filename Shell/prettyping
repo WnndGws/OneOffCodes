@@ -230,7 +230,7 @@ trap '' 2
 	fi
 
 	# The trap must be in another subshell because otherwise it will interrupt
-	# the "wait" commmand.
+	# the "wait" command.
 	while read line; do
 		echo -E "$line"
 	done

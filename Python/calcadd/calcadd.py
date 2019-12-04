@@ -77,7 +77,7 @@ def validate_calendar(calendar):
         return calendar_id
 
 def print_calendars(ctx, param, value):
-    '''Function to print all avaliable calendars'''
+    '''Function to print all available calendars'''
 
     #Check if value is passed in, otherwise will always run
     if not value or ctx.resilient_parsing:

@@ -9,7 +9,7 @@ Created on Sat Jun 11 09:02:09 2016
 """
 
 maxCell = int(input("What is the max Cell? "))
-collumn = str(input("What is the collumn? "))
+column = str(input("What is the column? "))
 cellCount = [maxCell]
 
 while maxCell > 0:
@@ -19,6 +19,6 @@ while maxCell > 0:
 pasteString = "="
 
 for i in cellCount:
-    pasteString = pasteString + '{0}{1}&"+"&'.format(collumn, i)
+    pasteString = pasteString + '{0}{1}&"+"&'.format(column, i)
 
 print(pasteString)

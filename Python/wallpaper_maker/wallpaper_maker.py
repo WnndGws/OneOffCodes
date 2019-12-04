@@ -97,7 +97,7 @@ def run_change_wallpaper():
     "--quote_file",
     type=click.Path(),
     default="~/.config/wallpaperMaker/quotes.txt",
-    help="Path to the newline seperated quotes file",
+    help="Path to the newline separated quotes file",
 )
 @click.option(
     "--font",
