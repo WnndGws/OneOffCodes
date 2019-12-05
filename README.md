@@ -17,7 +17,7 @@ chmod +x script.py
 ## Descriptions
 ### Python
 * **bisection_method**
-    * __ARCHIVED/UNFINSIHED__ written to try and solve a quadratic.
+    * __ARCHIVED/UNFINISHED__ written to try and solve a quadratic.
 ___
 
 * **boxing**

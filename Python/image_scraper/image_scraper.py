@@ -1,5 +1,5 @@
 #!/bin/python
-## Takes the arguement of a url and outputs the paragraph text from that page to a textfile
+## Takes the argument of a url and outputs the paragraph text from that page to a textfile
 
 import re
 import requests
@@ -7,7 +7,7 @@ import sys
 
 from bs4 import BeautifulSoup
 
-## Collect command-line arguements from input
+## Collect command-line arguments from input
 def getopts(argv):
     opts = {}  # Empty dictionary to store key-value pairs.
     while argv:  # While there are arguments left to parse...

@@ -8,7 +8,7 @@ if [ ! -d "$1" ]; then
 else
     cd "$1"
 fi
-# If passed arguement is not a directory then create dir and move files to it
+# If passed argument is not a directory then create dir and move files to it
 # If it is a directory then change into the dir
 
 n=$((1))

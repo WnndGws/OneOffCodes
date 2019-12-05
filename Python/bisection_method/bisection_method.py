@@ -38,7 +38,7 @@ def graph(equation, xmin, xmax):
 def main():
     # First build the equation based on user input
     coef = input(
-        "Please enter all coefficients of your equation (including zeros!) seperated by commas (eg. x^2 would be input as 1,0,0): "
+        "Please enter all coefficients of your equation (including zeros!) separated by commas (eg. x^2 would be input as 1,0,0): "
     )
     coef = list(map(float, coef.split(",")))
     terms = len(coef)

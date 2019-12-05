@@ -69,7 +69,7 @@ def scrape_wikitables():
             text = [i.text for i in data]
             for boxer_name in range(len(text)):
                 if len(text[boxer_name]) > 3:
-                    boxer_name = text[boxer_name].rstrip('\n')
+                    boxer_name = text[boxer_name].rstrip("\n")
                     boxer_name = re.findall(r"\S{3,}\ .[^\ \(]+", boxer_name)
                     if len(boxer_name) > 0:
                         if unidecode(boxer_name[0]) not in unique_boxers:
@@ -115,9 +115,10 @@ def add_months(sourcedate, months):
     day = min(sourcedate.day, calendar.monthrange(year, month)[1])
     return datetime.date(year, month, day)
 
+
 def scrape_sunday_puncher(start, months):
-    '''Scrapes the Sunday puncher public calender to see whats coming
-    '''
+    """Scrapes the Sunday puncher public calender to see whats coming
+    """
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     service = discovery.build("calendar", "v3", http=http)
@@ -141,8 +142,9 @@ def scrape_sunday_puncher(start, months):
 
     return events
 
+
 def add_to_calendar(matchingEvent):
-    '''Adds an event to my google calendar'''
+    """Adds an event to my google calendar"""
 
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
@@ -162,6 +164,7 @@ def add_to_calendar(matchingEvent):
         calendarId="nvorn96ej1f3i5h597eqvrimpo@group.calendar.google.com",
         body=newEvent,
     ).execute()
+
 
 @click.command()
 @click.option(
@@ -217,6 +220,7 @@ def main(start, months, verbose, calendar):
                 click.echo("Adding event(s) to calendar......")
 
     return boxer_i_care_about
+
 
 if __name__ == "__main__":
     main()

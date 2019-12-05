@@ -95,7 +95,7 @@ def add_months(sourcedate, months):
 @click.option("--add-to-calendar", is_flag=True, help="Add results to your calendar")
 @click.option("--source-calendar-url", help="The URL to the calendar to check. In the form 'aaaaaaaaaaaaa@group.calendar.google.com'", prompt=True)
 def main(start, months, verbose, add_to_calendar, source_calendar_url):
-    """Scrapes source calendar and adds reminders to calendar to watch sport that occured overnight"""
+    """Scrapes source calendar and adds reminders to calendar to watch sport that occurred overnight"""
 
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())

@@ -10,7 +10,7 @@ git clone https://github.com/Raimondi/delimitMate.git #autocomplete brackets etc
 git clone https://github.com/junegunn/fzf.vim.git #fuzzyfind
 git clone https://github.com/mattn/gist-vim.git #gists in vim
 git clone https://github.com/Yggdroot/indentLine.git #better indenting
-git clone https://github.com/haya14busa/incsearch.vim.git #improved incrimental searching
+git clone https://github.com/haya14busa/incsearch.vim.git #improved incremental searching
 git clone https://github.com/davidhalter/jedi-vim.git #autocomplete
 git clone https://github.com/Shougo/neocomplete.vim #neocomplete
 git clone https://github.com/scrooloose/nerdtree.git #filebrowser
