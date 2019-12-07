@@ -11,7 +11,7 @@ All scripts should be able to run in isolation.
 eg.
 ```
 chmod +x script.py
-./scripts.p
+./scripts.py
 ```
 
 ## Descriptions
