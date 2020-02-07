@@ -1,0 +1,9 @@
+#!/usr/bin/zsh
+# A dmenu binary prompt script.
+# Gives a dmenu prompt labeled with $1 to perform command $2.
+# For example:
+# `./prompt "Do you want to shutdown?" "shutdown -h now"`
+
+[[ $(echo -e "Yes\nNo" | bemenu --line-height 30 --fn "SauceCodePro Nerd Font [30]" --tb "#001e25" --tf "#D3D7CF" --fb "#001e25" --ff "#001e25" --nb "#001e25" --nf "#D3D7CF" --hb "#555753" --hf "#029A20" --sb "#555753" --sf "#029A20" -i -p "$1") \
+== "Yes" ]] && zsh -c $2 
+
