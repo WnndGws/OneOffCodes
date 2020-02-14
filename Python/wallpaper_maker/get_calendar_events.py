@@ -66,8 +66,7 @@ def get_events():
     now = now + "T00:00:00Z"
     tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).isoformat()
     tomorrow = tomorrow + "T00:00:00Z"
-    tomorrowPlusOne = (datetime.date.today() + datetime.timedelta(days=2)).isoformat()
-    tomorrowPlusOne = tomorrowPlusOne + "T00:00:00Z"
+    tomorrowPlusOne = tomorrow[:-10] + "T23:59:00Z"
 
     allEvents = []
     page_token = None
@@ -123,8 +122,12 @@ def main():
             start = event["start"].get("date")
             start = datetime.datetime.strptime(start, "%Y-%m-%d")
             start = datetime.datetime.strftime(start, "%Y/%m/%d")
+            end = event["end"].get("date")
+            end = datetime.datetime.strptime(end, "%Y-%m-%d")
             if start[:10] == today:
                 textListTodayAllDay.append(f'{event["summary"]}')
+            elif end > (datetime.date.today() + datetime.timedelta(days=2)):
+                pass
             else:
                 textListTomorrowAllDay.append(f'{event["summary"]}')
 
