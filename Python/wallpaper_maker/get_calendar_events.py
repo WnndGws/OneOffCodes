@@ -123,9 +123,10 @@ def main():
             start = datetime.datetime.strptime(start, "%Y-%m-%d")
             start = datetime.datetime.strftime(start, "%Y/%m/%d")
             end = event["end"].get("date")
-            end = datetime.datetime.strptime(end, "%Y-%m-%d")
+            end = datetime.datetime.strptime(end, "%Y-%m-%d").date()
             if start[:10] == today:
                 textListTodayAllDay.append(f'{event["summary"]}')
+            ## Google Calendar seems to only handle allday events in UTC, so need to filter out those that dont match
             elif end > (datetime.date.today() + datetime.timedelta(days=2)):
                 pass
             else:
@@ -136,10 +137,56 @@ def main():
     textListTomorrow.sort()
     textListTomorrowAllDay.sort()
 
-    print(textListToday)
-    print(textListTomorrow)
-    print(textListTodayAllDay)
-    print(textListTomorrowAllDay)
+    if len(textListToday) != 0:
+        maxToday = len(max(textListToday, key=len))
+    else:
+        maxToday = 0
+
+    if len(textListTodayAllDay) != 0:
+        maxTodayAllDay = len(max(textListTodayAllDay, key=len))
+    else:
+        maxTodayAllDay = 0
+
+    if len(textListTomorrow) != 0:
+        maxTomorrow = len(max(textListTomorrow, key=len))
+    else:
+        maxTomorrow = 0
+
+    if len(textListTomorrowAllDay) != 0:
+        maxTomorrowAllDay = len(max(textListTomorrowAllDay, key=len))
+    else:
+        maxTomorrowAllDay = 0
+
+    maxLen = max(maxToday, maxTodayAllDay, maxTomorrow, maxTomorrowAllDay)
+
+    printTextToday = [datetime.datetime.strftime(datetime.date.today(), "%d/%m/%Y")]
+    printTextTomorrow = [datetime.datetime.strftime(datetime.date.today() + datetime.timedelta(days=1), "%d/%m/%Y")]
+
+    for i in textListTodayAllDay:
+        if i not in printTextToday:
+                printTextToday.append(i)
+    for i in textListToday:
+        if i not in printTextToday:
+                printTextToday.append(i)
+    for i in textListTomorrowAllDay:
+        if i not in printTextTomorrow:
+                printTextTomorrow.append(i)
+    for i in textListTomorrow:
+        if i not in printTextTomorrow:
+                printTextTomorrow.append(i)
+
+    output = "" + printTextToday[0] + "\n"
+    for i in printTextToday[1:]:
+        i  = i + (maxLen - len(i))*"."
+        output = output + i + "\n"
+
+    output = output + "\n" + printTextTomorrow[0] + "\n"
+    for i in printTextTomorrow[1:]:
+        i  = i + (maxLen - len(i))*"."
+        output = output + i + "\n"
+
+    return output
 
 if __name__ == "__main__":
-    main()
+    output = main()
+    print(output)
