@@ -2,7 +2,6 @@
 ## Script made to check when there is a middleweight+ title fight, or when 'the ring' top 10 fight
 
 import os
-import httplib2
 from apiclient import discovery
 from oauth2client import client
 from oauth2client import tools
@@ -15,6 +14,7 @@ import bs4
 import re
 import html5lib
 import urllib
+import httplib2
 from unidecode import unidecode
 
 
@@ -130,7 +130,7 @@ def scrape_sunday_puncher(start, months):
     eventsResult = (
         service.events()
         .list(
-            calendarId="6souuam0ccm9ht4jlbbp75iua8@group.calendar.google.com",
+            calendarId="iumovuptqivl8kn9a4krhvttbo@group.calendar.google.com",
             timeMin=start,
             timeMax=end,
             singleEvents=True,
@@ -188,8 +188,10 @@ def main(start, months, verbose, calendar):
         eventTitle = event["summary"]
         boxer_one = re.findall(r"[a-zA-Z\s]+?(?= vs )", eventTitle)
         boxer_two = re.findall(r"(?<=vs )(.*)(?= - )", eventTitle)
-        nextMonthEvents.append(boxer_one[0])
-        nextMonthEvents.append(boxer_two[0])
+        if len(boxer_one) != 0:
+            nextMonthEvents.append(boxer_one[0])
+        if len(boxer_two) != 0:
+            nextMonthEvents.append(boxer_two[0])
 
     boxer_i_care_about = set(unique_boxers).intersection(nextMonthEvents)
 
