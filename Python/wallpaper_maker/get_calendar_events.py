@@ -111,7 +111,10 @@ def main():
     for event in allEvents:
         try:
             start = event["start"].get("dateTime")
-            start = datetime.datetime.strptime(start, "%Y-%m-%dT%H:%M:%S+08:00")
+            try:
+                start = datetime.datetime.strptime(start, "%Y-%m-%dT%H:%M:%S+08:00")
+            except:
+                start = datetime.datetime.strptime(start, "%Y-%m-%dT%H:%M:%SZ") + datetime.timedelta(hours=8)
             date = datetime.datetime.strftime(start, "%H:%M")
             start = datetime.datetime.strftime(start, "%Y/%m/%d %H:%M")
             if start[:10] == today:
