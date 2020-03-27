@@ -11,19 +11,17 @@ from oauth2client.file import Storage
 
 import datetime
 
-try:
-    import argparse
+#try:
+    #import argparse
+    #flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
+#except ImportError:
+    #flags = None
+flags = None
 
-    flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
-except ImportError:
-    flags = None
-
-# If modifying these scopes, delete your previously saved credentials
-# at ~/.credentials/calendar-python-quickstart.json
 SCOPES = "https://www.googleapis.com/auth/calendar.readonly"
 home_dir = os.path.expanduser("~")
 CLIENT_SECRET_FILE = os.path.join(
-    home_dir, ".config/api-secrets/wallpaper_client_secrets.json"
+    home_dir, ".config/saved_credentials/wallpaper_client_secrets.json"
 )
 APPLICATION_NAME = "Wallpaper_maker"
 
@@ -38,7 +36,7 @@ def get_credentials():
         Credentials, the obtained credential.
     """
     home_dir = os.path.expanduser("~")
-    credential_dir = os.path.join(home_dir, ".config/apiclient")
+    credential_dir = os.path.join(home_dir, ".config/saved_credentials")
     if not os.path.exists(credential_dir):
         os.makedirs(credential_dir)
     credential_path = os.path.join(credential_dir, "wallpaper_maker_credentials.json")
@@ -55,10 +53,8 @@ def get_credentials():
         print("Storing credentials to " + credential_path)
     return credentials
 
-
-def main():
-    """Shows basic usage of the Google Calendar API.
-
+def get_events():
+    """
     Creates a Google Calendar API service object and outputs a list of the next
     10 events on the user's calendar.
     """
@@ -68,28 +64,132 @@ def main():
 
     now = datetime.date.today().isoformat()
     now = now + "T00:00:00Z"
-    tomorrow = (datetime.date.today + datetime.timedelta(days=1)).isoformat()
+    tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).isoformat()
     tomorrow = tomorrow + "T00:00:00Z"
-    print("Getting the upcoming 10 events")
-    eventsResult = (
-        service.events()
-        .list(
-            calendarId="primary",
-            timeMin=now,
-            timeMax=tomorrow,
-            singleEvents=True,
-            orderBy="startTime",
-        )
-        .execute()
-    )
-    events = eventsResult.get("items", [])
+    tomorrowPlusOne = tomorrow[:-10] + "T23:59:00Z"
 
-    if not events:
-        print("No upcoming events found.")
-    for event in events:
-        start = event["start"].get("dateTime", event["start"].get("date"))
-        print(start, event["summary"])
+    allEvents = []
+    page_token = None
+    while True:
+        calendar_list = service.calendarList().list(pageToken=page_token).execute()
+        for calendar_list_entry in calendar_list['items']:
+            eventResult = (
+               service.events()
+               .list(
+                   calendarId=calendar_list_entry["id"],
+                   timeMin=now,
+                   timeMax=tomorrowPlusOne,
+                   singleEvents=True,
+                   orderBy="startTime",
+               )
+               .execute()
+            )
+            events = eventResult.get("items", [])
+            if not events:
+                pass
+            for event in events:
+                allEvents.append(event)
+        page_token = calendar_list.get('nextPageToken')
+        if not page_token:
+            break
 
+
+    return allEvents
+
+def main():
+    """Prints a pretty list of events
+    """
+
+    allEvents = get_events()
+    today = datetime.date.today().strftime("%Y/%m/%d")
+    textListToday = []
+    textListTodayAllDay = []
+    textListTomorrow = []
+    textListTomorrowAllDay = []
+    textBox = ""
+
+    for event in allEvents:
+        try:
+            start = event["start"].get("dateTime")
+            try:
+                start = datetime.datetime.strptime(start, "%Y-%m-%dT%H:%M:%S+08:00")
+            except:
+                start = datetime.datetime.strptime(start, "%Y-%m-%dT%H:%M:%SZ") + datetime.timedelta(hours=8)
+            date = datetime.datetime.strftime(start, "%H:%M")
+            start = datetime.datetime.strftime(start, "%Y/%m/%d %H:%M")
+            if start[:10] == today:
+                textListToday.append(f'{date} {event["summary"]}')
+            else:
+                textListTomorrow.append(f'{date} {event["summary"]}')
+        except:
+            start = event["start"].get("date")
+            start = datetime.datetime.strptime(start, "%Y-%m-%d")
+            start = datetime.datetime.strftime(start, "%Y/%m/%d")
+            end = event["end"].get("date")
+            end = datetime.datetime.strptime(end, "%Y-%m-%d").date()
+            if start[:10] == today:
+                textListTodayAllDay.append(f'{event["summary"]}')
+            ## Google Calendar seems to only handle allday events in UTC, so need to filter out those that dont match
+            elif end > (datetime.date.today() + datetime.timedelta(days=2)):
+                pass
+            else:
+                textListTomorrowAllDay.append(f'{event["summary"]}')
+
+    textListToday.sort()
+    textListTodayAllDay.sort()
+    textListTomorrow.sort()
+    textListTomorrowAllDay.sort()
+
+    if len(textListToday) != 0:
+        maxToday = len(max(textListToday, key=len))
+    else:
+        maxToday = 0
+
+    if len(textListTodayAllDay) != 0:
+        maxTodayAllDay = len(max(textListTodayAllDay, key=len))
+    else:
+        maxTodayAllDay = 0
+
+    if len(textListTomorrow) != 0:
+        maxTomorrow = len(max(textListTomorrow, key=len))
+    else:
+        maxTomorrow = 0
+
+    if len(textListTomorrowAllDay) != 0:
+        maxTomorrowAllDay = len(max(textListTomorrowAllDay, key=len))
+    else:
+        maxTomorrowAllDay = 0
+
+    maxLen = max(maxToday, maxTodayAllDay, maxTomorrow, maxTomorrowAllDay)
+
+    printTextToday = [datetime.datetime.strftime(datetime.date.today(), "%d/%m/%Y")]
+    printTextTomorrow = [datetime.datetime.strftime(datetime.date.today() + datetime.timedelta(days=1), "%d/%m/%Y")]
+
+    for i in textListTodayAllDay:
+        if i not in printTextToday:
+                printTextToday.append(i)
+    for i in textListToday:
+        if i not in printTextToday:
+                printTextToday.append(i)
+    for i in textListTomorrowAllDay:
+        if i not in printTextTomorrow:
+                printTextTomorrow.append(i)
+    for i in textListTomorrow:
+        if i not in printTextTomorrow:
+                printTextTomorrow.append(i)
+
+    output = "" + printTextToday[0] + "\n"
+    for i in printTextToday[1:]:
+        i  = i + (maxLen - len(i))*"."
+        output = output + i + "\n"
+
+    output = output + "\n" + printTextTomorrow[0] + "\n"
+    for i in printTextTomorrow[1:]:
+        i  = i + (maxLen - len(i))*"."
+        output = output + i + "\n"
+
+    return output
 
 if __name__ == "__main__":
-    main()
+    output = main()
+    print(output)
