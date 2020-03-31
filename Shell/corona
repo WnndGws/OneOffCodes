@@ -1,5 +1,7 @@
-#!/bin/zsh
+#!/bin/sh
 ## Checks daily corona stats
+
+## TODO use getopts
 
 [ "$(stat -c %y $XDG_CACHE_HOME/corona | cut -d' ' -f1)" != "$(date '+%Y-%m-%d')" ] &&
     curl --silent "https://corona-stats.online/Australia?format=json&source=1" -o $XDG_CACHE_HOME/corona
@@ -11,4 +13,4 @@ MORTALITY=$(jq '.[] | select(.province == "Western Australia") | .mortalityPer' 
 
 OUTPUT=" ${CASES}( ${DAILY_INC_CASES})  ${DEATHS}(${MORTALITY}%)"
 
-print $OUTPUT
+echo $OUTPUT
