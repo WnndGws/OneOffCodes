@@ -1,16 +1,17 @@
 #!/bin/sh
 ## Checks daily corona stats
 
-## TODO use getopts
+COUNTRY="Australia"
 
 [ "$(stat -c %y $XDG_CACHE_HOME/corona | cut -d' ' -f1)" != "$(date '+%Y-%m-%d')" ] &&
-    curl --silent "https://corona-stats.online/Australia?format=json&source=1" -o $XDG_CACHE_HOME/corona
+    curl --silent "https://corona-stats.online/$COUNTRY?format=json&source=1" -o $XDG_CACHE_HOME/corona
 
 CASES=$(jq '.[] | select(.province == "Western Australia") | .confirmed' $XDG_CACHE_HOME/corona)
 DAILY_INC_CASES=$(jq '.[] | select(.province == "Western Australia") | .confirmedByDay[-1] - .confirmedByDay[-2]' $XDG_CACHE_HOME/corona)
+DAILY_DELTA=$(jq '.[] | select(.province == "Western Australia") | .confirmedByDay[-1] - .confirmedByDay[-2] - .confirmedByDay[-2] + .confirmedByDay[-3]' $XDG_CACHE_HOME/corona)
 DEATHS=$(jq '.[] | select(.province == "Western Australia") | .deathsByDay[-1]' $XDG_CACHE_HOME/corona)
 MORTALITY=$(jq '.[] | select(.province == "Western Australia") | .mortalityPer' $XDG_CACHE_HOME/corona | sed "s/\"//g")
 
-OUTPUT=" ${CASES}( ${DAILY_INC_CASES})  ${DEATHS}(${MORTALITY}%)"
+OUTPUT=" ${CASES}( ${DAILY_INC_CASES} 喝$DAILY_DELTA)  ${DEATHS}(${MORTALITY}%)"
 
 echo $OUTPUT
