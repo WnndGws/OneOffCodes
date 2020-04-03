@@ -14,7 +14,7 @@ matches=$(head -1 "$1" | sed -e 's|\ |\*|g' -e "s|'|\\\'|g" -e 's|\.|\*|g' | xar
 if [ $lines -eq 0 ]; then
     echo "File not found"
 elif [ $lines -eq 1 ]; then
-    head -1 "$1" | sed -e 's|\ |\*|g' -e "s|'|\\\'|g" -e 's|\.|\*|g' | xargs -i find $HOME/wynZFS/Media/TV/ -iname "*{}*" | sed -e "s|'|\\\'|g" | xargs -i xdg-open {}
+    head -1 "$1" | sed -e 's|\ |\*|g' -e "s|'|\\\'|g" -e 's|\.|\*|g' | xargs -i find $HOME/wynZFS/Media/TV/ -iname "*{}*" | sed -e "s|'|\\\'|g" | xargs -i $BROWSER {}
 else
     $HOME/Git/OneOffCodes/Shell/lsgrep.sh $HOME/wynZFS/Media/TV "*$search_term*"
 fi
