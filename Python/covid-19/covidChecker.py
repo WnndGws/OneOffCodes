@@ -6,7 +6,7 @@ import requests
 import matplotlib.pyplot as plt
 
 COUNTRY = "Australia"
-PROVINCE = "Victoria"
+PROVINCE = "Western Australia"
 
 r = requests.get(f"https://corona-stats.online/{COUNTRY}?format=json&source=1")
 RAW_DATA = r.json()
