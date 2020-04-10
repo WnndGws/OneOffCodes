@@ -2,9 +2,21 @@
 # Feed this script a link and it will give dmenu
 # some choice programs to use to open it.
 
-x=$(echo -e "clip->primary\nprimary->clip\npaste" | dmenu -h 40 -fn "CodeNewRoman Nerd Font:pixelsize=15;1" -i -p "Where should I copy to/from?")
+x=$(echo -e "clip->primary\nprimary->clip\npaste" | bemenu -i --line-height 30 \
+                                                        --fn "SauceCodePro Nerd Font Bol [70]"\
+                                                        --tb "#001e25" \
+                                                        --tf "#d3d7cf" \
+                                                        --fb "#001e25" \
+                                                        --ff "#001e25" \
+                                                        --nb "#001e25" \
+                                                        --nf "#D3D7CF" \
+                                                        --hb "#555753" \
+                                                        --hf "#029A20" \
+                                                        --sb "#555753" \
+                                                        --sf "#029A20" \
+                                                        -p "Where should I copy to/from?")
 case "$x" in
-	"clip->primary") xsel -ob | xsel -ip ;;
-	"primary->clip") xsel -op | xsel -ib ;;
-	"paste") xsel -ob | xsel -ip && xsel -op ;;
+	"clip->primary") wl-paste -n | wl-copy -p ;;
+	"primary->clip") wl-paste -pn | wl-copy ;;
+	"paste") { wl-paste -n } || { wl-paste -np } #TODO; make actually work, try pasting normal then try primary if fails
 esac
