@@ -1,16 +1,11 @@
-#!/usr/bin/zsh
+#!/usr/bin/sh
 ## fuzzy cd using fzf
 
-#local file
+#locate file
+#file=$(locate -Ai -0 '$@' | grep -z -vE '~$' | fzf --read0 -0 -1)
+file=$(locate -Ai -0 "$1" | fzf --read0 -0 -1)
+#echo "$file"
 
-file="$(locate -Ai -0 $@ | grep -z -vE '~$' | fzf --read0 -0 -1)"
-
-if [ -n $file ]
-then
- if [ -d $file ]
- then
-    cd "$file"
- else
-    cd "${file:h}"
- fi
-fi
+# Checkes if file was found, exits if it wasnt
+# if file exists and if file is a dir, change to dir, otherwise change to file's dir
+[ ! -n "$file" ] && echo "That file cannot be located..."  || [ -d "$file" ] && cd "$file" || cd "${file:h}"
