@@ -2,7 +2,7 @@
 # Feed this script a link and it will give dmenu
 # some choice programs to use to open it.
 
-x=$(echo -e "clip->primary\nprimary->clip\npaste" | bemenu -i --line-height 30 \
+x=$(echo -e "primary->clip\nclip->primary" | bemenu -i --line-height 30 \
                                                         --fn "SauceCodePro Nerd Font Bol [70]"\
                                                         --tb "#001e25" \
                                                         --tf "#d3d7cf" \
@@ -16,7 +16,7 @@ x=$(echo -e "clip->primary\nprimary->clip\npaste" | bemenu -i --line-height 30 \
                                                         --sf "#029A20" \
                                                         -p "Where should I copy to/from?")
 case "$x" in
-	"clip->primary") wl-paste -n | wl-copy -p ;;
 	"primary->clip") wl-paste -pn | wl-copy ;;
-	"paste") { wl-paste -n } || { wl-paste -np } #TODO; make actually work, try pasting normal then try primary if fails
+	"clip->primary") wl-paste -n | wl-copy -p ;;
+	#"paste")  wl-paste -n || wl-paste -np #TODO; make actually work, try pasting normal then try primary if fails
 esac
