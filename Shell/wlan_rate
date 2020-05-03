@@ -1,0 +1,23 @@
+#!/bin/sh
+#Checks how much is being downloaded to calc a speed
+
+red='#65350'
+green='#99c794'
+yellow='#ffc24b'
+blue='#268bd2'
+magenta='#cd00cd'
+cyan='#73cef4'
+
+while true; do
+    down_past=$(awk 'NR==4 { printf $2 }' /proc/net/dev)
+    up_past=$(awk 'NR==4 { printf $10 }' /proc/net/dev)
+    sleep 1
+    down_now=$(awk 'NR==4 { printf $2 }' /proc/net/dev)
+    up_now=$(awk 'NR==4 { printf $10 }' /proc/net/dev)
+
+    #Prints out the digit padded to length 4
+    down_per_sec=$(awk -v n=$down_now -v p=$down_past 'BEGIN { printf "Down: %4d kB/s",(n-p)/1024 }')
+    up_per_sec=$(awk -v n=$up_now -v p=$up_past 'BEGIN { printf "up: %4d kB/s",(n-p)/1024 }')
+
+    echo "%{u$blue}$down_per_sec""%{-u} | ""%{u$blue}$up_per_sec"
+done
