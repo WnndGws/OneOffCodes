@@ -24,7 +24,7 @@ random_episode = random.randint(1,700)
 
 def get_science_or_fiction(episode, answers):
     # The url I want to scrape
-    url = f"https://www.theskepticsguide.org/sgu/{episode}"
+    url = f"https://www.theskepticsguide.org/podcasts/episode-{episode}"
 
     # Get the content into my memory
     page = requests_html.HTMLSession().get(url)
