@@ -27,42 +27,23 @@ def get_science_or_fiction(episode, answers):
     url = f"https://www.theskepticsguide.org/podcasts/episode-{episode}"
 
     # Get the content into my memory
-    page = requests_html.HTMLSession().get(url)
-    tree = html.fromstring(page.content)
+    session = requests_html.HTMLSession()
+    r = session.get(url)
 
-    # Inspect element you want, copy Xpath to find this string
-    items = tree.xpath("//html/body/section[@id='body']/div/div/div/div/div[@class='podcast-segments']/div[@class='podcast-segment']/ul/li//text()")
+    # Find just the list items I want
+    item_list = []
+    items = r.html.find('li.science-fiction__item')
+    for item in items:
+        text = item.find('p')[0].full_text
+        answer = item.find('span.quiz__answer')[0].full_text
+        item_number = item.find('span')[0].full_text
+        if answers:
+            item_list.append(f'{item_number} - {answer}: {text}')
+        else:
+            item_list.append(f'{item_number} - {text}')
 
-    # Remove the million " " strings in the list
-    items = [x for x in items if x != " "]
-
-    # just moves last item to first place, and each element down one
-    items_cycle = cycle(items)
-    next_item = next(items_cycle)
-    next_item = next(items_cycle)
-    items_dict = {}
-    items_list = []
-    n = 1
-
-    if answers:
-        for i in items:
-            if re.findall(r".*Science", i):
-                items_dict[f"Science0{n}"] = next_item
-                n += 1
-            if re.findall(r".*Fiction", i):
-                items_dict["Fiction"] = next_item
-            next_item = next(items_cycle)
-        print (items_dict)
-    else:
-        for i in items:
-            if re.findall(r".*Science", i):
-                items_list.append(next_item)
-            if re.findall(r".*Fiction", i):
-                items_list.append(next_item)
-            next_item = next(items_cycle)
-        for item in items_list:
-            print (f'{item}\n')
-
+    for item in item_list:
+        print (f'{item}\n')
 
 if __name__ == "__main__":
     get_science_or_fiction()
