@@ -1,20 +1,20 @@
 #!/usr/bin/python3
-## This script will scrape the SGU website for Science or Fiction games, and display them all for my use
+''' This script will scrape the SGU website for Science or Fiction games
+Displays them all for my use
+'''
+
+import random
+import requests_html
 
 import click
-from itertools import cycle
-import random
-import re
-import requests_html
-from lxml import html
 
-random_episode = random.randint(1,700)
+RANDOM_EPISODE = random.randint(1, 800)
 
 @click.command()
 @click.option(
     "--episode",
     prompt=True,
-    default=random_episode,
+    default=RANDOM_EPISODE,
     help="Episode number between 1 and 700"
     )
 @click.option(
@@ -43,7 +43,7 @@ def get_science_or_fiction(episode, answers):
             item_list.append(f'{item_number} - {text}')
 
     for item in item_list:
-        print (f'{item}\n')
+        print(f'{item}\n')
 
 if __name__ == "__main__":
     get_science_or_fiction()
