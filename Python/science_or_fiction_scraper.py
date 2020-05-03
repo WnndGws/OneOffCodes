@@ -4,6 +4,7 @@ Displays them all for my use
 '''
 
 import random
+import re
 import requests_html
 
 import click
@@ -35,6 +36,8 @@ def get_science_or_fiction(episode, answers):
     items = r.html.find('li.science-fiction__item')
     for item in items:
         text = item.find('p')[0].full_text
+        # Remove the URL from each news item
+        text = re.sub(r'https?:\/\/.*[\r\n]*', '', text)
         answer = item.find('span.quiz__answer')[0].full_text
         item_number = item.find('span')[0].full_text
         if answers:
