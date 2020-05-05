@@ -8,7 +8,7 @@ blue='#268bd2'
 magenta='#cd00cd'
 cyan='#73cef4'
 
-#Need to update or it wont know theres new packages
+#Need to update or it wont know there are new packages
 pikaur -Sy > /dev/null 2>&1
 
 pac=$(pacman -Qqu 2> /dev/null | wc -l)
