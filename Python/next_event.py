@@ -98,10 +98,13 @@ def getnextevent():
             # When making comparisons, an All day event only comes 1st if it there is nothing else that day
             start_time_test = start_time + datetime.timedelta(seconds=86399)
         if start_time_test < lowest_start_time:
-            lowest_start_time = start_time
+            lowest_start_time = start_time_test
             lowest_title = event["summary"]
 
-    print(f'{humanize.naturalday(lowest_start_time).capitalize()}-{datetime.datetime.strftime(lowest_start_time, "%H:%M")}-{lowest_title}')
+    if lowest_start_time.second == 59:
+        print(f'All Day-{lowest_title}')
+    else:
+        print(f'{humanize.naturalday(lowest_start_time).capitalize()}-{datetime.datetime.strftime(lowest_start_time, "%H:%M")}-{lowest_title}')
 
 if __name__ == "__main__":
     getnextevent()
