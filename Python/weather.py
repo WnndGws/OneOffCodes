@@ -16,7 +16,7 @@ CONFIG.read(FILEDIR + '/weather.ini')
 CITY = CONFIG['SETTINGS']['CITY']
 API_KEY = CONFIG['SETTINGS']['API_KEY']
 UNITS = "Metric"
-UNIT_KEY = ""
+UNIT_KEY = "C"
 NOW = int(time.time())
 
 DATAFILE = (FILEDIR + '/weather_data.txt')

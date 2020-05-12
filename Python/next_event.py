@@ -102,7 +102,7 @@ def getnextevent():
             lowest_title = event["summary"]
 
     if lowest_start_time.second == 59:
-        print(f'All Day-{lowest_title}')
+        print(f'All Day - {lowest_title}')
     else:
         print(f'{humanize.naturalday(lowest_start_time).capitalize()}-{datetime.datetime.strftime(lowest_start_time, "%H:%M")}-{lowest_title}')
 
