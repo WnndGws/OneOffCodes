@@ -1,6 +1,6 @@
 #!/bin/sh
 # Runs rofi with a yes/no option
-# Gives a dmenu prompt labeled with $1 to perform command $2.
+# Gives a dmenu prompt labelled with $1 to perform command $2.
 # For example:
 # `./prompt "Do you want to shutdown?" "shutdown -h now"`
 
