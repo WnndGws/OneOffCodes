@@ -1,0 +1,7 @@
+#!/bin/sh
+# Runs rofi with a yes/no option
+# Gives a dmenu prompt labeled with $1 to perform command $2.
+# For example:
+# `./prompt "Do you want to shutdown?" "shutdown -h now"`
+
+[[ $(printf "Yes\nNo" | rofi -dmenu -i -mesg "$1" -select -only-match) == 'Yes' ]] && zsh -c "$2"
