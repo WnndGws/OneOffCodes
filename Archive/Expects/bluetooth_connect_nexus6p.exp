@@ -1,7 +1,0 @@
-#!/usr/bin/expect -f
-## Automatically 'connects' my bluetooth headphones
-
-spawn bluetoothctl
-send "connect 00:9A:CD:6F:55:19\r"
-send "exit"
-expect eof

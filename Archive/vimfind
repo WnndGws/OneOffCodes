@@ -1,9 +1,0 @@
-#!/usr/bin/zsh
-## Find a file and open in vim
-
-local file
-file="$(fasd -Rfl "$1" | fzf -1 -0 --no-sort +m)"
-if [ -z "$file" ]; then
-    file="$(fzf -1 -q "$1")"
-fi
-vim "${file}" || return 1
