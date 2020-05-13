@@ -1,0 +1,28 @@
+#!/bin/python
+#Use this to rename my BSPWM workspaces to icons
+
+import re
+import subprocess
+
+#Desktop    1 2 3 4 5 6 7 8 9 10
+#0x0040000  6 8 9 A B 7 C D E F
+
+icons_dict ={
+    "alacritty": str(""),
+}
+
+def checkDesktopClasses():
+    myCmd = "bspc query --tree --desktop"
+    desktop = "0x00400006"
+    raw_output = subprocess.Popen([myCmd, desktop], stdout=subprocess.PIPE, shell=True).communicate()
+    raw_output = str(raw_output)
+    regexed_output = re.findall('"className":".*?"', raw_output)
+    return regexed_output
+
+def setDesktopName():
+    output = checkDesktopClasses()
+    for key in icons_dict:
+        for word in output:
+
+if __name__ == "__main__":
+    setDesktopName()
