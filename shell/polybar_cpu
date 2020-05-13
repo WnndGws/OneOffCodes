@@ -10,8 +10,7 @@ cyan='#73cef4'
 
 while true; do
     # Take one_min core load, times by 100 to get percentage, divide by 4 since quadcore cpu
-    #one_min_cpu_load_avg=$(awk '{ printf "%1d",$1*25 }' < /proc/loadavg)
-    one_min_cpu_load_avg=$(awk '{ printf "%1d",$1 }' < /proc/loadavg)
+    one_min_cpu_load_avg=$(awk '{ printf "%1d",$1*25 }' < /proc/loadavg)
 
     # Start to worry at 70%, investigate at over 100% constantly
     [[ $one_min_cpu_load_avg -gt 90 ]] && colour=$red ||\
