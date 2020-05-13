@@ -1,0 +1,15 @@
+#!/bin/sh
+# ust prints memory I have available to use in polybar
+
+while true; do
+    free_mem=$(free | awk 'NR==2{ print $7 }')
+    tot_mem=$(free | awk 'NR==2{ print $2 }')
+    free_percentage=$(awk -v f=$free_mem -v t=$tot_mem 'BEGIN { printf "%1d",100*(1-(f/t)) }')
+
+    [[ $free_percentage -gt 90 ]] && echo "%{u#e65350} $free_percentage%" ||\
+    [[ $free_percentage -gt 75 ]] && echo "%{u#e65350} $free_percentage%" ||\
+    [[ $free_percentage -gt 50 ]] && echo "%{u#ffc24b} $free_percentage%" ||\
+    echo "%{u#99c794} $free_percentage%"
+
+    sleep 1
+done
