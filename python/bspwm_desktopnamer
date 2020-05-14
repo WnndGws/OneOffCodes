@@ -7,6 +7,8 @@ import subprocess
 icons_dict = {
     "alacritty": str(""),
     "firefox": str(""),
+    "mpv": str(""),
+    "*": str("_"),
 }
 
 # Edit this with info from bspc query --desktops
@@ -39,8 +41,8 @@ def create_desktop_name(desktop):
     '''Loops over list of applications, and turns it into a string of icons'''
     desktop_name = ''
     output = check_desktop_classes(desktop)
-    for key in icons_dict:
-        for item in output:
+    for item in output:
+        for key in icons_dict:
             if item == key:
                 desktop_name += f'{icons_dict[key]} '
 
