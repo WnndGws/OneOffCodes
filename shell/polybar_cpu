@@ -13,9 +13,13 @@ while true; do
     one_min_cpu_load_avg=$(awk '{ printf "%1d",$1*25 }' < /proc/loadavg)
 
     # Start to worry at 70%, investigate at over 100% constantly
-    [[ $one_min_cpu_load_avg -gt 90 ]] && colour=$red ||\
-    [[ $one_min_cpu_load_avg -gt 70 ]] && colour=$yellow ||\
-    colour=$green
+    if [ $one_min_cpu_load_avg -gt 90 ]; then
+        colour=$red
+    elif [ $one_min_cpu_load_avg -gt 70 ]; then
+        colour=$yellow
+    else
+        colour=$green
+    fi
 
     echo "%{u$colour} $one_min_cpu_load_avg%"
     sleep 1
