@@ -17,6 +17,3 @@ aur=$(awk -v a='$aur' -v p='$pac' 'BEGIN { printf a+b }')
 
 [[ $pac == "0" ]] && [[ $aur == "0" ]] && colour=$blue || colour=$red
 echo "%{u$colour}$pac  $aur"
-
-#Update polybar via ipc hook
-polybar-msg hook pkg 1 > /dev/null 2>&1
