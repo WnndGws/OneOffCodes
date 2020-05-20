@@ -13,7 +13,7 @@ while true; do
     elif [ $free_percentage -gt 50 ]; then
         echo "%{u#ffc24b} $free_percentage%"
     else
-        echo "%{u#99c794} $free_percentage%"
+        echo "%{u#99c76c} $free_percentage%"
     fi
 
     sleep 1
