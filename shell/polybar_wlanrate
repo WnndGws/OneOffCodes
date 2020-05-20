@@ -2,7 +2,7 @@
 #Checks how much is being downloaded to calc a speed
 
 red='#65350'
-green='#99c794'
+green='#99c76c'
 yellow='#ffc24b'
 blue='#268bd2'
 magenta='#cd00cd'
