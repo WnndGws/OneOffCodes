@@ -29,8 +29,8 @@ def iterate_through():
             para = soup.find_all("p")
             for words in para:
                 if (
-                    re.match(".*(dustin).*(degree).*", words.text, re.IGNORECASE)
-                    is not None
+                        re.match(".*(dustin).*(degree).*", words.text, re.IGNORECASE)
+                        is not None
                 ):
                     ep_dict[n] = f"{words.text}\n"
                     url = f"http://traffic.libsyn.com/forcedn/atheistnomads/atheist_nomads_{n}.mp3"
