@@ -2,20 +2,17 @@
 # ust prints cpu I have available to use in polybar
 
 red='#65350'
-green='#99c794'
+green='#99c76c'
 yellow='#ffc24b'
-blue='#268bd2'
-magenta='#cd00cd'
-cyan='#73cef4'
 
 while true; do
     # Take one_min core load, times by 100 to get percentage, divide by 4 since quadcore cpu
     one_min_cpu_load_avg=$(awk '{ printf "%1d",$1*25 }' < /proc/loadavg)
 
     # Start to worry at 70%, investigate at over 100% constantly
-    if [ $one_min_cpu_load_avg -gt 90 ]; then
+    if [ "$one_min_cpu_load_avg" -gt 90 ]; then
         colour=$red
-    elif [ $one_min_cpu_load_avg -gt 70 ]; then
+    elif [ "$one_min_cpu_load_avg" -gt 70 ]; then
         colour=$yellow
     else
         colour=$green
