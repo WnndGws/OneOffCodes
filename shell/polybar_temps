@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+## Checks GPU and CPU temps, and displays them in polybar
+
+red='#65350'
+green='#99c76c'
+yellow='#ffc24b'
+
+while true; do
+    GPU=$(sensors | awk 'NR==16 { print $2; }' | cut -c 2- | rev | cut -c 6- | rev)
+    CPU=$(sensors | awk 'NR==3 { print $4; }' | cut -c 2- | rev | cut -c 6- | rev)
+
+    if [ $CPU -gt 85 ] || [ $GPU -gt 85 ]; then
+        colour=$red
+    elif [ $CPU -gt 65 ] || [ $GPU -gt 65 ]; then
+        colour=$yellow
+    else
+        colour=$green
+    fi
+
+    echo "%{u$colour} $CPU°C/$GPU°C"
+    sleep 10
+done
