@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Slightly edited version of
+"""Edited version of
 https://towardsdatascience.com/understand-text-summarization-and-create-your-own-summarizer-in-python-b26a9f09fc70
 """
 
@@ -10,19 +10,18 @@ import numpy as np
 import networkx as nx
 
 def read_article(file_name):
-    """ TODO: this doesnt make nice sentences"""
     """ Generates clean sentences"""
-    file = open(file_name, "r")
-    filedata = file.readlines()
-    #article = filedata[0].split(". ")
-
     sentences = []
-    #for sentence in article:
-    for sentence in filedata:
-        print(sentence)
-        #sentences.append(sentence.replace("[^a-zA-Z]", " ").split(" "))
-        sentences.append(sentence.replace("[^a-zA-Z]", " "))
-    #sentences.pop()
+    with open(file_name, "r") as file:
+        filedata = file.readlines()
+
+    for entry in filedata:
+        entry = entry.replace("[^a-zA-Z]", " ")
+        entry = entry.replace("\n", "")
+        entry_list = entry.split(". ")
+        for item in entry_list:
+            if not item.strip() == "":
+                sentences.append(item.strip())
 
     return sentences
 
@@ -50,9 +49,9 @@ def sentence_similarity(sent1, sent2, stopwords=None):
         if w in stopwords:
             continue
         vector2[all_words.index(w)] += 1
- 
+
     return 1 - cosine_distance(vector1, vector2)
- 
+
 def build_similarity_matrix(sentences, stop_words):
     """ Create an empty similarity matrix """
     similarity_matrix = np.zeros((len(sentences), len(sentences)))
@@ -88,9 +87,11 @@ def generate_summary(file_name, top_n):
 
     # Step 1 - Read text anc split it
     sentences = read_article(file_name)
+    #print(sentences)
 
     # Step 2 - Generate Similary Martix across sentences
     sentence_similarity_martix = build_similarity_matrix(sentences, stop_words)
+    #print(sentence_similarity_martix)
 
     # Step 3 - Rank sentences in similarity martix
     sentence_similarity_graph = nx.from_numpy_array(sentence_similarity_martix)
@@ -98,11 +99,13 @@ def generate_summary(file_name, top_n):
 
     # Step 4 - Sort the rank and pick top sentences
     ranked_sentence = sorted(((scores[i], s) for i, s in enumerate(sentences)), reverse=True)
-    print("Indexes of top ranked_sentence order are ", ranked_sentence)
+    #print("Indexes of top ranked_sentence order are ", ranked_sentence)
 
     for i in range(top_n):
-        summarize_text.append(" ".join(ranked_sentence[i][1]))
+        #print(ranked_sentence[i])
+        summarize_text.append(ranked_sentence[i][1])
 
+    ## TODO: Works, but next want to order the ranked sentences into the order they appear in the original article
     # Step 5 - Offcourse, output the summarize texr
     print("Summarize Text: \n", ". ".join(summarize_text))
 
