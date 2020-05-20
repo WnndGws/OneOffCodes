@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-## Summarises articles into n sentences
+""" Summarises articles into n sentences
+"""
 
 import nltk
 
