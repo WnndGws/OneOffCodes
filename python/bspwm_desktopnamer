@@ -8,21 +8,20 @@ icons_dict = {
     "alacritty": str(""),
     "firefox": str(""),
     "mpv": str(""),
-    "*": str("_"),
 }
 
 # Edit this with info from bspc query --desktops
 desktops_dict = {
-    "0x00400006": "1",
-    "0x00400008": "2",
-    "0x00400009": "3",
-    "0x0040000A": "4",
-    "0x0040000B": "5",
-    "0x0040000C": "6",
-    "0x00400007": "7",
-    "0x0040000D": "8",
-    "0x0040000E": "9",
-    "0x0040000F": "10",
+    "0x00600006": "1",
+    "0x00600008": "2",
+    "0x00600009": "3",
+    "0x0060000A": "4",
+    "0x0060000B": "5",
+    "0x0060000C": "6",
+    "0x00600007": "7",
+    "0x0060000D": "8",
+    "0x0060000E": "9",
+    "0x0060000F": "10",
 }
 
 def check_desktop_classes(desktop):
@@ -41,16 +40,12 @@ def create_desktop_name(desktop):
     '''Loops over list of applications, and turns it into a string of icons'''
     desktop_name = ''
     output = check_desktop_classes(desktop)
+    desktop_name += f'{desktops_dict[desktop]}'
     for item in output:
-        for key in icons_dict:
-            if item == key:
-                desktop_name += f'{icons_dict[key]} '
-
-    if desktop_name == '':
-        desktop_name = desktops_dict[desktop]
-    #else:
-        #remove trailing whitespace
-        #desktop_name = desktop_name[:-1]
+        if item in icons_dict:
+            desktop_name += f' {icons_dict[item]}'
+        else:
+            desktop_name += ' ^'
 
     return desktop_name
 
@@ -63,7 +58,7 @@ def set_desktop_name(desktop):
 def rename_all_desktops():
     '''TODO: bspc subscribe node_{add,remove} | while read -r line; do; echo "Changed"; done'''
     '''Loops over desktops and renames all'''
-    desktop_list = ["0x00400006", "0x00400008", "0x00400009", "0x0040000A", "0x0040000B", "0x00400007", "0x0040000C", "0x0040000D", "0x0040000E", "0x0040000F"]
+    desktop_list = ["0x00600006", "0x00600008", "0x00600009", "0x0060000A", "0x0060000B", "0x00600007", "0x0060000C", "0x0060000D", "0x0060000E", "0x0060000F"]
     for desktop in desktop_list:
         set_desktop_name(desktop)
 
