@@ -2,11 +2,13 @@
 # Checks how many packages need updating
 
 red='#65350'
-green='#99c794'
+green='#99c76c'
 yellow='#ffc24b'
 blue='#268bd2'
 magenta='#cd00cd'
 cyan='#73cef4'
+
+echo "Refreshing..."
 
 #Need to update or it wont know there are new packages
 pikaur -Sy > /dev/null 2>&1
