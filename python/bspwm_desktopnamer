@@ -1,5 +1,6 @@
 #!/bin/python
-#Use this to rename my BSPWM workspaces to icons
+""" Use this to rename my BSPWM workspaces to icons
+"""
 
 import re
 import subprocess
@@ -24,43 +25,61 @@ desktops_dict = {
     "0x0060000F": "10",
 }
 
+
 def check_desktop_classes(desktop):
-    '''checks what windows are open on a desktop and adds them to a list'''
+    """checks what windows are open on a desktop and adds them to a list"""
     my_cmd = f"bspc query --tree --desktop {desktop}"
     items = []
-    raw_output = subprocess.Popen([my_cmd], stdout=subprocess.PIPE, shell=True).communicate()
+    raw_output = subprocess.Popen(
+        [my_cmd], stdout=subprocess.PIPE, shell=True
+    ).communicate()
     raw_output = str(raw_output)
     regexed_output = re.findall('"className":".*?"', raw_output)
     for item in regexed_output:
-        #keep only text after :" and before "
+        # keep only text after :" and before "
         items.append(re.findall(':"(.*)"', item)[0])
     return items
 
+
 def create_desktop_name(desktop):
-    '''Loops over list of applications, and turns it into a string of icons'''
-    desktop_name = ''
+    """Loops over list of applications, and turns it into a string of icons"""
+    desktop_name = ""
     output = check_desktop_classes(desktop)
-    desktop_name += f'{desktops_dict[desktop]}'
+    desktop_name += f"{desktops_dict[desktop]}"
     for item in output:
         if item in icons_dict:
-            desktop_name += f' {icons_dict[item]}'
+            desktop_name += f" {icons_dict[item]}"
         else:
-            desktop_name += ' ^'
+            desktop_name += " ^"
 
     return desktop_name
 
+
 def set_desktop_name(desktop):
-    '''Runs bspc coommand to change desktop name'''
+    """Runs bspc coommand to change desktop name"""
     desktop_name = create_desktop_name(desktop)
     my_cmd = f'bspc desktop {desktop} --rename "{desktop_name}"'
     subprocess.call([my_cmd], shell=True)
 
+
 def rename_all_desktops():
-    '''TODO: bspc subscribe node_{add,remove} | while read -r line; do; echo "Changed"; done'''
-    '''Loops over desktops and renames all'''
-    desktop_list = ["0x00600006", "0x00600008", "0x00600009", "0x0060000A", "0x0060000B", "0x00600007", "0x0060000C", "0x0060000D", "0x0060000E", "0x0060000F"]
+    """TODO: Find a way to import names automatically
+    Loops over desktops and renames all"""
+    desktop_list = [
+        "0x00600006",
+        "0x00600008",
+        "0x00600009",
+        "0x0060000A",
+        "0x0060000B",
+        "0x00600007",
+        "0x0060000C",
+        "0x0060000D",
+        "0x0060000E",
+        "0x0060000F",
+    ]
     for desktop in desktop_list:
         set_desktop_name(desktop)
+
 
 if __name__ == "__main__":
     rename_all_desktops()
