@@ -2,11 +2,7 @@
 # Checks how many packages need updating
 
 red='#65350'
-green='#99c76c'
-yellow='#ffc24b'
 blue='#268bd2'
-magenta='#cd00cd'
-cyan='#73cef4'
 
 echo "Refreshing..."
 
@@ -17,5 +13,5 @@ pac=$(pacman -Qqu 2> /dev/null | wc -l)
 aur=$(pikaur -Qqu 2> /dev/null | wc -l)
 aur=$(awk -v a='$aur' -v p='$pac' 'BEGIN { printf a+b }')
 
-[[ $pac == "0" ]] && [[ $aur == "0" ]] && colour=$blue || colour=$red
+[ "$pac" = "0" ] && [ "$aur" = "0" ] && colour=$blue || colour=$red
 echo "%{u$colour}$pac  $aur"

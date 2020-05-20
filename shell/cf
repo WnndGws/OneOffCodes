@@ -8,4 +8,4 @@ file=$(locate -Ai -0 "$1" | fzf --read0 -0 -1)
 
 # Checkes if file was found, exits if it wasnt
 # if file exists and if file is a dir, change to dir, otherwise change to file's dir
-[ ! -n "$file" ] && echo "That file cannot be located..."  || [ -d "$file" ] && cd "$file" || cd "${file:h}"
+[ -z "$file" ] && echo "That file cannot be located..."  || [ -d "$file" ] && cd "$file" || cd "${file:h}"
