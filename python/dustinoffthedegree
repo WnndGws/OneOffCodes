@@ -33,7 +33,7 @@ def iterate_through():
                         is not None
                 ):
                     ep_dict[n] = f"{words.text}\n"
-                    url = f"http://traffic.libsyn.com/forcedn/atheistnomads/atheist_nomads_{n}.mp3"
+                    url = f"https://traffic.libsyn.com/forcedn/atheistnomads/atheist_nomads_{n}.mp3"
                     download_mp3(url)
     with open("dustin_degree.txt", "w") as file:
         file.write(json.dumps(ep_dict))
