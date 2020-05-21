@@ -4,7 +4,7 @@
 number_of_patches_left=$(git status --short | wc -l)
 
 while [ "$number_of_patches_left" -gt 0 ]; do
-    git commit -pS
+    git commit --patch --gpg-sign --verbose
     git pull
     git push
     number_of_patches_left=$(git status --short | wc -l)
