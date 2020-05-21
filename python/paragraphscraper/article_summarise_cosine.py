@@ -80,7 +80,12 @@ def build_similarity_matrix(sentences, stop_words):
     default=5,
     show_default=True,
 )
-def generate_summary(file_name, top_n):
+@click.option(
+    "--context",
+    is_flag=True,
+    help="Shows the sentence befroe and after the important one",
+)
+def generate_summary(file_name, top_n, context):
     """ Summarises file_name into 5 sentences """
     stop_words = stopwords.words('english')
     summarize_text = []
@@ -104,7 +109,10 @@ def generate_summary(file_name, top_n):
     for i in range(top_n):
         sentence_index = sentences.index(ranked_sentence[i][1])
         #Pads number to 4 digits
-        summary_string = f'{sentence_index:04}: {sentences[sentence_index]}'
+        if context:
+            summary_string = f'{sentence_index:04}: {sentences[sentence_index - 1]}. {sentences[sentence_index]}. {sentences[sentence_index + 1]}'
+        else:
+            summary_string = f'{sentence_index:04}: {sentences[sentence_index]}'
         summarize_text.append(summary_string)
 
     # Step 5 - Offcourse, output the summarize texr
