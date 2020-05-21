@@ -10,18 +10,5 @@ fi
 #for i in "${repos}"; do
 for i in "$HOME/Git"/*; do
     cd "$i"
-    git pull
-
-    for file in $(git ls-files --others --exclude-standard); do
-        git add $file
-        git commit -vS $file
-    done
-
-    for file in $(git diff --name-only); do
-        git add -p $file
-        git commit -vS $file
-    done
-
-    git push
+    $HOME/Git/scripts/shell/gitpush
 done
-
