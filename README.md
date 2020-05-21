@@ -1,6 +1,6 @@
 # One-off Codes
 
-This is a collection of shell scripts, and python scripts that I write to achieve a discrete task
+This is a collection of shell scripts, and Python scripts that I write to achieve a discrete task
 
 ## Getting Started
 
