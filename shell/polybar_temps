@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-## Checks GPU and CPU temps, and displays them in polybar
+# Checks GPU and CPU temps, and displays them in polybar
 
 red='#65350'
 green='#99c76c'
