@@ -29,7 +29,7 @@ case "$options" in
     firefox) firefox "$1";;
     feh) feh --scale-down --recursive "$1" --title "%S %n";;
     paragraph) /bin/rm /tmp/para.txt && "$HOME/Git/scripts/python/paragraphscraper/paragraph_scraper.py" --url "$1" && bspc rule -a \* -o state=floating && alacritty -e bat /tmp/para.txt ;;
-    summary) pass;;
+    summary) /bin/rm /tmp/para.txt && "$HOME/Git/scripts/python/paragraphscraper/paragraph_scraper.py" --url "$1" && "$HOME/Git/scripts/python/paragraphscraper/article_summarise_cosine.py" --file-name /tmp/para.txt --context > /tmp/summary.txt && bspc rule -a \* -o state=floating && alacritty -e bat /tmp/summary.txt ;;
     ytdl) youtube-dl "$1" > /dev/null 2>&1 & ;;
     speedread) pass;;
     speedread_summary) pass;;
