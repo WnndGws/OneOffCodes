@@ -59,7 +59,7 @@ def build_similarity_matrix(sentences, stop_words):
     for idx1 in range(len(sentences)):
         for idx2 in range(len(sentences)):
             if idx1 == idx2: #ignore if both are same sentences
-                continue 
+                continue
             similarity_matrix[idx1][idx2] = sentence_similarity(sentences[idx1], sentences[idx2], stop_words)
 
     return similarity_matrix
@@ -102,12 +102,21 @@ def generate_summary(file_name, top_n):
     #print("Indexes of top ranked_sentence order are ", ranked_sentence)
 
     for i in range(top_n):
-        #print(ranked_sentence[i])
-        summarize_text.append(ranked_sentence[i][1])
+        sentence_index = sentences.index(ranked_sentence[i][1])
+        #Pads number to 4 digits
+        summary_string = f'{sentence_index:04}: {sentences[sentence_index]}'
+        summarize_text.append(summary_string)
 
-    ## TODO: Works, but next want to order the ranked sentences into the order they appear in the original article
     # Step 5 - Offcourse, output the summarize texr
-    print("Summarize Text: \n", ". ".join(summarize_text))
+    summarize_text.sort()
+    #Now have the most important sentences, in the order they appeared
+    final_list = []
+    for i in summarize_text:
+        final_summary = ""
+        final_summary = final_summary.join(i.split(": ")[1])
+        final_list.append(final_summary)
+    print(f'Summary:\n{". ".join(final_list)}')
+    #print(f'Summary:\n{final_summary}')
 
 if __name__ == "__main__":
     generate_summary()
