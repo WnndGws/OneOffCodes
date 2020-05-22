@@ -20,7 +20,7 @@ chmod +x script.py
     * [Implementation](https://towardsdatascience.com/understand-text-summarization-and-create-your-own-summarizer-in-python-b26a9f09fc70) in python to use natural language to summarise an article into the top n most "important" sentences
 
 * paragraphscraper/paragraph_scraper
-    * Crawls a url and outputs all "<p>" tags to a file
+    * Crawls a url and outputs all "\<p\>" tags to a file
 
 * boxing
     * Checks when [any of the top ranked boxers](https://en.wikipedia.org/wiki/List_of_current_boxing_rankings) are fighting, with optional output to GoogleCalendar
