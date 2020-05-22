@@ -16,6 +16,7 @@ chmod +x script.py
 
 ## Descriptions
 ### Python
+<<<<<<< HEAD
 * paragraphscraper/article_summarise_cosine
     * [Implementation](https://towardsdatascience.com/understand-text-summarization-and-create-your-own-summarizer-in-python-b26a9f09fc70) in python to use natural language to summarise an article into the top n most "important" sentences
 
@@ -48,6 +49,72 @@ chmod +x script.py
 * scienceorfictionscraper
     * Scrapes the SGU for the "science or fiction" section in show notes. Can optionally print answers
 
+=======
+* **bisection_method**
+    * __ARCHIVED/UNFINISHED__ written to try and solve a quadratic.
+___
+
+* **boxing**
+    * Written to check list of top boxers, and see when their next fight is
+___
+
+* **clue_days**
+    * __ARCHIVED__ Written to determine when to give students a new clue about puzzle
+___
+
+* **dustin_off_the_degree**
+    * __ARCHIVED__ Written to extract dustin_off_the_degree from AtheistNomads podcast
+___
+* **ff2mpv.py**
+    * Used to open videos from Firefox in mpv [Source](https://github.com/woodruffw/ff2mpv)
+___
+
+* **file_lock**
+___
+* **gifmaker**
+    * Make a webm video/gif out of a source video and uploads it to GoogleDrive
+___
+
+* **i3_alternating_windows**
+___
+* **image_scraper**
+    * Checks url and scrapes the image tags
+___
+
+* **offlineimap**
+___
+* **only_give_code_on_fridays**
+___
+* **paragraph_scraper**
+    * Checks url and scrapes the paragraph tags
+___
+
+* **qr_codes**
+___
+* **reboot_router**
+___
+* **reddit_maker**
+___
+* **science_or_fiction_scraper**
+    * Scrapes science_or_fiction from the SGU podcast website
+___
+* **Screenshots**
+___
+* **small_mpv**
+___
+* **snap_ya**
+___
+* **sport_downloader**
+___
+* **umpv**
+    * Creates a mpv playlist from urls/files [Original Source. Heavily edited](https://github.com/mpv-player/mpv/blob/master/TOOLS/umpv)
+___
+* **umpv_180p**
+    * Creates a mpv playlist from urls/files with all videos being 180p [Original Source. Heavily edited](https://github.com/mpv-player/mpv/blob/master/TOOLS/umpv)
+
+___
+ 
+>>>>>>> c38307d269e2b63c6a7d6a80a614167905ca259f
 ### Shell
 <++> WIP
 
