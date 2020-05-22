@@ -46,9 +46,6 @@ ___
 * **image_scraper**
     * Checks url and scrapes the image tags
 ___
-* **myman**
-    * Check tldr for a program, and if not there then show manual or --help for it
-___
 
 * **offlineimap**
 ___
@@ -81,9 +78,6 @@ ___
 * **umpv_180p**
     * Creates a mpv playlist from urls/files with all videos being 180p [Original Source. Heavily edited](https://github.com/mpv-player/mpv/blob/master/TOOLS/umpv)
 
-___
-* **wallpaper_maker**
-    * My biggest script to scrape bing wallpaper and add quotes over it and set it as the wallpaper
 ___
  
 ### Shell
