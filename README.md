@@ -1,4 +1,4 @@
-# One-off Codes
+# Scripts
 
 This is a collection of shell scripts, and Python scripts that I write to achieve a discrete task
 
@@ -16,153 +16,40 @@ chmod +x script.py
 
 ## Descriptions
 ### Python
-* **bisection_method**
-    * __ARCHIVED/UNFINISHED__ written to try and solve a quadratic.
-___
+* paragraphscraper/article_summarise_cosine
+    * [Implementation](https://towardsdatascience.com/understand-text-summarization-and-create-your-own-summarizer-in-python-b26a9f09fc70) in python to use natural language to summarise an article into the top n most "important" sentences
 
-* **boxing**
-    * Written to check list of top boxers, and see when their next fight is
-___
+* paragraphscraper/paragraph_scraper
+    * Crawls a url and outputs all <p> tags to a file
 
-* **clue_days**
-    * __ARCHIVED__ Written to determine when to give students a new clue about puzzle
-___
+* boxing
+    * Checks when [any of the top ranked boxers](https://en.wikipedia.org/wiki/List_of_current_boxing_rankings) are fighting, with optional output to GoogleCalendar
 
-* **dustin_off_the_degree**
-    * __ARCHIVED__ Written to extract dustin_off_the_degree from AtheistNomads podcast
-___
-* **ff2mpv.py**
-    * Used to open videos from Firefox in mpv [Source](https://github.com/woodruffw/ff2mpv)
-___
+* bspwm_desktopnamer
+    * Rename my BSPWM workspaces to include the icons of any open programs on that workspace. Make for a nice polybar
 
-* **file_lock**
-___
-* **gifmaker**
-    * Make a webm video/gif out of a source video and uploads it to GoogleDrive
-___
+* dustinoffthedegree
+    * broken
+    * Used to scrape episode numbers and topic from podcast show notes
 
-* **i3_alternating_windows**
-___
-* **image_scraper**
-    * Checks url and scrapes the image tags
-___
-* **myman**
-    * Check tldr for a program, and if not there then show manual or --help for it
-___
+* ff2mpv
+    * Cloned from https://github.com/woodruffw/ff2mpv/
+    * Used to open a video in mpv from firefox
 
-* **offlineimap**
-___
-* **only_give_code_on_fridays**
-___
-* **paragraph_scraper**
-    * Checks url and scrapes the paragraph tags
-___
+* gifmaker
+    * Turns a portion of a video into a webm with the help of ffmpeg
 
-* **qr_codes**
-___
-* **reboot_router**
-___
-* **reddit_maker**
-___
-* **science_or_fiction_scraper**
-    * Scrapes science_or_fiction from the SGU podcast website
-___
-* **Screenshots**
-___
-* **small_mpv**
-___
-* **snap_ya**
-___
-* **sport_downloader**
-___
-* **umpv**
-    * Creates a mpv playlist from urls/files [Original Source. Heavily edited](https://github.com/mpv-player/mpv/blob/master/TOOLS/umpv)
-___
-* **umpv_180p**
-    * Creates a mpv playlist from urls/files with all videos being 180p [Original Source. Heavily edited](https://github.com/mpv-player/mpv/blob/master/TOOLS/umpv)
+* nextevent
+    * Outputs the next calendar entry in my GoogleCalendar
 
-___
-* **wallpaper_maker**
-    * My biggest script to scrape bing wallpaper and add quotes over it and set it as the wallpaper
-___
- 
+* polybar_weather
+    * Checks [openweathermap.org](https://openweathermap.org) for the current forcast, and prints it nicely for polybar module
+
+* scienceorfictionscraper
+    * Scrapes the SGU for the "science or fiction" section in show notes. Can optionally print answers
+
 ### Shell
-* **archived**
-    * Folder of archived scripts
-___
-* **bar_avgtemp.sh**
-    * Outputs avg temp for use in polybar
-___
-* **bar_pkg.sh**
-    * Checks updateds for display in polybar
-___
-* **battery_brightness.sh**
-    * Sets laptop display brightness based on how much laptop battery is left
-___
-* **Compile_Latex.sh**
-    * Compiles latex and shows output
-___
-* **dmenu_clipboard_management.sh**
-    * Uses dmenu to swap between buffer and clipboard
-___
-* **dmenu_openwith_prompt.sh**
-    * Script to choose how to open file/link
-___
-* **dmenu_yn_prompt.sh**
-    * Prompt for yes/no in dmenu
-___
-* **dotmake.sh**
-    * Series of commands to commit dotfiles using dotgit
-___
-* **gitPushAll.sh**
-    * Push all mu gits
-___
-* **gpgEncrypt.sh**
-___
-* **largestFiles.sh**
-    * Output the largest files in a folder
-___
-* **largestFolders.sh**
-    * Outputs largest folders in a folder
-___
-* **lock.sh**
-    * Lock pc
-___
-* **md2pdf.sh**
-    * Convert markdown to pdf
-___
-* **ocr_pdf.sh**
-    * OCR a pdf using tesseract
-___
-* **prettyping**
-    * Use prettyping
-___
-* **pytest.sh**
-    * Test python files as i write them
-___
-* **rcp.sh**
-    * Use rsync to copy
-___
-* **rmv.sh**
-    * Use rsync to move
-___
-* **Screenshots.sh**
-___
-* **seed_my_torrents.sh**
-    * Seed all my torrents in the background
-___
-* **shutdownAt.sh**
-    * Shutdown at time
-___
-* **shutdownIn.sh**
-    * Shutdown after set amount of time
-___
-* **sleep_until.sh**
-    * Use rtcwake to sleep until wake time
-___
-* **textcleaner**
-    * Remove latex cruft
-___
+<++> WIP
 
 ## Contributing
 
