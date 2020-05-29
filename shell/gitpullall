@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+## Pull all my repos
+
+for i in "$HOME/git"/*; do
+    cd "$i" > /dev/null
+    git pull > /dev/null
+    printf "$i pulled\n"
+done
+
