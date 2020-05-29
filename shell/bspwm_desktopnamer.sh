@@ -2,5 +2,5 @@
 ## Script to use bspc subscribe to constantly watch windows
 
 bspc subscribe node_{add,remove,transfer} | while read -r line; do
-    "$HOME/Git/scripts/python/bspwm_desktopnamer"
+    "$HOME/git/scripts/python/bspwm_desktopnamer"
 done

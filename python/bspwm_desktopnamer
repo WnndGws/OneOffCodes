@@ -13,16 +13,16 @@ icons_dict = {
 
 # Edit this with info from bspc query --desktops
 desktops_dict = {
-    "0x00600006": "1",
-    "0x00600008": "2",
-    "0x00600009": "3",
-    "0x0060000A": "4",
-    "0x0060000B": "5",
-    "0x0060000C": "6",
-    "0x00600007": "7",
-    "0x0060000D": "8",
-    "0x0060000E": "9",
-    "0x0060000F": "10",
+    "\^1.local": "1",
+    "\^2.local": "2",
+    "\^3.local": "3",
+    "\^4.local": "4",
+    "\^5.local": "5",
+    "\^6.local": "6",
+    "\^7.local": "7",
+    "\^8.local": "8",
+    "\^9.local": "9",
+    "\^10.local": "10",
 }
 
 
@@ -66,16 +66,16 @@ def rename_all_desktops():
     """TODO: Find a way to import names automatically
     Loops over desktops and renames all"""
     desktop_list = [
-        "0x00600006",
-        "0x00600008",
-        "0x00600009",
-        "0x0060000A",
-        "0x0060000B",
-        "0x00600007",
-        "0x0060000C",
-        "0x0060000D",
-        "0x0060000E",
-        "0x0060000F",
+        "\^1.local",
+        "\^2.local",
+        "\^3.local",
+        "\^4.local",
+        "\^5.local",
+        "\^6.local",
+        "\^7.local",
+        "\^8.local",
+        "\^9.local",
+        "\^10.local",
     ]
     for desktop in desktop_list:
         set_desktop_name(desktop)

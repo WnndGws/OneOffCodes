@@ -8,7 +8,7 @@ if [[ $(ssh-add -l) == 0 ]]; then
 fi
 
 #for i in "${repos}"; do
-for i in "$HOME/Git"/*; do
+for i in "$HOME/git"/*; do
     cd "$i"
-    $HOME/Git/scripts/shell/gitpush
+    $HOME/git/scripts/shell/gitpush
 done
