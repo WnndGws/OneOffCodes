@@ -4,4 +4,4 @@
 # For example:
 # `./prompt "Do you want to shutdown?" "shutdown -h now"`
 
-[[ $(printf "Yes\nNo" | rofi -dmenu -i -mesg "$1" -select -only-match) == 'Yes' ]] && zsh -c "$2"
+[ $(printf "Yes\nNo" | rofi -dmenu -i -mesg "$1" -select -only-match) = 'Yes' ] && zsh -c "$2"
