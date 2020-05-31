@@ -11,13 +11,13 @@ while true; do
 
     # Start to worry at 70%, investigate at over 100% constantly
     if [ "$one_min_cpu_load_avg" -gt 90 ]; then
-        colour=$red
+        leader="U"
     elif [ "$one_min_cpu_load_avg" -gt 70 ]; then
-        colour=$yellow
+        leader="H"
     else
-        colour=$green
+        leader="L"
     fi
 
-    echo "%{u$colour} $one_min_cpu_load_avg%"
+    echo "C$leader $one_min_cpu_load_avg%"
     sleep 1
 done
