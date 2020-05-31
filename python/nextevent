@@ -6,9 +6,11 @@ Checks google calendar for next event and displays it nicely
 import datetime
 import os
 
+# python-oauth2client
 from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
+# python-google-api-python-client
 from apiclient import discovery
 import httplib2
 import humanize
@@ -26,7 +28,7 @@ def get_credentials():
 
     # If modifying these scopes, delete your previously saved credentials
     scopes = "https://www.googleapis.com/auth/calendar"
-    client_secret_file = "nextevent2clientsecrets.json"
+    client_secret_file = "nexteventclientsecrets.json"
     application_name = "Next Event 2.0"
     flags = None
 
