@@ -1,16 +1,17 @@
 #!/usr/bin/env sh
 ## reads volume
 
+## TODO check if muted, write a vol-change script
 getCurVol() { volume=$(($(pamixer --get-volume)))
         if [ $volume -gt 50 ]; then
             leader="VH"
-            icon="^"
+            icon=""
         elif [ $volume -gt 25 ]; then
             leader="VM"
-            icon="^"
+            icon=""
         else
             leader="VL"
-            icon="^"
+            icon=""
         fi
 }
 
