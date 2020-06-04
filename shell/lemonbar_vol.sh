@@ -1,16 +1,11 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 # finds the active sink for pulse audio and increments the volume. 
 # useful when you have multiple audio outputs and have a key bound to vol-up and down
 
 #Set colours
 black='#343d46'
-red='#65350'
-green='#99c76c'
-yellow='#ffc24b'
 blue='#268bd2'
-magenta='#cd00cd'
-cyan='#73cef4'
 
 #Set variables
 inc='5'
@@ -142,19 +137,19 @@ function output() {
     volMuteStatus
     if [ "${curStatus}" = 'yes' ]
     then
-        echo "%{u$black +u} $curVol%"
+        echo "VM $curVol%"
     else
         if [ "${curVol}" -eq '0' ]
         then
-            echo "%{u$black +u} $curVol%"
+            echo "VM $curVol%"
         elif [ "${curVol}" -lt '25' ]
         then
-            echo "%{u$blue +u} $curVol%"
+            echo "VL $curVol%"
         elif [ "${curVol}" -lt '50' ]
         then
-            echo "%{u$blue +u} $curVol%"
+            echo "Vm $curVol%"
         else
-            echo "%{u$blue +u} $curVol%"
+            echo "VH $curVol%"
         fi
     fi
 } #}}}
