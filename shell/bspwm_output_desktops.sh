@@ -11,5 +11,5 @@ for i in $(IFS=' '; echo "$all_desktops"); do
     new_string="$new_string""${i##$desktop_head}," # ## searches from the back until it finds that whole string
 done
 
-new_string="\n#Added by script\n#Focus or Move window to desktops\nalt + {shift + ,_} {1-9,0}\n    ${new_string%?}}"
+new_string="#Added by script\n#Focus or Move window to desktops\nalt + {shift + ,_} {1-9,0}\n    ${new_string%?}}"
 echo "$new_string"
