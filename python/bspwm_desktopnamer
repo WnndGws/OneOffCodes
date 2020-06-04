@@ -12,19 +12,16 @@ icons_dict = {
 }
 
 # Edit this with info from bspc query --desktops
-desktops_dict = {
-    "\^1.local": "1",
-    "\^2.local": "2",
-    "\^3.local": "3",
-    "\^4.local": "4",
-    "\^5.local": "5",
-    "\^6.local": "6",
-    "\^7.local": "7",
-    "\^8.local": "8",
-    "\^9.local": "9",
-    "\^10.local": "10",
-}
-
+# Determine desktop names
+desktops=subprocess.Popen("bspc query --desktops", stdout=subprocess.PIPE, shell=True).communicate()
+desktops=desktops[0]
+desktops=desktops.split(b'\n')
+desktops.pop(-1)
+desktops_dict = {}
+n = 1
+for element in desktops:
+    desktops_dict.update({element.decode('utf-8'):str(n)})
+    n += 1
 
 def check_desktop_classes(desktop):
     """checks what windows are open on a desktop and adds them to a list"""
@@ -62,24 +59,14 @@ def set_desktop_name(desktop):
     subprocess.call([my_cmd], shell=True)
 
 
-def rename_all_desktops():
-    """TODO: Find a way to import names automatically
-    Loops over desktops and renames all"""
-    desktop_list = [
-        "\^1.local",
-        "\^2.local",
-        "\^3.local",
-        "\^4.local",
-        "\^5.local",
-        "\^6.local",
-        "\^7.local",
-        "\^8.local",
-        "\^9.local",
-        "\^10.local",
-    ]
+def rename_all_desktops(desktops):
+    """Loops over desktops and renames all"""
+    desktop_list = []
+    for element in desktops:
+        desktop_list.append(element.decode('utf-8'))
     for desktop in desktop_list:
         set_desktop_name(desktop)
 
 
 if __name__ == "__main__":
-    rename_all_desktops()
+    rename_all_desktops(desktops)
