@@ -7,7 +7,7 @@ while true; do
 
     FONT_COLOUR="#eee8d5" # white
 
-    if [ "$BAT_STATE" = "Charging" ]; then
+    if [ "$BAT_STATE" = "Charging" ] || [ "$BAT_STATE" = "Full" ]; then
         ICON=""
         UNDERLINE_COLOUR="#99c76c" #green
     elif [ "$BAT_PERC" -gt 75 ]; then
