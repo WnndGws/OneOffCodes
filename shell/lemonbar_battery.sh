@@ -24,6 +24,6 @@ while true; do
         UNDERLINE_COLOUR="e65350" #red
     fi
 
-    printf "%s\n" "B%{F$FONT_COLOUR}%{U$UNDERLINE_COLOUR} %{+u}${ICON} ${BAT_PERC}%%{-u} %{U-}%{F-}"
+    printf "%s\n" "B[%{F$FONT_COLOUR}%{U$UNDERLINE_COLOUR} %{+u}${ICON} ${BAT_PERC}%%{-u} %{U-}%{F-}]"
     sleep 300
 done
