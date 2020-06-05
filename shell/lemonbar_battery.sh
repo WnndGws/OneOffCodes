@@ -1,5 +1,7 @@
 #!/bin/sh
-## Battery display in lemo
+## Battery display in lemonbar
+
+while true; do
     BAT_PERC=$(($(paste /sys/class/power_supply/BAT0/capacity)))
     BAT_STATE=$(paste /sys/class/power_supply/BAT0/status)
     BAT_CHARGE=$(($(paste /sys/class/power_supply/BAT0/charge_now)))
