@@ -26,7 +26,7 @@ linkfile"\
 echo "$link_handlers"
 
 case "$link_handlers" in
-    umpv) "$HOME/git/scripts/shell/umpv" "$1" & ;;
+    umpv) "$HOME/git/scripts/python/umpv" "$1" & ;;
     mpv) mpv --pause --ytdl-format="best[height<=720]" --quiet "$1" 2>/dev/null & ;;
     firefox) firefox "$1";;
     feh) feh --scale-down --recursive "$1" --title "%S %n";;

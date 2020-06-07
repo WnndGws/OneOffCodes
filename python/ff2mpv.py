@@ -9,7 +9,7 @@ from subprocess import Popen, DEVNULL
 def main():
     message = get_message()
     url = message.get("url")
-    args = ["$HOME/git/scripts/shell/umpv", "--", url]
+    args = ["$HOME/git/scripts/shell/umpv", url]
     Popen(args, stdin=DEVNULL, stdout=DEVNULL, stderr=DEVNULL)
     # Need to respond something to avoid "Error: An unexpected error occurred"
     # in Browser Console.
