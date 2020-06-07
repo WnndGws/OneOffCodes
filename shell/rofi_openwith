@@ -1,6 +1,6 @@
 #!/bin/zsh
 # Use zsh so can use bash-isms
-# Feed this script a link and it will give rofi list of options to open with
+# Feed this script a link and it will give rofi list of link_handlers to open with
 
 # The URL will be shown visually in 30 characters or less.
 if [[ "${#1}" -gt 30 ]];
@@ -11,7 +11,7 @@ else
 fi
 echo $visual
 
-options=$(printf "umpv\n\
+link_handlers=$(printf "umpv\n\
 mpv\n\
 firefox\n\
 feh\n\
@@ -19,12 +19,13 @@ paragraph\n\
 summary\n\
 ytdl\n\
 speedread\n\
-speedread_summary"\
+speedread_summary\n\
+linkfile"\
 | rofi -dmenu -i -mesg "How should I open '$visual'?" -select)
 
-echo "$options"
+echo "$link_handlers"
 
-case "$options" in
+case "$link_handlers" in
     umpv) "$HOME/git/scripts/shell/umpv" "$1" & ;;
     mpv) mpv --pause --ytdl-format="best[height<=720]" --quiet "$1" 2>/dev/null & ;;
     firefox) firefox "$1";;
@@ -34,5 +35,6 @@ case "$options" in
     ytdl) youtube-dl "$1" > /dev/null 2>&1 & ;;
     speedread) pass;;
     speedread_summary) pass;;
-    *) "$options" "$1";;
+    linkfile) touch /tmp/linkfile.txt && echo "$1" >> /tmp/linkfile.txt ;;
+    *) "$link_handlers" "$1";;
 esac
