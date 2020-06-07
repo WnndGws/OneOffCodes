@@ -176,8 +176,9 @@ def add_to_calendar(matchingEvent):
     "--months", default=1, help="Number of months to add to start date (DEFAULT=1)"
 )
 @click.option("--verbose", is_flag=True, help="Will print out the results")
+@click.option("--test", is_flag=True, help="Will print the raw scraped data")
 @click.option("--calendar", is_flag=True, help="Add results to your calendar")
-def main(start, months, verbose, calendar):
+def main(start, months, verbose, calendar, test):
     """Scrapes calendar of all fights and lists those containing any of the current top fighters"""
 
     unique_boxers = scrape_wikitables()
@@ -194,6 +195,11 @@ def main(start, months, verbose, calendar):
             nextMonthEvents.append(boxer_two[0])
 
     boxer_i_care_about = set(unique_boxers).intersection(nextMonthEvents)
+
+    if test:
+        print(set(unique_boxers))
+        print(boxer_i_care_about)
+        print(events)
 
     if verbose:
         for event in events:
