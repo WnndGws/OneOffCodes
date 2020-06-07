@@ -35,7 +35,7 @@ def check_desktop_classes(desktop):
     regexed_output = re.findall('"className":".*?"', raw_output)
     for item in regexed_output:
         # keep only text after :" and before "
-        items.append(re.findall(':"(.*)"', item)[0])
+        items.append(re.findall(':"(.*)"', item)[0].lower())
     return items
 
 
