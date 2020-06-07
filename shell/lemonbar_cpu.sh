@@ -18,6 +18,6 @@ while true; do
         leader="L"
     fi
 
-    echo "C$leader $one_min_cpu_load_avg%"
+    echo "C$leader $one_min_cpu_load_avg%"
     sleep 1
 done
