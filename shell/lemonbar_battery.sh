@@ -13,22 +13,22 @@ while true; do
 
     if [ "$BAT_STATE" = "Charging" ] || [ "$BAT_STATE" = "Full" ]; then
         ICON=""
-        UNDERLINE_COLOUR="#99c76c" #green
+        UNDERLINE_COLOUR="#99c76c" # green
     elif [ "$BAT_PERC" -gt 95 ]; then
         ICON=""
-        UNDERLINE_COLOUR="#99c76c" #green
+        UNDERLINE_COLOUR="#99c76c" # green
     elif [ "$BAT_PERC" -gt 75 ]; then
         ICON=""
-        UNDERLINE_COLOUR="#99c76c" #green
+        UNDERLINE_COLOUR="#99c76c" # green
     elif [ "$BAT_PERC" -gt 50 ]; then
         ICON=""
-        UNDERLINE_COLOUR="#ffc24b" #yellow
+        UNDERLINE_COLOUR="#ffc24b" # yellow
     elif [ "$BAT_PERC" -gt 15 ]; then
         ICON=""
-        UNDERLINE_COLOUR="#ffc24b" #yellow
+        UNDERLINE_COLOUR="#ffc24b" # yellow
     else
         ICON=""
-        UNDERLINE_COLOUR="#e65350" #red
+        UNDERLINE_COLOUR="#e65350" # red
     fi
 
     printf "%s\n" "B[%{F$FONT_COLOUR}%{U$UNDERLINE_COLOUR} %{+u}${ICON} ${BAT_PERC}% (${TIME})%{-u} %{U-}%{F-}]"
