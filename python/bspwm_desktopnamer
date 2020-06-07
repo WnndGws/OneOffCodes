@@ -9,6 +9,7 @@ icons_dict = {
     "alacritty": str(""),
     "firefox": str(""),
     "mpv": str(""),
+    "signal": str(""),
 }
 
 # Edit this with info from bspc query --desktops
