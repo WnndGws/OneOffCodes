@@ -5,6 +5,7 @@
 import re
 import subprocess
 
+## ENTER THE CLASSNAME FROM `bspc query --tree` IN LOWERCASE
 icons_dict = {
     "alacritty": str(""),
     "firefox": str(""),
