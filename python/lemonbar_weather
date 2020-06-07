@@ -1,0 +1,109 @@
+#!/bin/python
+# -*- coding: utf-8 -*-
+""" Is used to display weather for current location in Lemonbar """
+
+import os
+import configparser
+import datetime
+import json
+import re
+import time
+
+import requests
+
+CONFIG = configparser.ConfigParser()
+FILEDIR = "/home/wynand/.cache/credentials"
+CONFIG.read(FILEDIR + "/weather.ini")
+
+CITY = CONFIG["SETTINGS"]["CITY"]
+API_KEY = CONFIG["SETTINGS"]["API_KEY"]
+UNITS = "Metric"
+UNIT_KEY = "C"
+NOW = int(time.time())
+TOMORROW = int((datetime.datetime.now() + datetime.timedelta(hours=24)).strftime("%s"))
+
+DATAFILE = FILEDIR + "/weather_data.txt"
+file_age = NOW - int(os.stat(DATAFILE).st_mtime)
+
+if file_age > 1800:
+    try:
+        REQ = requests.get(
+            f"https://api.openweathermap.org/data/2.5/forecast?id={CITY}&appid={API_KEY}&units={UNITS}"
+        )
+        if REQ.status_code == 200:
+            CURRENT = REQ.json()["list"][0]["weather"][0]["description"].capitalize()
+            TEMP = int(REQ.json()["list"][0]["main"]["feels_like"])
+            upcoming_temps = []
+            for i in range(0, 40):
+                if REQ.json()["list"][i]["dt"] < TOMORROW:
+                    upcoming_temps.append(REQ.json()["list"][i]["main"]["feels_like"])
+            UPCOMING_MIN = int(min(upcoming_temps))
+            UPCOMING_MAX = int(max(upcoming_temps))
+            SUNRISE = datetime.datetime.fromtimestamp(
+                (REQ.json()["city"]["sunrise"])
+            ).strftime("%H:%M")
+            SUNSET = datetime.datetime.fromtimestamp(
+                (REQ.json()["city"]["sunset"])
+            ).strftime("%H:%M")
+        with open(DATAFILE, "w") as f:
+            json.dump(
+                {
+                    "CURRENT": CURRENT,
+                    "TEMP": TEMP,
+                    "UPCOMING_MIN": UPCOMING_MIN,
+                    "UPCOMING_MAX": UPCOMING_MAX,
+                    "SUNRISE": SUNRISE,
+                    "SUNSET": SUNSET,
+                },
+                f,
+            )
+        # else:
+        # CURRENT = "Unknown"
+        # TEMP = "Unknown"
+        # SUNRISE = "Unknown"
+        # SUNRISE_TOMORROW = "Unknown"
+        # SUNSET = "Unknown"
+    except requests.exceptions.RequestException:
+        CURRENT = "Unknown"
+        TEMP = "Unknown"
+        UPCOMING_MIN = "Unknown"
+        UPCOMING_MAX = "Unknown"
+        SUNRISE = "Unknown"
+        SUNSET = "Unknown"
+else:
+    CURRENT = "Unknown"
+    TEMP = "Unknown"
+    UPCOMING_MIN = "Unknown"
+    UPCOMING_MAX = "Unknown"
+    SUNRISE = "Unknown"
+    SUNSET = "Unknown"
+
+DATA = json.load(open(DATAFILE, "r"))
+CURRENT = DATA["CURRENT"]
+TEMP = DATA["TEMP"]
+UPCOMING_MIN = DATA["UPCOMING_MIN"]
+UPCOMING_MAX = DATA["UPCOMING_MAX"]
+SUNRISE = DATA["SUNRISE"]
+SUNSET = DATA["SUNSET"]
+
+icons_dict = {
+    "thunderstorm": str(""),
+    "drizzle": str(""),
+    "rain": str(""),
+    "clear": str(""),
+    "clouds": str(""),
+}
+
+for key in icons_dict:
+    for word in CURRENT.lower().split():
+        try:
+            my_regex = r".*" + re.escape(word) + r".*"
+            lookup_val = re.findall(my_regex, key)[0]
+            ICON = icons_dict.get(lookup_val, "")
+            # if len(CURRENT) > 15:
+            # CURRENT = CURRENT[:5] + "...." + CURRENT[-5:]
+            print(
+                f"{ICON} {CURRENT}, {TEMP}°{UNIT_KEY} (Min:{UPCOMING_MIN} Max:{UPCOMING_MAX})"
+            )
+        except:
+            pass
