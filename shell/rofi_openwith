@@ -24,9 +24,9 @@ if [ -z "$SSH_TTY" ]; then
     linkfile"\
     | rofi -dmenu -i -mesg "How should I open '$visual'?" -select)
 else
-    link_handlers=$(printf "paragraph\n\
-    summary\n\
-    linkfile"\
+    link_handlers=$(printf "linkfile\n\
+    paragraph\n\
+    summary"\
     | smenu -line_mode -search_method fuzzy -message "How should I open '$visual'?")
 fi
 
