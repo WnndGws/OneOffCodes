@@ -3,7 +3,7 @@
 https://towardsdatascience.com/understand-text-summarization-and-create-your-own-summarizer-in-python-b26a9f09fc70
 
 Setup
-$ pikaur -S python-nltk python-numpy python-networkx
+$ pikaur -S python-nltk python-numpy python-networkx python-regex
 $ python
 >>> import nltk
 >>> nltk.download('stopwords')
