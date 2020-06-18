@@ -9,7 +9,7 @@ while true; do
     aur=$(pikaur -Qqu 2> /dev/null | wc -l)
     aur=$(awk -v a='$aur' -v p='$pac' 'BEGIN { printf a-b }')
 
-    [ "$pac" = "0" ] && [ "$aur" = "0" ] && leader="L" || leader="H"
+    [ "$pac" = " 0" ] && [ "$aur" = "0" ] && leader="L" || leader="H"
     echo "P$leader$pac  $aur"
 
     sleep 3600
