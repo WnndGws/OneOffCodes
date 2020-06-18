@@ -18,10 +18,10 @@ import subprocess
 from functools import partial
 
 
-EXCLUDED_CLASSES = ['qutebrowser', 'xev', 'lemonbar', 'xfce4-panel']
+EXCLUDED_CLASSES = ['firefox', 'xev', 'lemonbar', 'xfce4-panel']
 
 logging_level = logging.ERROR if len(sys.argv) == 1 else sys.argv[1]
-logging.basicConfig(filename=os.path.expanduser('~/.swallow.log'),
+logging.basicConfig(filename=os.path.expandvars('$XDG_CACHE_HOME/swallowed.log'),
                     level=logging_level)
 
 cmd_run = partial(subprocess.Popen, text=True, shell=True)
