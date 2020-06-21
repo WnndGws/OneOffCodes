@@ -11,6 +11,8 @@ icons_dict = {
     "firefox": str(""),
     "mpv": str(""),
     "signal": str(""),
+    "tor browser": str("﨩"),
+    "jftui": str("ﴽ"),
 }
 
 # Edit this with info from bspc query --desktops
