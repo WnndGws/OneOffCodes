@@ -1,32 +1,20 @@
-#!/bin/zsh
+#!/bin/sh
+#Saves a screenshot, and copies the image to the clipboard, and then the link
 
 echo "Select area to share......"
 sleep 0.1
-scrot $HOME'/GoogleDrive/01_Personal/01_Personal/05_Images/Screenshots/%Y-%m-%d-%T.png' -q 100 -s
-file_to_share=$(find $HOME/GoogleDrive/01_Personal/01_Personal/05_Images/Screenshots -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -f2- -d" " | sed 's/\.\//\/home\/wynand\/GoogleDrive\/01_Personal\/01_Personal\/05_Images\/Screenshots\//g')
+scrot --quality 100 --select "$HOME/documents/screenshots/%FT%T.png"
+file_to_share="$HOME/documents/screenshots/"$(/bin/ls --sort time "$HOME/documents/screenshots" | head -n1)
 
-while [[ $(insync-headless get_sync_progress) == "No syncing activities" ]]
-do
-    sleep 0.1
-done
-while [[ $(insync-headless get_sync_progress) != "No syncing activities" ]]
-do
-    sleep 0.1
-done
-xsel -cp
-while [[ $(xsel -op) == "" ]]
-do
-    sleep 0.1
-    insync-headless get_public_link $file_to_share | xsel -ip
-done
-feh --scale-down $file_to_share
-
-xclip -selection clipboard -t image/png -i $file_to_share
+# Allow 20 seconds to paste image
+xclip -selection clipboard -t image/png -i "$file_to_share"
 secs=$((20))
 while [ $secs -gt 0 ]; do
-   echo -ne "Paste image within the next $secs seconds....\033[0K\r"
+   printf "%s\n" "Paste image within the next $secs seconds...."
    sleep 1
-   : $((secs--))
+   secs=$((secs - 1))
 done
 
-find $HOME/GoogleDrive/01_Personal/01_Personal/05_Images/Screenshots -type f -mtime +7 -execdir rm -f {} \;
+# Clear clipboard of image
+printf "%s" "Clearing clipboard...."
+xclip -selection clipboard -i /dev/null
