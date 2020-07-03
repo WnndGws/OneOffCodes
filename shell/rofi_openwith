@@ -23,7 +23,7 @@ ytdl\n\
 speedread\n\
 speedread_summary\n\
 linkfile"\
-| rofi -dmenu -i -mesg "How should I open '$visual'?" -select)
+| rofi -matching fuzzy -dmenu -i -mesg "How should I open '$visual'?" -select)
 else
     link_handlers=$(printf "linkfile\n\
 paragraph\n\
