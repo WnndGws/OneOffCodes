@@ -1,21 +1,25 @@
 #!/usr/bin/sh
 ## Sets the display brightness to match battery level
 
-if ! command -v light > /dev/null 2>&1 ; then
-    echo "This script requires /usr/bin/light....Please install light and try again"
+if ! [ -w /sys/class/backlight/intel_backlight/brightness ]; then
+    echo "This script requires /sys/class/backlight/intel_backlight/brightness to be writeable by the user...."
     exit 2
 fi
 
-battery_percentage=$(cat /sys/class/power_supply/BAT0/capacity)
-set_percentage=$(bc <<< $battery_percentage/1.5)
-battery_state=$(cat /sys/class/power_supply/BAT0/status)
+battery_percentage=$(paste /sys/class/power_supply/BAT0/capacity)
+max_brightness=$(paste /sys/class/backlight/intel_backlight/max_brightness)
+set_brightness=$(((battery_percentage*10/15*max_brightness/100)))
+battery_state=$(paste /sys/class/power_supply/BAT0/status)
 
-if [[ $battery_state == "Charging" ]]; then
-    light -S 100
+if [ "$battery_state" = "Charging" ]; then
+    echo "$max_brightness" > /sys/class/backlight/intel_backlight/brightness
+    printf "%s" "Setting backlight to $(((max_brightness*100/max_brightness)))%"
 else
-    if [[  $battery_percentage == "100" ]]; then
-        light -S 100
+    if [  "$battery_percentage" = "100" ]; then
+        echo "$max_brightness" > /sys/class/backlight/intel_backlight/brightness
+        printf "%s" "Setting backlight to $(((max_brightness*100/max_brightness)))%"
     else
-        light -S $set_percentage
+        echo "$set_brightness" > /sys/class/backlight/intel_backlight/brightness
+        printf "%s" "Setting backlight to $(((set_brightness*100/max_brightness)))%"
     fi
 fi
