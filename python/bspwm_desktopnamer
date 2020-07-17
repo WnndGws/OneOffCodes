@@ -15,6 +15,7 @@ icons_dict = {
     "jftui": str("ﴽ"),
     "steam": str(""),
     "newsboat": str(""),
+    "zathura": str(""),
 }
 
 # Edit this with info from bspc query --desktops
