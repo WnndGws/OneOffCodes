@@ -26,8 +26,8 @@ linkfile"\
 | rofi -matching fuzzy -dmenu -i -mesg "How should I open '$visual'?" -select)
 else
     link_handlers=$(printf "linkfile\n\
-paragraph\n\
-summary"\
+paragraph_file\n\
+summary_file"\
 | smenu -line_mode -search_method fuzzy -message "How should I open '$visual'?")
 fi
 
@@ -45,5 +45,7 @@ case "$link_handlers" in
     speedread) /bin/rm /tmp/para.txt; "$HOME/git/scripts/python/paragraphscraper/paragraph_scraper.py" --url "$1" && bspc rule -a \* -o state=floating && alacritty --dimensions 128 28 --hold -e /usr/bin/speedread -w 350 /tmp/para.txt ;;
     speedread_summary) /bin/rm /tmp/para.txt; "$HOME/git/scripts/python/paragraphscraper/paragraph_scraper.py" --url "$1" && "$HOME/git/scripts/python/paragraphscraper/article_summarise_cosine.py" --file-name /tmp/para.txt --context > /tmp/summary.txt && bspc rule -a \* -o state=floating center=true && alacritty --dimensions 128 28 --hold -e /usr/bin/speedread -w 350 /tmp/summary.txt ;;
     linkfile) touch /tmp/linkfile.txt && echo "$1" >> /tmp/linkfile.txt ;;
+    paragraph_file) /bin/rm /tmp/para.txt; "$HOME/git/scripts/python/paragraphscraper/paragraph_scraper.py" --url "$1" ;;
+    summary_file) /bin/rm /tmp/para.txt; "$HOME/git/scripts/python/paragraphscraper/paragraph_scraper.py" --url "$1" && "$HOME/git/scripts/python/paragraphscraper/article_summarise_cosine.py" --file-name /tmp/para.txt --context > /tmp/summary.txt ;;
     *) "$link_handlers" "$1";;
 esac
