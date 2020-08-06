@@ -16,7 +16,7 @@ icons_dict = {
     "steam": str(""),
     "newsboat": str(""),
     "zathura": str(""),
-    "thunderbird": str(""),
+    "neomutt": str(""),
 }
 
 # Edit this with info from bspc query --desktops
