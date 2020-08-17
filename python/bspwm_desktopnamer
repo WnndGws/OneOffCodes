@@ -21,9 +21,9 @@ icons_dict = {
 
 # Edit this with info from bspc query --desktops
 # Determine desktop names
-desktops=subprocess.Popen("bspc query --desktops", stdout=subprocess.PIPE, shell=True).communicate()
-desktops=desktops[0]
-desktops=desktops.split(b'\n')
+desktops = subprocess.Popen("bspc query --desktops", stdout=subprocess.PIPE, shell=True).communicate()
+desktops = desktops[0]
+desktops = desktops.split(b'\n')
 desktops.pop(-1)
 desktops_dict = {}
 n = 1
