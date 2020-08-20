@@ -45,7 +45,6 @@ def check_desktop_classes(desktop):
         items.append(re.findall(':"(.*)"', item)[0].lower())
     return items
 
-
 def create_desktop_name(desktop):
     """Loops over list of applications, and turns it into a string of icons"""
     desktop_name = ""
