@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 ## Renames my desktops depending whats open on them
 ##TODO: Check class before name
+##TODO: Make script callable by single instance
 
 # Define icons
 icon_list="
