@@ -11,6 +11,8 @@ JFTUI ﴽ
 Newsboat 
 Zathura 
 Neomutt 﫮
+SignalBeta 
+Feh 﨤
 "
 
 #bspc subscribe node_add node_remove desktop_transfer | while read -r _; do
