@@ -34,8 +34,8 @@ fi
 echo "$link_handlers"
 
 case "$link_handlers" in
-    umpv) "$HOME/git/scripts/python/umpv" "$1" ;;
-    mpv) mpv --pause --ytdl-format="best[height<=720]" --quiet "$1" 2>/dev/null ;;
+    umpv) "$HOME/git/scripts/python/umpv" "$1" & disown ;;
+    mpv) mpv --pause --ytdl-format="best[height<=720]" --quiet "$1" 2>/dev/null & disown ;;
     firefox) firefox "$1";;
     feh) feh --scale-down --recursive "$1" --title "%S %n";;
     paragraph) /bin/rm /tmp/para.txt; "$HOME/git/scripts/python/paragraphscraper/paragraph_scraper.py" --url "$1" && bspc rule -a \* -o state=floating && alacritty --dimensions 128 28 --hold -e bat /tmp/para.txt ;;
