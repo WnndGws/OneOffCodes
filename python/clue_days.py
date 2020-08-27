@@ -1,0 +1,58 @@
+#!/usr/bin/env python
+"""
+Returns random days where either a red card or a black card is shown
+"""
+
+#standard imports
+import datetime
+import itertools
+import random
+
+#3rd party imports
+
+# Set up dates used
+current_year = int(datetime.datetime.strftime(datetime.datetime.now(), "%Y"))
+this_month = int(datetime.datetime.strftime(datetime.datetime.now(), "%m"))
+next_month = this_month + 1
+days_next_month = (datetime.date(current_year, next_month, 1) - datetime.date(current_year, this_month, 1)).days
+five_random_days = []
+while len(five_random_days) < 5:
+    five_random_days.append(random.choice(range(1, days_next_month)))
+
+# Set up deck of cards
+card_numbers = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
+black_suites = ["C", "S"]
+red_suites = ["D", "H"]
+red_deck = []
+black_deck = []
+for number, suite in itertools.product(card_numbers, black_suites):
+    black_deck.append(f'{number}{suite}')
+for number, suite in itertools.product(card_numbers, red_suites):
+    red_deck.append(f'{number}{suite}')
+random.shuffle(black_deck)
+random.shuffle(red_deck)
+
+while int(len(red_deck)) > 3:
+    # Set up dice rolls
+    roll_count = 0
+    black_rolls = 0
+    red_rolls = 0
+    roll_colour = random.choices(["b", "r"], weights=[0.5, 0.5], k=1)[0]
+
+    # Remove cards until <5 remain
+    if roll_colour == "b":
+        try:
+            del black_deck[0]
+        except:
+            pass
+    else:
+        try:
+            del red_deck[0]
+        except:
+            pass
+
+leftover_deck = red_deck + black_deck
+days = tuple(zip(five_random_days, leftover_deck))
+print(days)
+
+#print(locals())

@@ -10,6 +10,6 @@ while true; do
     #tomorrow_location=$(printf "%s" "$raw_output_tomorrow" | rg --only-matching --pcre2 "(?<=<trading-name>).*?(?=<\/trading-name>)" | head -n 1)
 
     #echo "F$today_location($today_price) $tomorrow_location($tomorrow_price)"
-    [ -z "$tomorrow_price" ] && echo "F $today_price" || echo "F $today_price  $tomorrow_price"
+    [ -z "$tomorrow_price" ] && echo "F $today_price" || echo "F $today_price|$tomorrow_price"
     sleep 43200
 done

@@ -34,7 +34,7 @@ while diceRolls < 4:
 redCards = []
 blackCards = []
 for c in cardsInDeck:
-    if c[1] == "b":
+    if c[1] == "s" or "c":
         blackCards.append(c)
     else:
         redCards.append(c)
