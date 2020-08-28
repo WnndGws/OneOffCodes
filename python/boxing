@@ -1,22 +1,23 @@
 #!/usr/bin/python
-## Script made to check when there is a middleweight+ title fight, or when 'the ring' top 10 fight
+'''Script made to check when there is a middleweight+ title fight, or when 'the ring' top 10 fight
+'''
 
+# Standard imports
 import os
-from apiclient import discovery
-from oauth2client import client
-from oauth2client import tools
-from oauth2client.file import Storage
 import datetime
-from dateutil.parser import parse
 import calendar
-import click
-import bs4
 import re
-import html5lib
 import urllib
 import httplib2
 from unidecode import unidecode
 
+# 3rd Party imports
+from apiclient import discovery
+import bs4
+import click
+from oauth2client import client
+from oauth2client import tools
+from oauth2client.file import Storage
 
 def get_credentials():
     """Gets valid user credentials from storage.
@@ -49,7 +50,6 @@ def get_credentials():
         credentials = tools.run_flow(flow, store, flags)
         print("Storing credentials to " + credential_path)
     return credentials
-
 
 def scrape_wikitables():
     """Scrapes wikipedia for the list of current top boxers"""
