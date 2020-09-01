@@ -103,7 +103,8 @@ for key in icons_dict:
             # if len(CURRENT) > 15:
             # CURRENT = CURRENT[:5] + "...." + CURRENT[-5:]
             print(
-                f"{ICON} {CURRENT}, {TEMP}°{UNIT_KEY} (Min:{UPCOMING_MIN} Max:{UPCOMING_MAX})"
+                #f"{ICON} {CURRENT}, {TEMP}°{UNIT_KEY} (Min:{UPCOMING_MIN} Max:{UPCOMING_MAX})"
+                f"{ICON} {TEMP}°{UNIT_KEY} ({UPCOMING_MIN}°{UNIT_KEY} to {UPCOMING_MAX}°{UNIT_KEY})"
             )
         except:
             pass
