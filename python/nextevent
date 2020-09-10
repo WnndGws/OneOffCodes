@@ -93,7 +93,14 @@ def getnextevent():
             except:
                 # If dateTime already includes offset, then strip the +08
                 # Doesnt affect output, just creates naive datetime
-                start_time = datetime.datetime.strptime(event["start"]["dateTime"], "%Y-%m-%dT%H:%M:%S+08:00")
+                # Need to subtract 08 from offset since I am GMT+8
+                start_time = event["start"]["dateTime"]
+                try:
+                    offset = (int(start_time[-5:-3]) * -1) + 8
+                    start_time = f'{start_time[:-6]}Z'
+                except ValueError:
+                    offset = 8
+                start_time = datetime.datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%SZ") + datetime.timedelta(hours=offset)
             start_time_test = start_time
         elif "date" in event["start"]:
             start_time = datetime.datetime.strptime(event["start"]["date"], "%Y-%m-%d")
