@@ -6,5 +6,5 @@ while true; do
 
     [ "$ip_head" -eq 58 ] && echo "L" || echo "L"
 
-    sleep 300
+    sleep 3000
 done
