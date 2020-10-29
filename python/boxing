@@ -130,7 +130,7 @@ def scrape_sunday_puncher(start, months):
     eventsResult = (
         service.events()
         .list(
-            calendarId="iumovuptqivl8kn9a4krhvttbo@group.calendar.google.com",
+            calendarId="iumovuptqivl8kn9a4krhvttbo@group.calendar.google.com", #Sunday puncher's public calendar
             timeMin=start,
             timeMax=end,
             singleEvents=True,
@@ -208,11 +208,17 @@ def main(start, months, verbose, calendar, test):
             boxer_two = re.findall(r"(?<=vs )(.*)(?= -)", eventTitle)
             if len(set(boxer_one).intersection(boxer_i_care_about)) > 0:
                 for item in ["summary", "location", "start"]:
-                    click.echo(f"{item}: {event[item]}")
+                    try:
+                        click.echo(f"{item}: {event[item]}")
+                    except KeyError:
+                        pass
                 click.echo("\n")
             elif len(set(boxer_two).intersection(boxer_i_care_about)) > 0:
                 for item in ["summary", "location", "start"]:
-                    click.echo(f"{item}: {event[item]}")
+                    try:
+                        click.echo(f"{item}: {event[item]}")
+                    except KeyError:
+                        pass
                 click.echo("\n")
 
     if calendar:
