@@ -5,11 +5,13 @@ Checks google calendar for next event and displays it nicely
 
 import datetime
 import os
+import re
 
 # python-oauth2client
 from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
+
 # python-google-api-python-client
 from apiclient import discovery
 import httplib2
@@ -110,6 +112,8 @@ def getnextevent():
             lowest_start_time = start_time_test
             lowest_title = event["summary"]
 
+    if re.match(r"^JOB-\d*.*", lowest_title) is not None:
+        lowest_title = "Work"
     if lowest_start_time.second == 59:
         print(f'All Day - {lowest_title}')
     else:
