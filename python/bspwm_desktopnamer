@@ -11,6 +11,7 @@ icons_dict = {
     "firefox": str(""),
     "mpv": str(""),
     "signal": str(""),
+    "pidgin": str(""),
     "tor browser": str("﨩"),
     "jftui": str("ﴽ"),
     "steam": str(""),
