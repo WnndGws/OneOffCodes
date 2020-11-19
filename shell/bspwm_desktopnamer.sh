@@ -12,6 +12,7 @@ Newsboat 
 Zathura 
 Neomutt 﫮
 SignalBeta 
+Pidgin 
 Feh 﨤
 "
 
