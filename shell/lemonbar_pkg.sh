@@ -3,7 +3,7 @@
 
 #Need to update or it wont know there are new packages
 while true; do
-    pikaur -Sy > /dev/null 2>&1
+    sudo pikaur -Sy > /dev/null 2>&1
 
     pac=$(pacman -Qqu 2> /dev/null | wc -l)
     aur=$(pikaur -Qqu 2> /dev/null | wc -l)
