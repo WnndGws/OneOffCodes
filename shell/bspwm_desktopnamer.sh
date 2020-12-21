@@ -14,6 +14,7 @@ Neomutt 﫮
 SignalBeta 
 Pidgin 
 Feh 﨤
+Steam 
 "
 
 #bspc subscribe node_add node_remove desktop_transfer | while read -r _; do
