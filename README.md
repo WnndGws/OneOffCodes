@@ -1,21 +1,27 @@
 # Scripts
 
-This is a collection of shell scripts, and Python scripts that I write to achieve a discrete task
+This is a collection of shell scripts, and Python scripts that I write to achieve a discrete task.
 
 ## Getting Started
 
-All scripts are written for ZSH and/or Python 3.
+All shell scripts aim to be POSIX compliant, but are written in ZSH and will thus work best in this environment.
+All python scripts are written for python3 only.
 
 ## Installing
+
 All scripts should be able to run in isolation.
 eg.
-```
+
+```bash
 chmod +x script.py
 ./scripts.py
 ```
 
 ## Descriptions
+NB! OUT OF DATE
+
 ### Python
+
 * paragraphscraper/article_summarise_cosine
     * [Implementation](https://towardsdatascience.com/understand-text-summarization-and-create-your-own-summarizer-in-python-b26a9f09fc70) in python to use natural language to summarise an article into the top n most "important" sentences
 
