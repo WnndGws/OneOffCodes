@@ -4,7 +4,7 @@ This is a collection of shell scripts, and Python scripts that I write to achiev
 
 ## Getting Started
 
-All shell scripts aim to be POSIX compliant, but are written in ZSH and will thus work best in this environment.
+All shell scripts aim to be POSIX compliant, but are written in ZSH and will thus work best in this environment.  
 All Python scripts are written for python3 only.
 
 ## Installing
