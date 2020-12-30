@@ -9,8 +9,8 @@ All python scripts are written for python3 only.
 
 ## Installing
 
-All scripts should be able to run in isolation.
-eg.
+All scripts should be able to run in isolation. 
+e.g.
 
 ```bash
 chmod +x script.py
