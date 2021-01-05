@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 ## Locks and mutes PC
 
 # Mutes and unmutes

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 #Saves a screenshot, and copies the image to the clipboard, and then the link
 
 echo "Select area to share......"

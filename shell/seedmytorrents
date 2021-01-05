@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 ## Use aria2c to seed my torrents
 
 killall -9 aria2c

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 #Checks how much is being downloaded to calc a speed
 
 while true; do

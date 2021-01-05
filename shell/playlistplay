@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 ##Use to play .order files so can watch overlapping shows in correct order. Searches and plays 1st line in a file. If multiples found presents them. Offers choice whether want to move played file to bottom
 ##Relys on custom 'lsgrep' function
 

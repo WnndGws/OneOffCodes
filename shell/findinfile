@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 # using ripgrep combined with preview
 # find-in-file - usage: fif <searchTerm>
 

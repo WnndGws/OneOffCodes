@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 # Use zsh so can use bash-isms
 # Feed this script a link and it will give rofi a list of link_handlers to open with
 

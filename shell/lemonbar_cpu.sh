@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 # Just prints cpu I have available to use in polybar
 
 red='#65350'

@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 ## Uses bashisms
 ## Battery display in lemonbar
 

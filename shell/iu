@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/usr/bin/env sh
 ## Curls a UrL, the opens it in imv
 
 IMGDIR="/tmp"

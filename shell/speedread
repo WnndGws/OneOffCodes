@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 ## Speedreads a file using pipes to handle unicode
 
 cat /tmp/para.txt | /usr/bin/speedread -w 380

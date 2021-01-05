@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/usr/bin/env sh
 ## Sets the display brightness to match battery level
 
 if ! [ -w /sys/class/backlight/intel_backlight/brightness ]; then

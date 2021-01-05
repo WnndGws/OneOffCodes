@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 ## Convert a pdf to tiff, then ocr it
 
 full_in_name="$1"

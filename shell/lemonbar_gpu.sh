@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 # Checks how many packages need updating
 
 #Need to update or it wont know there are new packages

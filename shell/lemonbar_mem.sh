@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 # Just prints memory I have available to use in polybar
 
 while true; do

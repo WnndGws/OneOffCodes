@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 ## fkill - kill processes - list only the ones you can kill. Modified the earlier script.
 
 local pid

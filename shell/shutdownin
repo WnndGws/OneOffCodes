@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 #Allows user to enter shutdown_in hh:mm:ss and gives a countdown, had to change shutdown command to not need sudo, thus no need to expect in pw, although could do it that way
 
 timein=$1

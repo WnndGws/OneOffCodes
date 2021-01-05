@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 # Extracted and adapted from source:
 # https://github.com/Chrysostomus/bspwm-scripts/blob/master/bin/bspwm_resize.sh
 

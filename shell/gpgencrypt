@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 #GPG encrypt a file to the recipient and myself
 
 if [[ ${1:0:1} != "/" ]]; then

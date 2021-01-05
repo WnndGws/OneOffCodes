@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 ## Shell script to compile latex for me using mklatex
 
 tex_file="$1"

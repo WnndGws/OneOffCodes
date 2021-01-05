@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 # Outputs cheapest fuel today and tomorrow, allowing me to make a choice
 
 while true; do
