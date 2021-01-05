@@ -1,6 +1,6 @@
 # Scripts
 
-This is a collection of shell scripts, and Python scripts that I write to achieve a discrete task.
+This is a collection of scripts that I have written to achieve some simple tasks.
 
 ## Getting Started
 
@@ -20,7 +20,3 @@ chmod +x script.py
 ## Contributing
 
 I am more than happy to be shown how to improve these scripts. Simply fork, edit, and submit a PR with any changes.
-
-## Authors
-
-* WnndGws
