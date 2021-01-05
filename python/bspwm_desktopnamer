@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/env python3
 """ Use this to rename my BSPWM workspaces to icons
 NOTE TO SELF. I USE THE SHELL SCRIPT NOW INSTEAD
 """

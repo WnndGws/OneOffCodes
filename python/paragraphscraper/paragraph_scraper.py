@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """ Re-written to scrape paragraph tags on a website
 """
 

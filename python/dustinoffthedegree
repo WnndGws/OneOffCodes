@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/usr/bin/env python3
 # Used to scrape episode numbers and topic from podcast show notes
 
 import json

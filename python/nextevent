@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 '''Written to replace the next_event2.
 Checks google calendar for next event and displays it nicely
 '''
