@@ -3,8 +3,8 @@
 
 #Need to update or it wont know there are new packages
 
-# TODO; import this from /etc/pacman.conf
-ignore_list="(^linux$)|(^nvidia$)"
+# TODO; test if works with empty list
+ignore_list="(^$(rg "^Ignore.*" /etc/pacman.conf | sed -e 's/^.*= //' -e 's/ /$)|(^/g')$)"
 
 while true; do
     sudo pikaur -Sy > /dev/null 2>&1
