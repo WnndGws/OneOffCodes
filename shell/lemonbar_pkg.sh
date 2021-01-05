@@ -2,11 +2,19 @@
 # Checks how many packages need updating
 
 #Need to update or it wont know there are new packages
+
+# TODO; import this from /etc/pacman.conf
+ignore_list="(^linux$)|(^nvidia$)"
+
 while true; do
     sudo pikaur -Sy > /dev/null 2>&1
 
-    pac=$(pacman -Qqu 2> /dev/null | wc -l)
-    aur=$(pikaur -Qqu 2> /dev/null | wc -l)
+    pac=$(pacman -Qqu | rg --invert-match --count "$ignore_list")
+    [ -z $pac ] && pac=0
+
+    aur=$(pikaur -Qqu 2> /dev/null | rg --invert-match --count "$ignore_list")
+    # Need to minus 1 since pikaur outputs a non-blank blank line
+    aur=$(awk -v a="$aur" 'BEGIN { printf a-1 }')
     aur=$(awk -v a="$aur" -v p="$pac" 'BEGIN { printf a-p }')
 
     [ "$pac" = "0" ] && [ "$aur" = "0" ] && leader="L" || leader="H"
