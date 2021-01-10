@@ -3,8 +3,8 @@
 
 echo "Select area to share......"
 sleep 0.1
-scrot --quality 100 --select "$HOME/documents/screenshots/%FT%T.png"
-file_to_share="$HOME/documents/screenshots/"$(/bin/ls --sort time "$HOME/documents/screenshots" | head -n1)
+scrot --quality 100 --select "$HOME/%FT%T.png"
+file_to_share="$HOME/"$(/bin/ls --sort time "$HOME" | head -n1)
 
 # Allow 20 seconds to paste image
 xclip -selection clipboard -t image/png -i "$file_to_share"
