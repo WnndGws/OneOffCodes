@@ -13,6 +13,7 @@ echo $visual
 
 if [ -z "$SSH_TTY" ]; then
     link_handlers=$(printf "umpv\n\
+umpv_audio\n\
 mpv\n\
 firefox\n\
 feh\n\
@@ -35,6 +36,7 @@ echo "$link_handlers"
 
 case "$link_handlers" in
     umpv) "$HOME/git/scripts/python/umpv" "$1" & disown ;;
+    umpv_audio) "$HOME/git/scripts/python/umpv_audio" "$1" & disown ;;
     mpv) mpv --pause --ytdl-format="best[height<=720]" --quiet "$1" 2>/dev/null & disown ;;
     firefox) firefox "$1";;
     feh) feh --scale-down --recursive "$1" --title "%S %n";;
