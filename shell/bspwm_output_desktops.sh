@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 ## Prints a string to put in sxhkd
 
-desktop_head="$(bspc query --desktops | head -n1)"
+desktop_head="$(bspc query --desktops | head --lines 1)"
 desktop_head="${desktop_head%?}" # Split off last character
 desktop_head="${desktop_head%?}" # Split off last character again
 all_desktops="$(bspc query --desktops)"
