@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # Checks GPU stats
 
-#Need to update or it wont know there are new packages
+# Need to update or it wont know there are new packages
 while true; do
     # Get 4th row, 2nd column and strip last character
     temp=$(sensors | rg --after-context 3 "amdgpu" | awk 'NR==4 {print substr($2, 2, length($2)-5)}')
