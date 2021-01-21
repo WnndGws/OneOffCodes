@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# Outputs cheapest fuel today and tomorrow, allowing me to make a choice
+## Outputs cheapest fuel today and tomorrow, allowing me to make a choice
 
 while true; do
     raw_output_today=$(wget -qO- "http://www.fuelwatch.wa.gov.au/fuelwatch/fuelWatchRSS?Product=1&Suburb=Coolbellup")
