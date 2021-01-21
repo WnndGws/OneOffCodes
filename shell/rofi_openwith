@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
-# Use zsh so can use bash-isms
-# Feed this script a link and it will give rofi a list of link_handlers to open with
+## Use zsh so can use bash-isms
+## Feed this script a link and it will give rofi a list of link_handlers to open with
 
 # The URL will be shown visually in 30 characters or less.
 if [[ "${#1}" -gt 30 ]];
