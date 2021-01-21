@@ -3,12 +3,9 @@
 Returns random days where either a red card or a black card is shown
 """
 
-#standard imports
 import datetime
 import itertools
 import random
-
-#3rd party imports
 
 # Set up dates used
 current_year = int(datetime.datetime.strftime(datetime.datetime.now(), "%Y"))
