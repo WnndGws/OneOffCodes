@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-## reads volume
+## Reads volume
 
 getCurVol() { volume=$(pamixer --get-volume-human)
         if [ "$volume" = "muted" ]; then
@@ -22,11 +22,11 @@ getCurVol() { volume=$(pamixer --get-volume-human)
         fi
 }
 
-#Need to print something, otherwise it waits for 1st event
+# Need to print something, otherwise it waits for 1st event
 getCurVol
 printf "%s\n" "${leader}${icon} ${volume}%"
 
-#Subscribe, and for each line print the current volume
+# Subscribe, and for each line print the current volume
 pactl subscribe | grep --line-buffered "sink" |\
     while read -r line; do
         getCurVol
