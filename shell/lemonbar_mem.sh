@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# Just prints memory I have available to use in polybar
+## Just prints memory I have available to use in polybar
 
 while true; do
     free_mem=$(free | awk 'NR==2{ print $7 }')
