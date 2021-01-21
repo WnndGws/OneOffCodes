@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-#Saves a screenshot, and copies the image to the clipboard, and then the link
+## Saves a screenshot, and copies the image to the clipboard, and then the link
 
 echo "Select area to share......"
 sleep 0.1
