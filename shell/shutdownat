@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-## Allows user to enter shutdown time in human readable format and gives a countdown, had to change shutdown command to not need sudo, thus no need to expect in pw, although could do it that way
+## Allows user to enter shutdown time in human readable format and gives a countdown
 
 timein=$1
 delimiter=":"
@@ -15,4 +15,5 @@ while [ $time_ts -gt 0 ]; do
     ((time_ts--))
 done
 
+# This command doesn't require sudo
 systemctl poweroff
