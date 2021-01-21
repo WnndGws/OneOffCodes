@@ -3,7 +3,7 @@
 
 local pid
 if [ "$UID" != "0" ]; then
-    pid=$(ps -f --user $UID | sed 1d | fzf -m | awk '{print $2}')
+    pid=$(ps -f --user $UID | sed 1d | fzf --multi | awk '{print $2}')
 else
     pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
 fi
