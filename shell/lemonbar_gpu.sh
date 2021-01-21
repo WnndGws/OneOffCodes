@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# Checks GPU stats
+## Checks GPU stats
 
 while true; do
     # Get 4th row, 2nd column and strip last character
