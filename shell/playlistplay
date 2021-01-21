@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 ## Use to play .order files so can watch overlapping shows in correct order. Searches and plays 1st line in a file. If multiples found presents them. Offers choice whether want to move played file to bottom
-## Relys on custom 'lsgrep' function
+## Relies on custom 'lsgrep' function
 
 lines=$(head -1 "$1" | sed -e 's|\ |\*|g' -e "s|'|\\\'|g" -e 's|\.|\*|g' | xargs -i find $HOME/wynZFS/Media/TV/ -iname "*{}*" | wc -l )
 # Takes the 1st line in the WatchOrder file, replaces spaces and ' then counts how many matches it finds
