@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
-## Uses bashisms
 ## Battery display in lemonbar
+## Note: this uses bashisms so not strictly POSIX
 
 FONT_COLOUR="#eee8d5" # white
 
