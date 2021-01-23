@@ -4,7 +4,6 @@
 # Locate file
 #file=$(locate -Ai -0 '$@' | grep -z -vE '~$' | fzf --read0 -0 -1)
 file=$(locate -Ai -0 "$1" | fzf --read0 -0 -1)
-#echo "$file"
 
 # Checks if file was found, exits if it wasn't
 # If file exists and if file is a dir, change to dir, otherwise change to file's dir
