@@ -17,7 +17,7 @@ print_state() {
     fi
 
     if [ "$BAT_STATE" = "Charging" ]; then
-        ICON=""
+        ICON="" # fontawesome 'plug' (f1e6)
         UNDERLINE_COLOUR="#99c76c" # green
     elif [ "$BAT_PERC" -gt 95 ]; then
         ICON=""
